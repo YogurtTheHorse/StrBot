@@ -1,17 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\StrategyBot.Game.Data\StrategyBot.Game.Data.csproj" />
-      <ProjectReference Include="..\StrategyBot.Game.Logic\StrategyBot.Game.Logic.csproj" />
     </ItemGroup>
-
 
 </Project>
