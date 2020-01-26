@@ -23,7 +23,7 @@ namespace StrategyBot.Game.Server.RabbitMq
                 autoDelete: false
             );
 
-            channel.QueueBind(rabbitMqSettings.ServersQueue, rabbitMqSettings.MessagesExchange, "");
+            channel.QueueBind(rabbitMqSettings.ServersQueue, rabbitMqSettings.MessagesExchange, rabbitMqSettings.ServersQueue);
         }
     }
 }

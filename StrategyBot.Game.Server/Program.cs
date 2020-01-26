@@ -44,6 +44,9 @@ namespace StrategyBot.Game.Server
                 .GetSection(nameof(RabbitMqSettings))
                 .Get<RabbitMqSettings>();
 
+            iocContainerBuilder
+                .RegisterInstance(rabbitMqSettings);
+
             var factory = new ConnectionFactory()
             {
                 HostName = rabbitMqSettings.Hostname,
