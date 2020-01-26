@@ -19,14 +19,29 @@ namespace StrategyBot.Game.Server
         public static void Main(string[] args)
         {
             IConfigurationRoot configuration = BuildConfiguration();
+
+            var rabbitMqSettings = configuration
+                .GetSection(nameof(RabbitMqSettings))
+                .Get<RabbitMqSettings>();
+            var mongoSettings = configuration
+                .GetSection(nameof(MongoSettings))
+                .Get<MongoSettings>();
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = rabbitMqSettings.Hostname,
+                DispatchConsumersAsync = true
+            };
+
+            using IConnection connection = factory.CreateConnection();
+            using IModel channel = connection.CreateModel();
+
+            channel.SetupServerQueue(rabbitMqSettings);
+            
             var iocContainerBuilder = new ContainerBuilder();
 
             iocContainerBuilder
-                .RegisterInstance(
-                    configuration
-                        .GetSection(nameof(MongoSettings))
-                        .Get<MongoSettings>()
-                )
+                .RegisterInstance(mongoSettings)
                 .As<MongoSettings>();
             iocContainerBuilder
                 .RegisterType<MongoUnitOfWork>()
@@ -40,67 +55,62 @@ namespace StrategyBot.Game.Server
                 .As<IGameCommunicator>()
                 .SingleInstance();
 
-            var rabbitMqSettings = configuration
-                .GetSection(nameof(RabbitMqSettings))
-                .Get<RabbitMqSettings>();
-
             iocContainerBuilder
                 .RegisterInstance(rabbitMqSettings);
-
-            var factory = new ConnectionFactory()
-            {
-                HostName = rabbitMqSettings.Hostname,
-                DispatchConsumersAsync = true
-            };
-
-
-            using IConnection connection = factory.CreateConnection();
-            using IModel channel = connection.CreateModel();
+            
             iocContainerBuilder
                 .RegisterInstance(channel)
                 .As<IModel>()
                 .SingleInstance();
 
-            channel.SetupServerQueue(rabbitMqSettings);
-
             IContainer container = iocContainerBuilder.Build();
-            using ILifetimeScope scope = container.BeginLifetimeScope();
 
             var messagesConsumer = new AsyncEventingBasicConsumer(channel);
-            messagesConsumer.Received += async (model, ea) =>
-            {
-                var message = ea.Body.DecodeObject<MessageFromSocialNetwork>();
-
-                using ILifetimeScope scope = container.BeginLifetimeScope();
-                IMongoRepository<Player> players = scope.Resolve<IMongoUnitOfWork>().GetRepository<Player>();
-                Player player = await players.GetFirstOrDefault(p =>
-                                    p.SocialId == message.PlayerSocialId &&
-                                    p.ReplyQueueName == message.ReplyBackQueueName
-                                )
-                                ?? new Player
-                                {
-                                    Key = ObjectId.GenerateNewId(),
-                                    SocialId = message.PlayerSocialId,
-                                    ReplyQueueName = message.ReplyBackQueueName
-                                };
-
-                var gameContext = scope.Resolve<GameContext>();
-                await gameContext.ProcessMessage(new IncomingMessage
-                {
-                    Text = message.Text,
-                    PlayerId = player.Key
-                });
-            };
+            messagesConsumer.Received += MessagesConsumerOnReceived(container);
 
             channel.BasicConsume(
                 rabbitMqSettings.ServersQueue,
                 autoAck: true,
                 consumer: messagesConsumer
             );
+            
 
             Console.WriteLine("Listening...");
             Console.ReadLine();
         }
+
+        private static AsyncEventHandler<BasicDeliverEventArgs> MessagesConsumerOnReceived(IContainer container) =>
+            async (model, ea) =>
+            {
+                try
+                {
+                    var message = ea.Body.DecodeObject<MessageFromSocialNetwork>();
+
+                    IMongoRepository<Player> players = container.Resolve<IMongoUnitOfWork>().GetRepository<Player>();
+                    Player player = await players.GetFirstOrDefault(p =>
+                                        p.SocialId == message.PlayerSocialId &&
+                                        p.ReplyQueueName == message.ReplyBackQueueName
+                                    )
+                                    ?? new Player
+                                    {
+                                        Key = ObjectId.GenerateNewId(),
+                                        SocialId = message.PlayerSocialId,
+                                        ReplyQueueName = message.ReplyBackQueueName
+                                    };
+
+                    var gameContext = container.Resolve<GameContext>();
+                    await gameContext.ProcessMessage(new IncomingMessage
+                    {
+                        Text = message.Text,
+                        PlayerId = player.Key
+                    });
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(e.Message);
+                    Console.Error.WriteLine(e.StackTrace);
+                }
+            };
 
         private static IConfigurationRoot BuildConfiguration()
         {
