@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using StrategyBot.Game.Data.Abstractions;
 
 namespace StrategyBot.Game.Data.Mongo
 {
-    public class MongoRepository<T> : IRepository<T> where T : MongoModel
+    public class MongoMongoRepository<T> : IMongoRepository<T> where T : MongoModel
     {
         private readonly IMongoCollection<T> _collection;
 
-        public MongoRepository(IMongoDatabase database)
+        public MongoMongoRepository(IMongoDatabase database)
         {
             if (!BsonClassMap.IsClassMapRegistered(typeof(T)))
             {
@@ -51,5 +52,10 @@ namespace StrategyBot.Game.Data.Mongo
                 Builders<T>.Filter.Eq(m => m.Key, entity.Key),
                 entity
             );
+
+        public async Task<T> GetById(ObjectId id) =>
+            await (
+                await _collection.FindAsync(Builders<T>.Filter.Eq(m => m.Key, id))
+            ).FirstOrDefaultAsync();
     }
 }

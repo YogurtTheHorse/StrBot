@@ -5,11 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\StrategyBot.Game.Data\StrategyBot.Game.Data.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Entities" />
+      <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
     </ItemGroup>
 
 </Project>

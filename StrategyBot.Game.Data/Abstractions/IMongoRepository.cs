@@ -7,7 +7,7 @@ using MongoDB.Bson;
 
 namespace StrategyBot.Game.Data.Abstractions
 {
-    public interface IRepository<T>
+    public interface IMongoRepository<T>
     {
         async Task<IEnumerable<T>> GetAll() => await GetAll(e => true);
         
@@ -26,5 +26,7 @@ namespace StrategyBot.Game.Data.Abstractions
         Task Update(T entity);
 
         async Task UpdateMany(IEnumerable<T> entities) => await Task.WhenAll(entities.Select(Update));
+        
+        Task<T> GetById(ObjectId id);
     }   
 }

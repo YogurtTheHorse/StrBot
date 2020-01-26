@@ -1,18 +1,20 @@
 using System;
 using System.Threading.Tasks;
 using StrategyBot.Game.Data.Abstractions;
-using StrategyBot.Game.Data.Mongo;
 using StrategyBot.Game.Logic.Entities;
 
 namespace StrategyBot.Game.Logic
 {
     public class GameContext
     {
-        public IUnitOfWork UnitOfWork { get; }
+        public IGameCommunicator GameCommunicator { get; set; }
+        
+        public IMongoUnitOfWork MongoUnitOfWork { get; }
 
-        public GameContext(IUnitOfWork unitOfWork)
+        public GameContext(IMongoUnitOfWork mongoUnitOfWork, IGameCommunicator gameCommunicator)
         {
-            UnitOfWork = unitOfWork;
+            GameCommunicator = gameCommunicator;
+            MongoUnitOfWork = mongoUnitOfWork;
         }
 
         public async Task ProcessMessage(IncomingMessage message)

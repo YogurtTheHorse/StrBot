@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Logic", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Telegram.Polling", "StrategyBot.Telegram.Polling\StrategyBot.Telegram.Polling.csproj", "{242E7F03-4671-48FB-8503-CAF016448612}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server", "StrategyBot.Game.Server\StrategyBot.Game.Server.csproj", "{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server.RabbitMq", "StrategyBot.Game.Server.RabbitMq\StrategyBot.Game.Server.RabbitMq.csproj", "{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{242E7F03-4671-48FB-8503-CAF016448612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{242E7F03-4671-48FB-8503-CAF016448612}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{242E7F03-4671-48FB-8503-CAF016448612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

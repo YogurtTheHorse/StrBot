@@ -5,7 +5,7 @@ using StrategyBot.Game.Data.Abstractions;
 
 namespace StrategyBot.Game.Data.Mongo
 {
-    public class MongoUnitOfWork : IUnitOfWork
+    public class MongoUnitOfWork : IMongoUnitOfWork
     {
         private readonly MongoClient _client;
         private readonly IMongoDatabase _database;
@@ -24,6 +24,6 @@ namespace StrategyBot.Game.Data.Mongo
             ConventionRegistry.Register("EnumConventionAsString", pack, t => true);
         }
 
-        public IRepository<T> GetRepository<T>() where T : MongoModel => new MongoRepository<T>(_database);
+        public IMongoRepository<T> GetRepository<T>() where T : MongoModel => new MongoMongoRepository<T>(_database);
     }
 }
