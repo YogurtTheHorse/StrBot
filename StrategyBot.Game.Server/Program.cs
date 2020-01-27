@@ -86,28 +86,28 @@ namespace StrategyBot.Game.Server
                 {
                     var message = ea.Body.DecodeObject<MessageFromSocialNetwork>();
 
-                    IMongoRepository<Player> players = container.Resolve<IMongoUnitOfWork>().GetRepository<Player>();
-                    Player player = await players.GetFirstOrDefault(p =>
+                    IMongoRepository<PlayerInfo> players = container.Resolve<IMongoUnitOfWork>().GetRepository<PlayerInfo>();
+                    PlayerInfo playerInfo = await players.GetFirstOrDefault(p =>
                         p.SocialId == message.PlayerSocialId &&
                         p.ReplyQueueName == message.ReplyBackQueueName
                     );
                     
-                    if (player == null)
+                    if (playerInfo == null)
                     {
-                        player = new Player
+                        playerInfo = new PlayerInfo
                         {
                             Key = ObjectId.GenerateNewId(),
                             SocialId = message.PlayerSocialId,
                             ReplyQueueName = message.ReplyBackQueueName
                         };
-                        await players.Insert(player);
+                        await players.Insert(playerInfo);
                     }
 
                     var gameContext = container.Resolve<GameContext>();
                     await gameContext.ProcessMessage(new IncomingMessage
                     {
                         Text = message.Text,
-                        PlayerId = player.Key
+                        PlayerId = playerInfo.Key
                     });
                 }
                 catch (Exception e)

@@ -11,23 +11,23 @@ namespace StrategyBot.Game.Server
     {
         private readonly RabbitMqSettings _rabbitMqSettings;
         private readonly IModel _rabbitMqChannel;
-        private readonly IMongoRepository<Player> _players;
+        private readonly IMongoRepository<PlayerInfo> _players;
 
         public RabbitMqCommunicator(RabbitMqSettings rabbitMqSettings, IModel rabbitMqChannel, IMongoUnitOfWork mongoUnitOfWork)
         {
             _rabbitMqSettings = rabbitMqSettings;
             _rabbitMqChannel = rabbitMqChannel;
-            _players = mongoUnitOfWork.GetRepository<Player>();
+            _players = mongoUnitOfWork.GetRepository<PlayerInfo>();
         }
 
         public async Task Answer(GameAnswer message, GameMessageType messageType = GameMessageType.RegularAnswer)
         {
-            Player player = await _players.GetById(message.PlayerId);
+            PlayerInfo playerInfo = await _players.GetById(message.PlayerId);
 
             _rabbitMqChannel.BasicPublish(
                 _rabbitMqSettings.MessagesExchange,
                 new MessagesRoutingKeyBuilder()
-                    .WithSocialNetwork(player.ReplyQueueName)
+                    .WithSocialNetwork(playerInfo.ReplyQueueName)
                     .WithMessageType(messageType)
                     .Build(),
                 null,
@@ -35,7 +35,7 @@ namespace StrategyBot.Game.Server
                 {
                     Text = message.Text,
                     PlayerId = message.PlayerId,
-                    PlayerSocialId = player.SocialId
+                    PlayerSocialId = playerInfo.SocialId
                 }.EncodeObject()
             );
         }
