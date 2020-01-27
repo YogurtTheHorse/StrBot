@@ -6,24 +6,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\StrategyBot.Game.Interface\StrategyBot.Game.Interface.csproj" />
-        <ProjectReference Include="..\StrategyBot.Game.Logic\StrategyBot.Game.Logic.csproj" />
-        <ProjectReference Include="..\StrategyBot.Game.Server.RabbitMq\StrategyBot.Game.Server.RabbitMq.csproj" />
+        <ProjectReference Include="..\StrategyBot.Game.Interface\StrategyBot.Game.Interface.csproj"/>
+        <ProjectReference Include="..\StrategyBot.Game.Logic\StrategyBot.Game.Logic.csproj"/>
+        <ProjectReference Include="..\StrategyBot.Game.Server.RabbitMq\StrategyBot.Game.Server.RabbitMq.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="4.9.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
-        <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
+        <PackageReference Include="Autofac" Version="4.9.4"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1"/>
+        <PackageReference Include="RabbitMQ.Client" Version="5.1.2"/>
+        <PackageReference Include="YamlDotNet" Version="8.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <Content Include="Text\**\*.*">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

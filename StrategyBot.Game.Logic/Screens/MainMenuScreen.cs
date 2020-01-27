@@ -16,7 +16,7 @@ namespace StrategyBot.Game.Logic.Screens
             _gameCommunicator = gameCommunicator;
         }
         
-        public async Task ProcessMessage(IncomingMessage message, PlayerState playerState)
+        public async Task ProcessMessage(IncomingMessage message, PlayerState playerState, PlayerData playerData)
         {
             await _gameCommunicator.Answer(new GameAnswer
             {
@@ -25,6 +25,12 @@ namespace StrategyBot.Game.Logic.Screens
             });
 
             await Task.CompletedTask;
+        }
+
+        public Task OnOpen(PlayerState playerState, PlayerData playerData)
+        {
+            //string.Format()
+            return Task.CompletedTask;
         }
     }
 }

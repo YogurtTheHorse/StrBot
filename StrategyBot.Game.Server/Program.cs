@@ -29,6 +29,9 @@ namespace StrategyBot.Game.Server
             var mongoSettings = configuration
                 .GetSection(nameof(MongoSettings))
                 .Get<MongoSettings>();
+            var localizationOptions = configuration
+                .GetSection(nameof(LocalizationOptions))
+                .Get<LocalizationOptions>();
 
             var factory = new ConnectionFactory()
             {
@@ -44,8 +47,12 @@ namespace StrategyBot.Game.Server
             var iocContainerBuilder = new ContainerBuilder();
 
             iocContainerBuilder
-                .RegisterInstance(mongoSettings)
-                .As<MongoSettings>();
+                .RegisterInstance(mongoSettings);
+            iocContainerBuilder
+                .RegisterInstance(rabbitMqSettings);
+            iocContainerBuilder
+                .RegisterInstance(localizationOptions);
+            
             iocContainerBuilder
                 .RegisterType<MongoUnitOfWork>()
                 .As<IMongoUnitOfWork>()
@@ -59,11 +66,13 @@ namespace StrategyBot.Game.Server
                 .SingleInstance();
 
             iocContainerBuilder
+                .RegisterType<YamlLocalizer>()
+                .As<ILocalizer>();
+
+            iocContainerBuilder
                 .RegisterGeneric(typeof(MongoRepository<>))
                 .As(typeof(IMongoRepository<>));
 
-            iocContainerBuilder
-                .RegisterInstance(rabbitMqSettings);
             
             iocContainerBuilder
                 .RegisterInstance(channel)
@@ -81,6 +90,8 @@ namespace StrategyBot.Game.Server
                 .As<IScreenController>();
 
             IContainer container = iocContainerBuilder.Build();
+            var localizer = container.Resolve<ILocalizer>();
+            Console.WriteLine(localizer.GetString("screens.main_menu.test", "ru"));
 
             var messagesConsumer = new AsyncEventingBasicConsumer(channel);
             messagesConsumer.Received += MessagesConsumerOnReceived(container);
