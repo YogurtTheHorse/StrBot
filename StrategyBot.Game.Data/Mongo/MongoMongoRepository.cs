@@ -25,7 +25,7 @@ namespace StrategyBot.Game.Data.Mongo
                 });
             }
 
-            _collection = database.GetCollection<T>(nameof(T));
+            _collection = database.GetCollection<T>(typeof(T).Name);
         }
 
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> filter) =>
