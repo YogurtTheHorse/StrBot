@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Web", "Strategy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Data", "StrategyBot.Game.Data\StrategyBot.Game.Data.csproj", "{62ADA329-8E30-4877-9137-6F2BAE1BA46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Logic", "StrategyBot.Game.Logic\StrategyBot.Game.Logic.csproj", "{05D80E6B-2A3F-4F1B-A892-213543553912}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Interface", "StrategyBot.Game.Interface\StrategyBot.Game.Interface.csproj", "{05D80E6B-2A3F-4F1B-A892-213543553912}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Telegram.Polling", "StrategyBot.Telegram.Polling\StrategyBot.Telegram.Polling.csproj", "{242E7F03-4671-48FB-8503-CAF016448612}"
 EndProject
@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server.RabbitMq", "StrategyBot.Game.Server.RabbitMq\StrategyBot.Game.Server.RabbitMq.csproj", "{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game", "StrategyBot.Game\StrategyBot.Game.csproj", "{2D723F3C-D266-4A20-A112-0AEB32737564}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Logic", "StrategyBot.Game.Logic\StrategyBot.Game.Logic.csproj", "{221CA5ED-9F75-4A9D-AFF0-B501B204A719}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,9 +44,7 @@ Global
 		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D723F3C-D266-4A20-A112-0AEB32737564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D723F3C-D266-4A20-A112-0AEB32737564}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D723F3C-D266-4A20-A112-0AEB32737564}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D723F3C-D266-4A20-A112-0AEB32737564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{221CA5ED-9F75-4A9D-AFF0-B501B204A719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{221CA5ED-9F75-4A9D-AFF0-B501B204A719}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

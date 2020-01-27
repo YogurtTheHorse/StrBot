@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
@@ -8,11 +7,12 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using StrategyBot.Game.Data.Abstractions;
 using StrategyBot.Game.Data.Mongo;
+using StrategyBot.Game.Interface;
+using StrategyBot.Game.Interface.Entities;
+using StrategyBot.Game.Interface.Models;
+using StrategyBot.Game.Interface.Screens;
 using StrategyBot.Game.Logic;
-using StrategyBot.Game.Logic.Entities;
-using StrategyBot.Game.Logic.Models;
 using StrategyBot.Game.Logic.Screens;
-using StrategyBot.Game.Screens;
 using StrategyBot.Game.Server.RabbitMq;
 
 namespace StrategyBot.Game.Server
@@ -103,7 +103,7 @@ namespace StrategyBot.Game.Server
                 {
                     var message = ea.Body.DecodeObject<MessageFromSocialNetwork>();
 
-                    var players = container.Resolve<IMongoRepository<PlayerInfo>>();
+                    var players = container.Resolve<IMongoRepository<PlayerState>>();
                     ObjectId? playerId = (await players.GetFirstOrDefault(p =>
                         p.SocialId == message.PlayerSocialId &&
                         p.ReplyQueueName == message.ReplyBackQueueName

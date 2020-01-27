@@ -1,6 +1,6 @@
 using System;
 
-namespace StrategyBot.Game.Logic.Screens
+namespace StrategyBot.Game.Interface.Screens
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class MainScreenAttribute : Attribute { }

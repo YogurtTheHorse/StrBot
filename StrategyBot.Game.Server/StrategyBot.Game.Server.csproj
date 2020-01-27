@@ -6,9 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\StrategyBot.Game.Interface\StrategyBot.Game.Interface.csproj" />
         <ProjectReference Include="..\StrategyBot.Game.Logic\StrategyBot.Game.Logic.csproj" />
         <ProjectReference Include="..\StrategyBot.Game.Server.RabbitMq\StrategyBot.Game.Server.RabbitMq.csproj" />
-        <ProjectReference Include="..\StrategyBot.Game\StrategyBot.Game.csproj" />
     </ItemGroup>
 
     <ItemGroup>

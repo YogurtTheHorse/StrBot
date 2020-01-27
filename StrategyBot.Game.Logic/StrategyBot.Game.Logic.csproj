@@ -2,10 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>StrategyBot.Game</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\StrategyBot.Game.Data\StrategyBot.Game.Data.csproj" />
+      <ProjectReference Include="..\StrategyBot.Game.Interface\StrategyBot.Game.Interface.csproj" />
     </ItemGroup>
 
 </Project>

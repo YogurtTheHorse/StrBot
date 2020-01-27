@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using StrategyBot.Game.Logic.Models;
+using StrategyBot.Game.Interface.Models;
 
-namespace StrategyBot.Game.Logic.Screens
+namespace StrategyBot.Game.Interface.Screens
 {
     public class StackScreenController : IScreenController
     {
@@ -28,24 +28,24 @@ namespace StrategyBot.Game.Logic.Screens
             }
         }
 
-        public IScreen GetCurrentPlayerScreen(PlayerData playerData)
+        public IScreen GetCurrentPlayerScreen(PlayerState playerState)
         {
-            if (playerData.ScreensStack.TryPeek(out string currentScreenName))
+            if (playerState.ScreensStack.TryPeek(out string currentScreenName))
             {
                 if (!_screens.TryGetValue(currentScreenName, out IScreen currentScreen))
                     throw new InvalidOperationException(
                         $"Screen with name {currentScreenName} wasn't found. " +
-                        $"Check {playerData.Key} player data"
+                        $"Check {playerState.Key} player data"
                     );
 
                 return currentScreen;
             }
 
-            playerData.ScreensStack.Push(_mainScreenName);
+            playerState.ScreensStack.Push(_mainScreenName);
             return _screens[_mainScreenName];
         }
 
-        public void OpenScreen<T>(PlayerData playerData, bool safeOpen) where T : IScreen
+        public void OpenScreen<T>(PlayerState playerData, bool safeOpen) where T : IScreen
         {
             if (safeOpen) // check screen existence
             {
@@ -63,11 +63,11 @@ namespace StrategyBot.Game.Logic.Screens
             playerData.ScreensStack.Push(typeof(T).Name);
         }
 
-        public void Back(PlayerData playerData)
+        public void Back(PlayerState playerState)
         {
-            if (!playerData.ScreensStack.TryPop(out string _))
+            if (!playerState.ScreensStack.TryPop(out string _))
             {
-                playerData.ScreensStack.Push(_mainScreenName);
+                playerState.ScreensStack.Push(_mainScreenName);
             }
         }
     }

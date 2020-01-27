@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using StrategyBot.Game.Logic;
-using StrategyBot.Game.Logic.Entities;
-using StrategyBot.Game.Logic.Models;
-using StrategyBot.Game.Logic.Screens;
+using StrategyBot.Game.Interface;
+using StrategyBot.Game.Interface.Entities;
+using StrategyBot.Game.Interface.Models;
+using StrategyBot.Game.Interface.Screens;
 
-namespace StrategyBot.Game.Screens
+namespace StrategyBot.Game.Logic.Screens
 {
     [MainScreen]
     public class MainMenuScreen : IScreen
@@ -16,7 +16,7 @@ namespace StrategyBot.Game.Screens
             _gameCommunicator = gameCommunicator;
         }
         
-        public async Task ProcessMessage(IncomingMessage message, PlayerData playerData)
+        public async Task ProcessMessage(IncomingMessage message, PlayerState playerData)
         {
             await _gameCommunicator.Answer(new GameAnswer
             {
