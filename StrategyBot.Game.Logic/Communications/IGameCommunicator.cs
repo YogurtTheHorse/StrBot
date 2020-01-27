@@ -4,6 +4,6 @@ namespace StrategyBot.Game.Logic
 {
     public interface IGameCommunicator
     {
-        Task Answer(GameAnswer message);
+        Task Answer(GameAnswer message, GameMessageType messageType = GameMessageType.RegularAnswer);
     }
 }

@@ -20,13 +20,16 @@ namespace StrategyBot.Game.Server
             _players = mongoUnitOfWork.GetRepository<Player>();
         }
 
-        public async Task Answer(GameAnswer message)
+        public async Task Answer(GameAnswer message, GameMessageType messageType = GameMessageType.RegularAnswer)
         {
             Player player = await _players.GetById(message.PlayerId);
 
             _rabbitMqChannel.BasicPublish(
                 _rabbitMqSettings.MessagesExchange,
-                player.ReplyQueueName,
+                new MessagesRoutingKeyBuilder()
+                    .WithSocialNetwork(player.ReplyQueueName)
+                    .WithMessageType(messageType)
+                    .Build(),
                 null,
                 new MessageToSocialNetwork
                 {

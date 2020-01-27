@@ -44,7 +44,13 @@ namespace StrategyBot.Telegram.Polling
             channel.SetupServerQueue(rabbitMqSettings);
 
             channel.QueueDeclare("telegram", true, false, false);
-            channel.QueueBind("telegram", rabbitMqSettings.MessagesExchange, "telegram");
+            channel.QueueBind(
+                "telegram",
+                rabbitMqSettings.MessagesExchange,
+                new MessagesRoutingKeyBuilder()
+                    .WithSocialNetwork("telegram")
+                    .Build()
+            );
 
             bot.StartReceiving(new UpdateHandler(channel, rabbitMqSettings), cancellationTokenSource.Token);
 
