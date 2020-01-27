@@ -9,19 +9,16 @@ namespace StrategyBot.Game.Logic
 {
     public class GameContext
     {
-        private readonly IGameCommunicator _gameCommunicator;
         private readonly IScreenController _screenController;
         private readonly IMongoRepository<PlayerData> _playersData;
         private readonly IMongoRepository<PlayerInfo> _playersInfo;
 
         public GameContext(
-            IGameCommunicator gameCommunicator,
             IScreenController screenController,
             IMongoRepository<PlayerData> playersData,
             IMongoRepository<PlayerInfo> playersInfo
         )
         {
-            _gameCommunicator = gameCommunicator;
             _screenController = screenController;
             _playersData = playersData;
             _playersInfo = playersInfo;
