@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace StrategyBot.Game.Server.RabbitMq
+﻿namespace StrategyBot.Game.Server.RabbitMq
 {
     public class RabbitMqSettings
     {

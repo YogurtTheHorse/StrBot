@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using MihaZupan;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using StrategyBot.Game.Logic;
 using StrategyBot.Game.Server.RabbitMq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
