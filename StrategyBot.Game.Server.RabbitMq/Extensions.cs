@@ -13,7 +13,7 @@ namespace StrategyBot.Game.Server.RabbitMq
         {
             channel.ExchangeDeclare(
                 rabbitMqSettings.MessagesExchange,
-                ExchangeType.Direct
+                ExchangeType.Topic
             );
 
             channel.QueueDeclare(
