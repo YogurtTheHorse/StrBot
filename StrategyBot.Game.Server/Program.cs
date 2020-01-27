@@ -88,15 +88,20 @@ namespace StrategyBot.Game.Server
 
                     IMongoRepository<Player> players = container.Resolve<IMongoUnitOfWork>().GetRepository<Player>();
                     Player player = await players.GetFirstOrDefault(p =>
-                                        p.SocialId == message.PlayerSocialId &&
-                                        p.ReplyQueueName == message.ReplyBackQueueName
-                                    )
-                                    ?? new Player
-                                    {
-                                        Key = ObjectId.GenerateNewId(),
-                                        SocialId = message.PlayerSocialId,
-                                        ReplyQueueName = message.ReplyBackQueueName
-                                    };
+                        p.SocialId == message.PlayerSocialId &&
+                        p.ReplyQueueName == message.ReplyBackQueueName
+                    );
+                    
+                    if (player == null)
+                    {
+                        player = new Player
+                        {
+                            Key = ObjectId.GenerateNewId(),
+                            SocialId = message.PlayerSocialId,
+                            ReplyQueueName = message.ReplyBackQueueName
+                        };
+                        await players.Insert(player);
+                    }
 
                     var gameContext = container.Resolve<GameContext>();
                     await gameContext.ProcessMessage(new IncomingMessage
