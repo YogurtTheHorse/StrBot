@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Web", "StrategyBot.Web\StrategyBot.Web.csproj", "{FB48254D-658D-4DFF-8CAC-091123418AB3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Data", "StrategyBot.Game.Data\StrategyBot.Game.Data.csproj", "{62ADA329-8E30-4877-9137-6F2BAE1BA46E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Interface", "StrategyBot.Game.Interface\StrategyBot.Game.Interface.csproj", "{05D80E6B-2A3F-4F1B-A892-213543553912}"
@@ -20,10 +18,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FB48254D-658D-4DFF-8CAC-091123418AB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB48254D-658D-4DFF-8CAC-091123418AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB48254D-658D-4DFF-8CAC-091123418AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB48254D-658D-4DFF-8CAC-091123418AB3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62ADA329-8E30-4877-9137-6F2BAE1BA46E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62ADA329-8E30-4877-9137-6F2BAE1BA46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62ADA329-8E30-4877-9137-6F2BAE1BA46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
