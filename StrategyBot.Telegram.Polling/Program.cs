@@ -1,36 +1,33 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using MihaZupan;
 using RabbitMQ.Client;
-using StrategyBot.Game.Logic.Entities;
+using RabbitMQ.Client.Events;
+using StrategyBot.Game.Logic;
 using StrategyBot.Game.Server.RabbitMq;
 using Telegram.Bot;
+using Telegram.Bot.Types;
 
 namespace StrategyBot.Telegram.Polling
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             IConfigurationRoot configuration = BuildConfiguration();
 
-            // IConfigurationSection proxyConfiguration = configuration.GetSection("Bot:Proxy");
-            // string token = configuration.GetSection("Bot:Token").Value;
-            //
-            // TelegramBotClient bot = SetupBot(proxyConfiguration, token);
-            //
-            // User botInfo = await bot.GetMeAsync();
-            // Console.Title = botInfo.Username;
-            //
-            // var cancellationTokenSource = new CancellationTokenSource();
-            //
-            // bot.StartReceiving(new UpdateHandler(gameContext, bot), cancellationTokenSource.Token);
-            //
-            // Console.WriteLine($"Start listening for @{botInfo.Username}");
-            // Console.ReadLine();
-            // 
-            // cancellationTokenSource.Cancel();
+            IConfigurationSection proxyConfiguration = configuration.GetSection("Bot:Proxy");
+            string token = configuration.GetSection("Bot:Token").Value;
+
+            TelegramBotClient bot = SetupBot(proxyConfiguration, token);
+
+            User botInfo = await bot.GetMeAsync();
+            Console.Title = botInfo.Username;
+
+            var cancellationTokenSource = new CancellationTokenSource();
 
             var rabbitMqSettings = configuration
                 .GetSection(nameof(RabbitMqSettings))
@@ -41,23 +38,32 @@ namespace StrategyBot.Telegram.Polling
                 HostName = rabbitMqSettings.Hostname
             };
 
-
             using IConnection connection = factory.CreateConnection();
             using IModel channel = connection.CreateModel();
 
             channel.SetupServerQueue(rabbitMqSettings);
 
-            channel.BasicPublish(
-                rabbitMqSettings.MessagesExchange,
-                rabbitMqSettings.ServersQueue,
-                null,
-                new MessageFromSocialNetwork
-                {
-                    Text = "test",
-                    PlayerSocialId = "test",
-                    ReplyBackQueueName = "telegram"
-                }.EncodeObject()
-            );
+            channel.QueueDeclare("telegram", true, false, false);
+            channel.QueueBind("telegram", rabbitMqSettings.MessagesExchange, "telegram");
+
+            bot.StartReceiving(new UpdateHandler(channel, rabbitMqSettings), cancellationTokenSource.Token);
+
+            var rabbitConsumer = new AsyncEventingBasicConsumer(channel);
+            rabbitConsumer.Received += async (_, ea) =>
+            {
+                var gameMessage = ea.Body.DecodeObject<MessageToSocialNetwork>();
+
+                await bot.SendTextMessageAsync(
+                    gameMessage.PlayerSocialId,
+                    gameMessage.Text,
+                    cancellationToken: cancellationTokenSource.Token
+                );
+            };
+
+            Console.WriteLine($"Start listening for @{botInfo.Username}");
+            Console.ReadLine();
+
+            cancellationTokenSource.Cancel();
         }
 
         private static TelegramBotClient SetupBot(IConfigurationSection proxyConfiguration, string token)
