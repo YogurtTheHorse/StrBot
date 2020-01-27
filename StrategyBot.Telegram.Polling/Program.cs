@@ -103,7 +103,8 @@ namespace StrategyBot.Telegram.Polling
         {
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: true);
+                .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.Confidentional.json", optional: true, reloadOnChange: true);
 
             return builder.Build();
         }
