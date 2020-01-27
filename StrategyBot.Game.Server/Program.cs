@@ -59,6 +59,10 @@ namespace StrategyBot.Game.Server
                 .SingleInstance();
 
             iocContainerBuilder
+                .RegisterGeneric(typeof(MongoRepository<>))
+                .As(typeof(IMongoRepository<>));
+
+            iocContainerBuilder
                 .RegisterInstance(rabbitMqSettings);
             
             iocContainerBuilder
@@ -99,28 +103,26 @@ namespace StrategyBot.Game.Server
                 {
                     var message = ea.Body.DecodeObject<MessageFromSocialNetwork>();
 
-                    IMongoRepository<PlayerInfo> players = container.Resolve<IMongoUnitOfWork>().GetRepository<PlayerInfo>();
-                    PlayerInfo playerInfo = await players.GetFirstOrDefault(p =>
+                    var players = container.Resolve<IMongoRepository<PlayerInfo>>();
+                    ObjectId? playerId = (await players.GetFirstOrDefault(p =>
                         p.SocialId == message.PlayerSocialId &&
                         p.ReplyQueueName == message.ReplyBackQueueName
-                    );
+                    ))?.Key;
                     
-                    if (playerInfo == null)
+                    var gameContext = container.Resolve<GameContext>();
+                    
+                    if (playerId == null)
                     {
-                        playerInfo = new PlayerInfo
-                        {
-                            Key = ObjectId.GenerateNewId(),
-                            SocialId = message.PlayerSocialId,
-                            ReplyQueueName = message.ReplyBackQueueName
-                        };
-                        await players.Insert(playerInfo);
+                        playerId = await gameContext.CreatePlayer(
+                            message.PlayerSocialId,
+                            message.ReplyBackQueueName
+                        );
                     }
 
-                    var gameContext = container.Resolve<GameContext>();
                     await gameContext.ProcessMessage(new IncomingMessage
                     {
                         Text = message.Text,
-                        PlayerId = playerInfo.Key
+                        PlayerId = playerId.Value
                     });
                 }
                 catch (Exception e)

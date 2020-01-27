@@ -10,11 +10,11 @@ using StrategyBot.Game.Data.Abstractions;
 
 namespace StrategyBot.Game.Data.Mongo
 {
-    public class MongoMongoRepository<T> : IMongoRepository<T> where T : MongoModel
+    public class MongoRepository<T> : IMongoRepository<T> where T : MongoModel
     {
         private readonly IMongoCollection<T> _collection;
 
-        public MongoMongoRepository(IMongoDatabase database)
+        public MongoRepository(IMongoUnitOfWork unitOfWork)
         {
             if (!BsonClassMap.IsClassMapRegistered(typeof(T)))
             {
@@ -25,7 +25,7 @@ namespace StrategyBot.Game.Data.Mongo
                 });
             }
 
-            _collection = database.GetCollection<T>(typeof(T).Name);
+            _collection = unitOfWork.Database.GetCollection<T>(typeof(T).Name);
         }
 
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> filter) =>

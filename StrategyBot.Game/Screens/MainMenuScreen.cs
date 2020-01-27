@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using StrategyBot.Game.Logic;
 using StrategyBot.Game.Logic.Entities;
+using StrategyBot.Game.Logic.Models;
 using StrategyBot.Game.Logic.Screens;
 
 namespace StrategyBot.Game.Screens
@@ -15,7 +16,7 @@ namespace StrategyBot.Game.Screens
             _gameCommunicator = gameCommunicator;
         }
         
-        public async Task ProcessMessage(IncomingMessage message)
+        public async Task ProcessMessage(IncomingMessage message, PlayerData playerData)
         {
             await _gameCommunicator.Answer(new GameAnswer
             {
