@@ -28,7 +28,12 @@ namespace StrategyBot.Game.Server
                 _rabbitMqSettings.MessagesExchange,
                 player.ReplyQueueName,
                 null,
-                message.EncodeObject()
+                new MessageToSocialNetwork
+                {
+                    Text = message.Text,
+                    PlayerId = message.PlayerId,
+                    PlayerSocialId = player.SocialId
+                }.EncodeObject()
             );
         }
     }

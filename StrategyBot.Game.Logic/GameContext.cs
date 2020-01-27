@@ -7,21 +7,25 @@ namespace StrategyBot.Game.Logic
 {
     public class GameContext
     {
-        public IGameCommunicator GameCommunicator { get; set; }
-        
-        public IMongoUnitOfWork MongoUnitOfWork { get; }
+        private readonly IGameCommunicator _gameCommunicator;
 
-        public GameContext(IMongoUnitOfWork mongoUnitOfWork, IGameCommunicator gameCommunicator)
+        private readonly IMongoUnitOfWork _unitOfWork;
+
+        public GameContext(IMongoUnitOfWork unitOfWork, IGameCommunicator gameCommunicator)
         {
-            GameCommunicator = gameCommunicator;
-            MongoUnitOfWork = mongoUnitOfWork;
+            _gameCommunicator = gameCommunicator;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task ProcessMessage(IncomingMessage message)
         {
             Console.WriteLine(message.Text);
 
-            await Task.CompletedTask;
+            await _gameCommunicator.Answer(new GameAnswer
+            {
+                PlayerId = message.PlayerId,
+                Text = "I've got " + message.Text
+            });
         }
     }
 }
