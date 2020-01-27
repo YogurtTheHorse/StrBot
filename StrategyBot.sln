@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server.RabbitMq", "StrategyBot.Game.Server.RabbitMq\StrategyBot.Game.Server.RabbitMq.csproj", "{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game", "StrategyBot.Game\StrategyBot.Game.csproj", "{2D723F3C-D266-4A20-A112-0AEB32737564}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D723F3C-D266-4A20-A112-0AEB32737564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D723F3C-D266-4A20-A112-0AEB32737564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D723F3C-D266-4A20-A112-0AEB32737564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D723F3C-D266-4A20-A112-0AEB32737564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

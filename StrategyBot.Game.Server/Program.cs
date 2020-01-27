@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
@@ -10,6 +11,8 @@ using StrategyBot.Game.Data.Mongo;
 using StrategyBot.Game.Logic;
 using StrategyBot.Game.Logic.Entities;
 using StrategyBot.Game.Logic.Models;
+using StrategyBot.Game.Logic.Screens;
+using StrategyBot.Game.Screens;
 using StrategyBot.Game.Server.RabbitMq;
 
 namespace StrategyBot.Game.Server
@@ -62,6 +65,16 @@ namespace StrategyBot.Game.Server
                 .RegisterInstance(channel)
                 .As<IModel>()
                 .SingleInstance();
+
+            iocContainerBuilder
+                .RegisterAssemblyTypes(typeof(MainMenuScreen).Assembly)
+                .Where(t => typeof(IScreen).IsAssignableFrom(t))
+                .As<IScreen>()
+                .PreserveExistingDefaults();
+
+            iocContainerBuilder
+                .RegisterType<StackScreenController>()
+                .As<IScreenController>();
 
             IContainer container = iocContainerBuilder.Build();
 
