@@ -16,7 +16,7 @@ namespace StrategyBot.Game.Logic.Screens
             _gameCommunicator = gameCommunicator;
         }
         
-        public async Task ProcessMessage(IncomingMessage message, PlayerState playerData)
+        public async Task ProcessMessage(IncomingMessage message, PlayerState playerState)
         {
             await _gameCommunicator.Answer(new GameAnswer
             {

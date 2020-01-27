@@ -45,7 +45,7 @@ namespace StrategyBot.Game.Interface.Screens
             return _screens[_mainScreenName];
         }
 
-        public void OpenScreen<T>(PlayerState playerData, bool safeOpen) where T : IScreen
+        public void OpenScreen<T>(PlayerState playerState, bool safeOpen) where T : IScreen
         {
             if (safeOpen) // check screen existence
             {
@@ -60,7 +60,7 @@ namespace StrategyBot.Game.Interface.Screens
                 }
             }
 
-            playerData.ScreensStack.Push(typeof(T).Name);
+            playerState.ScreensStack.Push(typeof(T).Name);
         }
 
         public void Back(PlayerState playerState)
