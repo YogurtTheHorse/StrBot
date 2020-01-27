@@ -35,7 +35,8 @@ namespace StrategyBot.Telegram.Polling
 
             var factory = new ConnectionFactory()
             {
-                HostName = rabbitMqSettings.Hostname
+                HostName = rabbitMqSettings.Hostname,
+                DispatchConsumersAsync = true
             };
 
             using IConnection connection = factory.CreateConnection();
@@ -65,6 +66,7 @@ namespace StrategyBot.Telegram.Polling
                     cancellationToken: cancellationTokenSource.Token
                 );
             };
+            channel.BasicConsume("telegram", false, rabbitConsumer);
 
             Console.WriteLine($"Start listening for @{botInfo.Username}");
             Console.ReadLine();
