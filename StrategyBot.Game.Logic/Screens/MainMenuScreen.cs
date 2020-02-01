@@ -11,7 +11,7 @@ namespace StrategyBot.Game.Logic.Screens
     [MainScreen]
     public class MainMenuScreen : IScreen
     {
-        private readonly IGamePCommunicator _gameCommunicator;
+        private readonly IGameCommunicator _gameCommunicator;
         private readonly ILocalizer _localizer;
 
         public MainMenuScreen(IGameCommunicator gameCommunicator, ILocalizer localizer)
