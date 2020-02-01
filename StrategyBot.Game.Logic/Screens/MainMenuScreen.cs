@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using StrategyBot.Game.Data.Abstractions;
 using StrategyBot.Game.Entities;
-using StrategyBot.Game.Interface;
-using StrategyBot.Game.Interface.Entities;
-using StrategyBot.Game.Interface.Models;
-using StrategyBot.Game.Interface.Screens;
+using StrategyBot.Game.Core;
+using StrategyBot.Game.Core.Entities;
+using StrategyBot.Game.Core.Models;
+using StrategyBot.Game.Core.Screens;
 
 namespace StrategyBot.Game.Logic.Screens
 {

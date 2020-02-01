@@ -1,4 +1,4 @@
-using StrategyBot.Game.Interface;
+using StrategyBot.Game.Core;
 
 namespace StrategyBot.Game.Server.RabbitMq
 {

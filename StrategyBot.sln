@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Data", "StrategyBot.Game.Data\StrategyBot.Game.Data.csproj", "{62ADA329-8E30-4877-9137-6F2BAE1BA46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Interface", "StrategyBot.Game.Interface\StrategyBot.Game.Interface.csproj", "{05D80E6B-2A3F-4F1B-A892-213543553912}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Core", "StrategyBot.Game.Core\StrategyBot.Game.Core.csproj", "{05D80E6B-2A3F-4F1B-A892-213543553912}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Telegram.Polling", "StrategyBot.Telegram.Polling\StrategyBot.Telegram.Polling.csproj", "{242E7F03-4671-48FB-8503-CAF016448612}"
 EndProject

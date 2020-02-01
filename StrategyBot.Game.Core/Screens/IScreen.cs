@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using StrategyBot.Game.Interface.Entities;
-using StrategyBot.Game.Interface.Models;
+using StrategyBot.Game.Core.Entities;
+using StrategyBot.Game.Core.Models;
 
-namespace StrategyBot.Game.Interface.Screens
+namespace StrategyBot.Game.Core.Screens
 {
     public interface IScreen
     {

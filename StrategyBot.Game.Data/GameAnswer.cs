@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 
-namespace StrategyBot.Game.Interface
+namespace StrategyBot.Game.Core
 {
     public class GameAnswer
     {

@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using StrategyBot.Game.Data.Abstractions;
-using StrategyBot.Game.Interface;
-using StrategyBot.Game.Interface.Models;
+using StrategyBot.Game.Core;
+using StrategyBot.Game.Core.Models;
 using StrategyBot.Game.Server.RabbitMq;
 
 namespace StrategyBot.Game.Server

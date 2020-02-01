@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 
-namespace StrategyBot.Game.Interface.Entities
+namespace StrategyBot.Game.Core.Entities
 {
     public class IncomingMessage
     {

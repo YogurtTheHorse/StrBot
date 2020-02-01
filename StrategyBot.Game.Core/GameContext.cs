@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using StrategyBot.Game.Core.Entities;
+using StrategyBot.Game.Core.Models;
+using StrategyBot.Game.Core.Screens;
 using StrategyBot.Game.Data.Abstractions;
-using StrategyBot.Game.Interface.Entities;
-using StrategyBot.Game.Interface.Models;
-using StrategyBot.Game.Interface.Screens;
 
-namespace StrategyBot.Game.Interface
+namespace StrategyBot.Game.Core
 {
     public class GameContext
     {
