@@ -26,9 +26,11 @@ namespace StrategyBot.Game.Server
             var rabbitMqSettings = configuration
                 .GetSection(nameof(RabbitMqSettings))
                 .Get<RabbitMqSettings>();
+            
             var mongoSettings = configuration
                 .GetSection(nameof(MongoSettings))
                 .Get<MongoSettings>();
+            
             var localizationOptions = configuration
                 .GetSection(nameof(LocalizationOptions))
                 .Get<LocalizationOptions>();
@@ -57,9 +59,11 @@ namespace StrategyBot.Game.Server
                 .RegisterType<MongoUnitOfWork>()
                 .As<IMongoUnitOfWork>()
                 .SingleInstance();
+            
             iocContainerBuilder
                 .RegisterType<GameContext>()
                 .SingleInstance();
+            
             iocContainerBuilder
                 .RegisterType<RabbitMqCommunicator>()
                 .As<IGameCommunicator>()
@@ -67,12 +71,13 @@ namespace StrategyBot.Game.Server
 
             iocContainerBuilder
                 .RegisterType<YamlLocalizer>()
-                .As<ILocalizer>();
+                .As<ILocalizer>()
+                .SingleInstance();
 
             iocContainerBuilder
                 .RegisterGeneric(typeof(MongoRepository<>))
-                .As(typeof(IMongoRepository<>));
-
+                .As(typeof(IMongoRepository<>))
+                .SingleInstance();
             
             iocContainerBuilder
                 .RegisterInstance(channel)
@@ -87,7 +92,8 @@ namespace StrategyBot.Game.Server
 
             iocContainerBuilder
                 .RegisterType<StackScreenController>()
-                .As<IScreenController>();
+                .As<IScreenController>()
+                .SingleInstance();
 
             IContainer container = iocContainerBuilder.Build();
             var localizer = container.Resolve<ILocalizer>();

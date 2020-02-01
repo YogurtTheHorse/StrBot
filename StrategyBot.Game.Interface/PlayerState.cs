@@ -8,6 +8,8 @@ namespace StrategyBot.Game.Interface.Models
         public string ReplyQueueName { get; set; }
 
         public string SocialId { get; set; }
+        
+        public string Locale { get; set; }
 
         public Stack<string> ScreensStack { get; set; } = new Stack<string>();
     }

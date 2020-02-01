@@ -35,8 +35,8 @@ namespace StrategyBot.Game.Server
                 Path.DirectorySeparatorChar, 
                 keys.Take(keys.Length - 1)
             );
-            string[] pathToLookUp = new[]
-            {
+            
+            string[] pathToLookUp = {
                 prePath + $".{locale}.yml",
                 prePath + $".{_defaultLanguage}.yml",
                 prePath + ".yml"

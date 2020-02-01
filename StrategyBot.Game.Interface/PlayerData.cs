@@ -6,5 +6,9 @@ namespace StrategyBot.Game.Interface.Models
     public class PlayerData : MongoModel
     {
         public Dictionary<string, object> TemporaryVariables { get; set; } = new Dictionary<string, object>();
+
+        public int AttackShips { get; set; } = 0;
+
+        public int DefenceShips { get; set; } = 0;
     }
 }
