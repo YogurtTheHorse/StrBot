@@ -16,11 +16,11 @@ namespace StrategyBot.Game.Screens
         protected override IEnumerable<CommonScreenElement> ScreenElements => new CommonScreenElement[]
         {
             CommonElementsFactory.Action(
-                LocalizationPath.Root.Screens.MainMenu.OpenPhrase.Attack() as LocalizationDescription,
+                ILocalizer.Root.Screens.MainMenu.OpenPhrase.Attack() as LocalizationDescription,
                 () => Task.FromResult(false)
             ),
             CommonElementsFactory.NoAction(
-                LocalizationPath.Root.Screens.MainMenu.OpenPhrase()
+                ILocalizer.Root.Screens.MainMenu.OpenPhrase()
             ),
         };
     }
