@@ -63,6 +63,9 @@ namespace StrategyBot.Telegram.Console
                     gameMessage.Text,
                     cancellationToken: cancellationTokenSource.Token
                 );
+
+                // ReSharper disable once AccessToDisposedClosure
+                channel.BasicAck(ea.DeliveryTag, false);
             };
             channel.BasicConsume("telegram", false, rabbitConsumer);
 
