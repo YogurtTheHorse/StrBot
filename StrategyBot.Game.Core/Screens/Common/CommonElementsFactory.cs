@@ -21,10 +21,13 @@ namespace StrategyBot.Game.Logic.Screens.Common
             _gameCommunicator = gameCommunicator;
         }
 
-        public Greetings Greet(string greetKey) => new Greetings(greetKey, _localizer.Value, _gameCommunicator.Value);
+        public Greetings Greet(LocalizationDescription description) => 
+            new Greetings(description, _localizer.Value, _gameCommunicator.Value);
 
-        public Action Action(string key, Func<Task<bool>> callback) => new Action(key, callback, _localizer.Value);
+        public Action Action(LocalizationDescription description, Func<Task<bool>> callback) => 
+            new Action(description, callback, _localizer.Value);
 
-        public NoAction NoAction(string key) =>  new NoAction(key, _localizer.Value, _gameCommunicator.Value);
+        public NoAction NoAction(LocalizationDescription description) =>  
+            new NoAction(description, _localizer.Value, _gameCommunicator.Value);
     }
 }

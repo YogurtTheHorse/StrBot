@@ -16,16 +16,20 @@ namespace StrategyBot.Game.Logic.Localizations
         }
 
         public Localization Format(params object[] args) =>
-            new Localization(
-                _random,
-                _formats.Select(f => string.Format(f, args)).ToArray()
-            );
+            args.Length > 0
+                ? new Localization(
+                    _random,
+                    _formats.Select(f => string.Format(f, args)).ToArray()
+                )
+                : this;
 
         public string Value => _formats[_random.Next(0, _formats.Length - 1)];
 
-        public bool MatchesMessage(IncomingMessage message)
+        public bool MatchesMessage(IncomingMessage message, params object[] args)
         {
-            return _formats.Any(f => f.Equals(message.Text));
+            return Format(args)
+                ._formats
+                .Any(f => f.Equals(message.Text));
         }
     }
 }

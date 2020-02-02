@@ -7,13 +7,13 @@ namespace StrategyBot.Game.Logic.Screens.Common.Elements
 {
     public class Greetings : CommonScreenElement
     {
-        private readonly string _greetKey;
+        private readonly LocalizationDescription _description;
         private readonly ILocalizer _localizer;
         private readonly IGameCommunicator _gameCommunicator;
 
-        public Greetings(string greetKey, ILocalizer localizer, IGameCommunicator gameCommunicator)
+        public Greetings(LocalizationDescription description, ILocalizer localizer, IGameCommunicator gameCommunicator)
         {
-            _greetKey = greetKey;
+            _description = description;
             _localizer = localizer;
             _gameCommunicator = gameCommunicator;
         }
@@ -23,9 +23,9 @@ namespace StrategyBot.Game.Logic.Screens.Common.Elements
             await _gameCommunicator.Answer(new GameAnswer
             {
                 Text = _localizer.GetString(
-                    _greetKey,
+                    _description.Key,
                     state.Locale
-                ).Value,
+                ).Format(_description.ArgsFactory(state, data)).Value,
                 PlayerId = data.Key,
                 Suggestions = screen.GetSuggestions(state, data)
             });

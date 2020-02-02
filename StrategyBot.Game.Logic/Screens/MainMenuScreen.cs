@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using StrategyBot.Game.Logic.Localizations;
 using StrategyBot.Game.Logic.Screens;
 using StrategyBot.Game.Logic.Screens.Common;
 
@@ -14,8 +15,13 @@ namespace StrategyBot.Game.Screens
 
         protected override IEnumerable<CommonScreenElement> ScreenElements => new CommonScreenElement[]
         {
-            CommonElementsFactory.Action("screens.main_menu.attack", () => Task.FromResult(false)),
-            CommonElementsFactory.NoAction("screens.main_menu.open_phrase"),
+            CommonElementsFactory.Action(
+                LocalizationPath.Root.Screens.MainMenu.OpenPhrase.Attack() as LocalizationDescription,
+                () => Task.FromResult(false)
+            ),
+            CommonElementsFactory.NoAction(
+                LocalizationPath.Root.Screens.MainMenu.OpenPhrase()
+            ),
         };
     }
 }

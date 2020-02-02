@@ -9,22 +9,22 @@ namespace StrategyBot.Game.Logic.Screens.Common.Elements
 {
     public class Action : CommonScreenElement
     {
-        private readonly string _key;
+        private readonly LocalizationDescription _localizationDescription;
         private readonly Func<Task<bool>> _callback;
         private readonly ILocalizer _localizer;
 
-        public Action(string key, Func<Task<bool>> callback, ILocalizer localizer)
+        public Action(LocalizationDescription localizationDescription, Func<Task<bool>> callback, ILocalizer localizer)
         {
-            _key = key;
+            _localizationDescription = localizationDescription;
             _callback = callback;
             _localizer = localizer;
         }
 
         public override async Task<bool> ProcessMessage(IncomingMessage message, PlayerState state, PlayerData data, CommonScreen screen)
         {
-            Localization localization = _localizer.GetString(_key, state.Locale);
+            Localization localization = _localizer.GetString(_localizationDescription.Key, state.Locale);
 
-            if (localization.MatchesMessage(message))
+            if (localization.MatchesMessage(message, _localizationDescription.ArgsFactory(state, data)))
             {
                 return await _callback();
             }
@@ -36,7 +36,7 @@ namespace StrategyBot.Game.Logic.Screens.Common.Elements
         {
             return new Suggestion[]
             {
-                _localizer.GetString(_key, state.Locale).Value
+                _localizer.GetString(_localizationDescription.Key, state.Locale).Value
             };
         }
     }
