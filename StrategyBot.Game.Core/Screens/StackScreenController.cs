@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using StrategyBot.Game.Core.Models;
 
-namespace StrategyBot.Game.Core.Screens
+namespace StrategyBot.Game.Logic.Screens
 {
     public class StackScreenController : IScreenController
     {

@@ -1,53 +1,56 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MongoDB.Bson;
-using StrategyBot.Game.Logic;
+using StrategyBot.Game.Logic.Localizations;
 using YamlDotNet.Serialization;
 
-namespace StrategyBot.Game.Server
+namespace StrategyBot.Game.Server.YamlLocalization
 {
     public class YamlLocalizer : ILocalizer
     {
+        private readonly Func<string[], Localization> _localizationFactory;
         private readonly string _resourcesDirectory;
         private readonly string _defaultLanguage;
         private readonly Deserializer _deserializer;
 
-        public YamlLocalizer(LocalizationOptions localizationOptions)
+        public YamlLocalizer(LocalizationOptions localizationOptions, Func<string[], Localization> localizationFactory)
         {
+            _localizationFactory = localizationFactory;
             _resourcesDirectory = localizationOptions.ResourcesDirectory;
             _defaultLanguage = localizationOptions.DefaultLanguage;
             _deserializer = new Deserializer();
         }
 
-        public string GetString(string key, string locale, params object[] args)
+        public Localization GetString(string key, string locale)
         {
             string format = GetFormat(key, locale);
 
-            return string.Format(format, args);
+            return _localizationFactory(new[] {format});
         }
 
         private string GetFormat(string key, string locale)
         {
             string[] keys = key.Split(".");
-            
+
             string prePath = string.Join(
-                Path.DirectorySeparatorChar, 
+                Path.DirectorySeparatorChar,
                 keys.Take(keys.Length - 1)
             );
-            
-            string[] pathToLookUp = {
+
+            string[] pathToLookUp =
+            {
                 prePath + $".{locale}.yml",
                 prePath + $".{_defaultLanguage}.yml",
                 prePath + ".yml"
             };
-            
+
             foreach (string path in pathToLookUp)
             {
                 string finalPath = Path.Join(_resourcesDirectory, path);
 
                 if (!File.Exists(finalPath)) continue;
-                
+
                 Dictionary<string, string> yaml = ParseFile(finalPath);
 
                 if (yaml.TryGetValue(keys.Last(), out string res))

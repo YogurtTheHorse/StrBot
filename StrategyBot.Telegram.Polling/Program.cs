@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +9,7 @@ using StrategyBot.Game.Server.RabbitMq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace StrategyBot.Telegram.Polling
+namespace StrategyBot.Telegram.Console
 {
     public static class Program
     {
@@ -24,7 +23,7 @@ namespace StrategyBot.Telegram.Polling
             TelegramBotClient bot = SetupBot(proxyConfiguration, token);
 
             User botInfo = await bot.GetMeAsync();
-            Console.Title = botInfo.Username;
+            System.Console.Title = botInfo.Username;
 
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -67,8 +66,8 @@ namespace StrategyBot.Telegram.Polling
             };
             channel.BasicConsume("telegram", false, rabbitConsumer);
 
-            Console.WriteLine($"Start listening for @{botInfo.Username}");
-            Console.ReadLine();
+            System.Console.WriteLine($"Start listening for @{botInfo.Username}");
+            System.Console.ReadLine();
 
             cancellationTokenSource.Cancel();
         }

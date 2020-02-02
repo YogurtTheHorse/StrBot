@@ -1,4 +1,4 @@
-namespace StrategyBot.Game.Server
+namespace StrategyBot.Game.Server.YamlLocalization
 {
     public class LocalizationOptions
     {

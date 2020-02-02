@@ -7,13 +7,14 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using StrategyBot.Game.Data.Abstractions;
 using StrategyBot.Game.Data.Mongo;
-using StrategyBot.Game.Core;
-using StrategyBot.Game.Core.Entities;
-using StrategyBot.Game.Core.Models;
-using StrategyBot.Game.Core.Screens;
 using StrategyBot.Game.Logic;
+using StrategyBot.Game.Logic.Communications;
+using StrategyBot.Game.Logic.Localizations;
 using StrategyBot.Game.Logic.Screens;
+using StrategyBot.Game.Logic.Screens.Common;
+using StrategyBot.Game.Screens;
 using StrategyBot.Game.Server.RabbitMq;
+using StrategyBot.Game.Server.YamlLocalization;
 
 namespace StrategyBot.Game.Server
 {
@@ -26,11 +27,11 @@ namespace StrategyBot.Game.Server
             var rabbitMqSettings = configuration
                 .GetSection(nameof(RabbitMqSettings))
                 .Get<RabbitMqSettings>();
-            
+
             var mongoSettings = configuration
                 .GetSection(nameof(MongoSettings))
                 .Get<MongoSettings>();
-            
+
             var localizationOptions = configuration
                 .GetSection(nameof(LocalizationOptions))
                 .Get<LocalizationOptions>();
@@ -45,7 +46,7 @@ namespace StrategyBot.Game.Server
             using IModel channel = connection.CreateModel();
 
             channel.SetupServerQueue(rabbitMqSettings);
-            
+
             var iocContainerBuilder = new ContainerBuilder();
 
             iocContainerBuilder
@@ -54,16 +55,16 @@ namespace StrategyBot.Game.Server
                 .RegisterInstance(rabbitMqSettings);
             iocContainerBuilder
                 .RegisterInstance(localizationOptions);
-            
+
             iocContainerBuilder
                 .RegisterType<MongoUnitOfWork>()
                 .As<IMongoUnitOfWork>()
                 .SingleInstance();
-            
+
             iocContainerBuilder
                 .RegisterType<GameContext>()
                 .SingleInstance();
-            
+
             iocContainerBuilder
                 .RegisterType<RabbitMqCommunicator>()
                 .As<IGameCommunicator>()
@@ -78,7 +79,7 @@ namespace StrategyBot.Game.Server
                 .RegisterGeneric(typeof(MongoRepository<>))
                 .As(typeof(IMongoRepository<>))
                 .SingleInstance();
-            
+
             iocContainerBuilder
                 .RegisterInstance(channel)
                 .As<IModel>()
@@ -95,6 +96,18 @@ namespace StrategyBot.Game.Server
                 .As<IScreenController>()
                 .SingleInstance();
 
+            iocContainerBuilder
+                .RegisterInstance(new Random());
+
+            iocContainerBuilder
+                .RegisterType<CommonElementsFactory>()
+                .As<ICommonElementsFactory>()
+                .SingleInstance();
+
+            iocContainerBuilder
+                .RegisterType<Localization>()
+                .AsSelf();
+
             IContainer container = iocContainerBuilder.Build();
             var localizer = container.Resolve<ILocalizer>();
             Console.WriteLine(localizer.GetString("screens.main_menu.test", "ru"));
@@ -107,7 +120,7 @@ namespace StrategyBot.Game.Server
                 autoAck: true,
                 consumer: messagesConsumer
             );
-            
+
 
             Console.WriteLine("Listening...");
             Console.ReadLine();
@@ -125,9 +138,9 @@ namespace StrategyBot.Game.Server
                         p.SocialId == message.PlayerSocialId &&
                         p.ReplyQueueName == message.ReplyBackQueueName
                     ))?.Key;
-                    
+
                     var gameContext = container.Resolve<GameContext>();
-                    
+
                     if (playerId == null)
                     {
                         playerId = await gameContext.CreatePlayer(

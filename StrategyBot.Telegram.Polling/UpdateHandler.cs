@@ -8,7 +8,7 @@ using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace StrategyBot.Telegram.Polling
+namespace StrategyBot.Telegram.Console
 {
     public class UpdateHandler : IUpdateHandler
     {
@@ -52,7 +52,7 @@ namespace StrategyBot.Telegram.Polling
                 _ => exception.ToString()
             };
     
-            await Console.Error.WriteLineAsync(errorMessage);
+            await System.Console.Error.WriteLineAsync(errorMessage);
     
         }
     
@@ -82,7 +82,7 @@ namespace StrategyBot.Telegram.Polling
     
         private Task UnknownUpdateHandlerAsync(Update update)
         {
-            Console.WriteLine($"Unknown update type: {update.Type}");
+            System.Console.WriteLine($"Unknown update type: {update.Type}");
     
             return Task.CompletedTask;
         }

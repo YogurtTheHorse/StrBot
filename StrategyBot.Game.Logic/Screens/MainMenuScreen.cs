@@ -1,53 +1,21 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using StrategyBot.Game.Data.Abstractions;
-using StrategyBot.Game.Entities;
-using StrategyBot.Game.Core;
-using StrategyBot.Game.Core.Entities;
-using StrategyBot.Game.Core.Models;
-using StrategyBot.Game.Core.Screens;
+using StrategyBot.Game.Logic.Screens;
+using StrategyBot.Game.Logic.Screens.Common;
 
-namespace StrategyBot.Game.Logic.Screens
+namespace StrategyBot.Game.Screens
 {
     [MainScreen]
-    public class MainMenuScreen : IScreen
+    public class MainMenuScreen : CommonScreen
     {
-        private readonly IGameCommunicator _gameCommunicator;
-        private readonly ILocalizer _localizer;
-
-        public MainMenuScreen(IGameCommunicator gameCommunicator, ILocalizer localizer)
+        public MainMenuScreen(ICommonElementsFactory commonElementsFactory) : base(commonElementsFactory)
         {
-            _gameCommunicator = gameCommunicator;
-            _localizer = localizer;
         }
 
-        public async Task ProcessMessage(IncomingMessage message, PlayerState playerState, PlayerData playerData)
+        protected override IEnumerable<CommonScreenElement> ScreenElements => new CommonScreenElement[]
         {
-            await _gameCommunicator.Answer(new GameAnswer
-            {
-                Text = "Hi, you are in main menu",
-                PlayerId = message.PlayerId
-            });
-
-            await Task.CompletedTask;
-        }
-
-        public async Task OnOpen(PlayerState playerState, PlayerData playerData)
-        {
-            await _gameCommunicator.Answer(new GameAnswer
-            {
-                Text = _localizer.GetString(
-                    "screens.main_menu.open_phrase",
-                    playerState.Locale,
-                    playerData.AttackShips,
-                    playerData.DefenceShips
-                ),
-                PlayerId = playerData.Key,
-                Suggestions = new[]
-                {
-                    _localizer.GetString("screens.main_menu.attack", playerState.Locale),
-                    _localizer.GetString("screens.main_menu.select_skills", playerState.Locale),
-                }
-            });
-        }
+            CommonElementsFactory.Action("screens.main_menu.attack", () => Task.FromResult(false)),
+            CommonElementsFactory.NoAction("screens.main_menu.open_phrase"),
+        };
     }
 }

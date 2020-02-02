@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
-using StrategyBot.Game.Core.Entities;
-using StrategyBot.Game.Core.Models;
+using StrategyBot.Game.Logic.Communications;
 
-namespace StrategyBot.Game.Core.Screens
+namespace StrategyBot.Game.Logic.Screens
 {
     public interface IScreen
     {
-        Task ProcessMessage(IncomingMessage message, PlayerState playerState, PlayerData playerData);
+        Task ProcessMessage(IncomingMessage message, PlayerState state, PlayerData data);
 
-        Task OnOpen(PlayerState playerState, PlayerData playerData);
+        Task OnOpen(PlayerState state, PlayerData data);
     }
 }

@@ -1,7 +1,4 @@
-using System.Reflection;
-using StrategyBot.Game.Core.Models;
-
-namespace StrategyBot.Game.Core.Screens
+namespace StrategyBot.Game.Logic.Screens
 {
     public interface IScreenController
     {

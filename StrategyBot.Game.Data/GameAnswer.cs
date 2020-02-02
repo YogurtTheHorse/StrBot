@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 
-namespace StrategyBot.Game.Core
+namespace StrategyBot.Game.Data
 {
     public class GameAnswer
     {
@@ -8,6 +8,6 @@ namespace StrategyBot.Game.Core
         
         public string Text { get; set; }
         
-        public string[] Suggestions { get; set; }
+        public Suggestion[] Suggestions { get; set; }
     }
 }

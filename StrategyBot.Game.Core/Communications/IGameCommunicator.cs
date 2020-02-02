@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
+using StrategyBot.Game.Data;
 
-namespace StrategyBot.Game.Core
+namespace StrategyBot.Game.Logic.Communications
 {
     public interface IGameCommunicator
     {

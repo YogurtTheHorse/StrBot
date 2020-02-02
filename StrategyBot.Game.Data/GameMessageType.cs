@@ -1,4 +1,4 @@
-namespace StrategyBot.Game.Core
+namespace StrategyBot.Game.Data
 {
     public enum GameMessageType
     {
