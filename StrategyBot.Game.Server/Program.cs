@@ -109,8 +109,6 @@ namespace StrategyBot.Game.Server
                 .AsSelf();
 
             IContainer container = iocContainerBuilder.Build();
-            var localizer = container.Resolve<ILocalizer>();
-            Console.WriteLine(localizer.GetString("screens.main_menu.test", "ru"));
 
             var messagesConsumer = new AsyncEventingBasicConsumer(channel);
             messagesConsumer.Received += MessagesConsumerOnReceived(container);

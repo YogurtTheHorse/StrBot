@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>StrategyBot.Game.CoeControllers</RootNamespace>
+    </PropertyGroup>
+
+</Project>
