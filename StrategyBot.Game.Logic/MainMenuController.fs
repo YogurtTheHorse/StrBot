@@ -10,8 +10,7 @@ type MainMenuController() =
     inherit ControllerBase()
 
     [<Action("screens.main_menu.say_my_name")>]
-    member __.SayMyName(player: PlayerState ) =
-        __.Answer ("Your name is " + player.SocialId)
+    member __.SayMyName(player: PlayerState) = __.Answer("Your name is " + player.SocialId)
 
     [<Action("screens.main_menu.attack")>]
     member __.AttackAction() = __.Answer "test"
