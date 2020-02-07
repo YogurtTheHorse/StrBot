@@ -2,8 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>StrategyBot.Game</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Include="MainMenuController.fs" />
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\StrategyBot.Game.Core.Controllers\StrategyBot.Game.Core.Controllers.csproj" />
