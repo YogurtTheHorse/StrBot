@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <Compile Include="MainMenuController.fs" />
+      <Compile Include="PlayerData.fs" />
     </ItemGroup>
 
     <ItemGroup>

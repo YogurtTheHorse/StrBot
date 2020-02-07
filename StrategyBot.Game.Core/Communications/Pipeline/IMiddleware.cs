@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace StrategyBot.Game.Core.Communications.Pipeline
 {
-    public interface IMiddleware
+    public interface IMiddleware<in T>
     {
-        Task Pipe(IncomingMessage message, PlayerState state, PlayerData data, Func<Task> next);
+        Task Pipe(IncomingMessage message, PlayerInfo info, T data, Func<Task> next);
     }
 }

@@ -35,10 +35,6 @@ namespace StrategyBot.Game.Core.Controllers.Autofac
             }
 
             containerBuilder
-                .RegisterType<ControllerMiddleware>()
-                .As<IMiddleware>();
-
-            containerBuilder
                 .RegisterType<AutofacControllersProvider>()
                 .As<IControllersProvider>();
         }

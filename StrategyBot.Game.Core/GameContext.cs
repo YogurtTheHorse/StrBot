@@ -5,16 +5,16 @@ using StrategyBot.Game.Data.Abstractions;
 
 namespace StrategyBot.Game.Core
 {
-    public class GameContext
+    public class GameContext<T> where T : PlayerDataBase, new()
     {
-        private readonly IMessageProcessor _messageProcessor;
-        private readonly IMongoRepository<PlayerState> _playersState;
-        private readonly IMongoRepository<PlayerData> _playersData;
+        private readonly IMessageProcessor<T> _messageProcessor;
+        private readonly IMongoRepository<PlayerInfo> _playersState;
+        private readonly IMongoRepository<T> _playersData;
 
         public GameContext(
-            IMessageProcessor messageProcessor,
-            IMongoRepository<PlayerState> playersState,
-            IMongoRepository<PlayerData> playersData
+            IMessageProcessor<T> messageProcessor,
+            IMongoRepository<PlayerInfo> playersState,
+            IMongoRepository<T> playersData
         )
         {
             _messageProcessor = messageProcessor;
@@ -24,7 +24,7 @@ namespace StrategyBot.Game.Core
 
         public async Task<ObjectId> CreatePlayer(string socialId, string replyBackQueue)
         {
-            var playerState = new PlayerState
+            var playerState = new PlayerInfo
             {
                 Key = ObjectId.GenerateNewId(),
                 SocialId = socialId,
@@ -32,7 +32,7 @@ namespace StrategyBot.Game.Core
             };
             await _playersState.Insert(playerState);
 
-            var playerData = new PlayerData
+            var playerData = new T
             {
                 Key = playerState.Key
             };
@@ -43,10 +43,10 @@ namespace StrategyBot.Game.Core
 
         public async Task ProcessMessage(IncomingMessage message)
         {
-            PlayerState playerState = await _playersState.GetById(message.PlayerId);
-            PlayerData playerData = await _playersData.GetById(message.PlayerId);
+            PlayerInfo playerInfo = await _playersState.GetById(message.PlayerId);
+            T playerData = await _playersData.GetById(message.PlayerId);
             
-            await _messageProcessor.ProcessMessage(message, playerState, playerData);
+            await _messageProcessor.ProcessMessage(message, playerInfo, playerData);
         }
     }
 }

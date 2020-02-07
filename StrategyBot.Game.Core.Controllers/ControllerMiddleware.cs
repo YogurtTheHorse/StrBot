@@ -13,7 +13,7 @@ using StrategyBot.Game.Data;
 
 namespace StrategyBot.Game.Core.Controllers
 {
-    public class ControllerMiddleware : IMiddleware
+    public class ControllerMiddleware<T> : IMiddleware<T> where T : IControllersData
     {
         private readonly IControllersProvider _controllersProvider;
         private readonly ILocalizer _localizer;
@@ -28,9 +28,9 @@ namespace StrategyBot.Game.Core.Controllers
             _mainControllerName = controllersProvider.MainControllerName;
         }
 
-        public async Task Pipe(IncomingMessage message, PlayerState state, PlayerData data, Func<Task> next)
+        public async Task Pipe(IncomingMessage message, PlayerInfo info, T data, Func<Task> next)
         {
-            string realControllerName = state.ControllersStack.TryPeek(out string controllerName)
+            string realControllerName = data.ControllersStack.TryPeek(out string controllerName)
                 ? controllerName
                 : _mainControllerName;
 
@@ -39,11 +39,11 @@ namespace StrategyBot.Game.Core.Controllers
 
             foreach ((MethodInfo methodInfo, ActionAttribute actionAttribute) in controller.ActionsInfos)
             {
-                Localization actionString = _localizer.GetString(actionAttribute.LocalizationPath.Path, state.Locale);
+                Localization actionString = _localizer.GetString(actionAttribute.LocalizationPath.Path, info.Locale);
 
                 if (!actionString.MatchesMessage(message)) continue;
 
-                IEnumerable<object> parameters = BuildParameters(methodInfo, message, state, data);
+                IEnumerable<object> parameters = BuildParameters(methodInfo, message, info, data);
 
                 answer = await CallHandler(controller, methodInfo, parameters.ToArray());
                 break;
@@ -53,20 +53,20 @@ namespace StrategyBot.Game.Core.Controllers
             {
                 IEnumerable<object> parameters = BuildParameters(
                     controller.DefaultInfo.Value.methodInfo,
-                    message, state, data
+                    message, info, data
                 );
 
                 answer = await CallHandler(controller, controller.DefaultInfo.Value.methodInfo, parameters.ToArray());
             }
 
-            await ProcessAnswer(answer, data, state);
+            await ProcessAnswer(answer, data, info);
         }
 
-        private async Task ProcessAnswer(IControllerAnswer answer, PlayerData data, PlayerState state)
+        private async Task ProcessAnswer(IControllerAnswer answer, T data, PlayerInfo info)
         {
             await _gameCommunicator.Answer(new GameAnswer
             {
-                PlayerId = data.Key,
+                PlayerId = info.Key,
                 Suggestions = answer.Suggestions,
                 Text = answer.Text
             });

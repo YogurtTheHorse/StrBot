@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 
 namespace StrategyBot.Game.Core.Communications
 {
-    public interface IMessageProcessor
+    public interface IMessageProcessor<T>
     {
-        Task ProcessMessage(IncomingMessage message, PlayerState state, PlayerData data);
+        Task ProcessMessage(IncomingMessage message, PlayerInfo info, T data);
     }
 }

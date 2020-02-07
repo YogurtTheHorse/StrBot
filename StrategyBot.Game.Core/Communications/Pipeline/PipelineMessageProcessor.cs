@@ -4,39 +4,39 @@ using System.Threading.Tasks;
 
 namespace StrategyBot.Game.Core.Communications.Pipeline
 {
-    public class PipelineMessageProcessor : IMessageProcessor
+    public class PipelineMessageProcessor<T> : IMessageProcessor<T>
     {
-        private List<IMiddleware> _middlewares;
+        private List<IMiddleware<T>> _middlewares;
 
         public PipelineMessageProcessor()
         {
-            _middlewares = new List<IMiddleware>();
+            _middlewares = new List<IMiddleware<T>>();
         }
 
-        public PipelineMessageProcessor Use(IMiddleware middleware)
+        public PipelineMessageProcessor<T> Use(IMiddleware<T> middleware)
         {
             _middlewares.Add(middleware);
 
             return this;
         }
 
-        private async Task ProcessMessage(IncomingMessage message, PlayerState state, PlayerData data, int i)
+        private async Task ProcessMessage(IncomingMessage message, PlayerInfo info, T data, int i)
         {
             if (i >= _middlewares.Count) return;
 
             await _middlewares[i].Pipe(
                 message,
-                state,
+                info,
                 data,
-                async () => { await ProcessMessage(message, state, data, i + 1); }
+                async () => { await ProcessMessage(message, info, data, i + 1); }
             );
         }
 
-        public async Task ProcessMessage(IncomingMessage message, PlayerState state, PlayerData data)
+        public async Task ProcessMessage(IncomingMessage message, PlayerInfo info, T data)
         {
             if (_middlewares.Any())
             {
-                await ProcessMessage(message, state, data, 0);
+                await ProcessMessage(message, info, data, 0);
             }
         }
     }

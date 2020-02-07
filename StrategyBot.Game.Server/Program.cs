@@ -11,6 +11,7 @@ using StrategyBot.Game.Core;
 using StrategyBot.Game.Logic;
 using StrategyBot.Game.Core.Communications;
 using StrategyBot.Game.Core.Communications.Pipeline;
+using StrategyBot.Game.Core.Controllers;
 using StrategyBot.Game.Core.Controllers.Autofac;
 using StrategyBot.Game.Core.Localizations;
 using StrategyBot.Game.Data.Abstractions;
@@ -64,7 +65,7 @@ namespace StrategyBot.Game.Server
                 .SingleInstance();
 
             iocContainerBuilder
-                .RegisterType<GameContext>()
+                .RegisterType<GameContext<PlayerData>>()
                 .SingleInstance();
 
             iocContainerBuilder
@@ -88,15 +89,16 @@ namespace StrategyBot.Game.Server
                 .SingleInstance();
 
             iocContainerBuilder.RegisterControllers(typeof(MainMenuController).Assembly);
+            iocContainerBuilder
+                .RegisterType<ControllerMiddleware<PlayerData>>()
+                .AsSelf();
 
             iocContainerBuilder
-                .Register(c => c
-                    .Resolve<IEnumerable<IMiddleware>>()
-                    .Aggregate(
-                        new PipelineMessageProcessor(),
-                        (p, m) => p.Use(m)
-                    ))
-                .As<IMessageProcessor>();
+                .Register(c =>
+                    new PipelineMessageProcessor<PlayerData>()
+                        .Use(c.Resolve<ControllerMiddleware<PlayerData>>())
+                )
+                .As<IMessageProcessor<PlayerData>>();
 
             iocContainerBuilder
                 .RegisterInstance(new Random());
@@ -106,6 +108,7 @@ namespace StrategyBot.Game.Server
                 .AsSelf();
 
             IContainer container = iocContainerBuilder.Build();
+            var f = container.Resolve<IMessageProcessor<PlayerData>>();
 
             var messagesConsumer = new AsyncEventingBasicConsumer(channel);
             messagesConsumer.Received += MessagesConsumerOnReceived(container);
@@ -127,13 +130,13 @@ namespace StrategyBot.Game.Server
                 {
                     var message = ea.Body.DecodeObject<MessageFromSocialNetwork>();
 
-                    var players = container.Resolve<IMongoRepository<PlayerState>>();
+                    var players = container.Resolve<IMongoRepository<PlayerInfo>>();
                     ObjectId? playerId = (await players.GetFirstOrDefault(p =>
                         p.SocialId == message.PlayerSocialId &&
                         p.ReplyQueueName == message.ReplyBackQueueName
                     ))?.Key;
 
-                    var gameContext = container.Resolve<GameContext>();
+                    var gameContext = container.Resolve<GameContext<PlayerData>>();
 
                     if (playerId == null)
                     {
