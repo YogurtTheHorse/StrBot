@@ -106,7 +106,6 @@ namespace StrategyBot.Game.Server
                 .AsSelf();
 
             IContainer container = iocContainerBuilder.Build();
-            var m = container.Resolve<IMiddleware>();
 
             var messagesConsumer = new AsyncEventingBasicConsumer(channel);
             messagesConsumer.Received += MessagesConsumerOnReceived(container);
