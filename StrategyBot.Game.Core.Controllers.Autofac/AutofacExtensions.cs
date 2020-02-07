@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using StrategyBot.Game.Core.Communications.Pipeline;
 using StrategyBot.Game.Core.Controllers;
 using StrategyBot.Game.Core.Controllers.Abstractions;
-using StrategyBot.Game.Logic.Communications.Pipeline;
 
 namespace StrategyBot.Game.Core.Controllers.Autofac
 {

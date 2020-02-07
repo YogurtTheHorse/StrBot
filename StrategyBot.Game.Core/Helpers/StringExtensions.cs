@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace StrategyBot.Game.Logic.Helpers
+namespace StrategyBot.Game.Core.Helpers
 {
     public static class StringExtensions
     {

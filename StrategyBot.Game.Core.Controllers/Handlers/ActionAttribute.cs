@@ -1,5 +1,5 @@
 using System;
-using StrategyBot.Game.Logic.Localizations;
+using StrategyBot.Game.Core.Localizations;
 
 namespace StrategyBot.Game.Core.Controllers.Handlers
 {

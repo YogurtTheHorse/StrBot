@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StrategyBot.Game.Logic.Communications.Pipeline
+namespace StrategyBot.Game.Core.Communications.Pipeline
 {
     public class PipelineMessageProcessor : IMessageProcessor
     {

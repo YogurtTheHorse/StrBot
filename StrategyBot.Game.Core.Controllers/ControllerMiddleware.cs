@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using StrategyBot.Game.Core.Communications;
+using StrategyBot.Game.Core.Communications.Pipeline;
 using StrategyBot.Game.Core.Controllers.Abstractions;
 using StrategyBot.Game.Core.Controllers.Answers;
 using StrategyBot.Game.Core.Controllers.Handlers;
+using StrategyBot.Game.Core.Localizations;
 using StrategyBot.Game.Data;
-using StrategyBot.Game.Logic;
-using StrategyBot.Game.Logic.Communications;
-using StrategyBot.Game.Logic.Communications.Pipeline;
-using StrategyBot.Game.Logic.Localizations;
 
 namespace StrategyBot.Game.Core.Controllers
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using StrategyBot.Game.Data.Mongo;
 
-namespace StrategyBot.Game.Logic
+namespace StrategyBot.Game.Core
 {
     public class PlayerData : MongoModel
     {

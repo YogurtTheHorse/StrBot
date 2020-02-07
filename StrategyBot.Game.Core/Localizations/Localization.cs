@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using StrategyBot.Game.Logic.Communications;
+using StrategyBot.Game.Core.Communications;
 
-namespace StrategyBot.Game.Logic.Localizations
+namespace StrategyBot.Game.Core.Localizations
 {
     public class Localization
     {

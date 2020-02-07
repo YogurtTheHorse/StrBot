@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using StrategyBot.Game.Logic.Localizations;
+using StrategyBot.Game.Core.Localizations;
 using YamlDotNet.Serialization;
 
 namespace StrategyBot.Game.Server.YamlLocalization

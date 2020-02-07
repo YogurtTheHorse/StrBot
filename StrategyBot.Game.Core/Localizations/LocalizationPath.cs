@@ -1,4 +1,4 @@
-namespace StrategyBot.Game.Logic.Localizations
+namespace StrategyBot.Game.Core.Localizations
 {
     public class LocalizationPath
     {

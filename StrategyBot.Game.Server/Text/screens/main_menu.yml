@@ -3,4 +3,5 @@ open_phrase: Welcome to StrBot. It is a simple strategy where you have to contro
   your skills currently.
   
 attack: Attack
+say_my_name: Say
 select_skills: Choose skills

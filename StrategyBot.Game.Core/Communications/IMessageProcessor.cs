@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace StrategyBot.Game.Logic.Communications
+namespace StrategyBot.Game.Core.Communications
 {
     public interface IMessageProcessor
     {

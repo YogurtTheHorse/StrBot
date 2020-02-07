@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using StrategyBot.Game.Core.Communications;
 using StrategyBot.Game.Data.Abstractions;
-using StrategyBot.Game.Logic.Communications;
 
-namespace StrategyBot.Game.Logic
+namespace StrategyBot.Game.Core
 {
     public class GameContext
     {
