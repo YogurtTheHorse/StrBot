@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server.Rab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Logic", "StrategyBot.Game.Logic\StrategyBot.Game.Logic.csproj", "{221CA5ED-9F75-4A9D-AFF0-B501B204A719}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Core.Controllers", "StrategyBot.Game.Core.Controllers\StrategyBot.Game.Core.Controllers.csproj", "{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Core.Controllers.Autofac", "StrategyBot.Game.Core.Controllers.Autofac\StrategyBot.Game.Core.Controllers.Autofac.csproj", "{79F22739-908B-4F44-81AA-C2DF718F9E54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,5 +44,13 @@ Global
 		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.Build.0 = Release|Any CPU
 		{221CA5ED-9F75-4A9D-AFF0-B501B204A719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{221CA5ED-9F75-4A9D-AFF0-B501B204A719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F22739-908B-4F44-81AA-C2DF718F9E54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F22739-908B-4F44-81AA-C2DF718F9E54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F22739-908B-4F44-81AA-C2DF718F9E54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F22739-908B-4F44-81AA-C2DF718F9E54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

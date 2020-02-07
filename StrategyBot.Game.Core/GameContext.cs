@@ -2,23 +2,22 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using StrategyBot.Game.Data.Abstractions;
 using StrategyBot.Game.Logic.Communications;
-using StrategyBot.Game.Logic.Screens;
 
 namespace StrategyBot.Game.Logic
 {
     public class GameContext
     {
-        private readonly IScreenController _screenController;
+        private readonly IMessageProcessor _messageProcessor;
         private readonly IMongoRepository<PlayerState> _playersState;
         private readonly IMongoRepository<PlayerData> _playersData;
 
         public GameContext(
-            IScreenController screenController,
+            IMessageProcessor messageProcessor,
             IMongoRepository<PlayerState> playersState,
             IMongoRepository<PlayerData> playersData
         )
         {
-            _screenController = screenController;
+            _messageProcessor = messageProcessor;
             _playersState = playersState;
             _playersData = playersData;
         }
@@ -47,8 +46,7 @@ namespace StrategyBot.Game.Logic
             PlayerState playerState = await _playersState.GetById(message.PlayerId);
             PlayerData playerData = await _playersData.GetById(message.PlayerId);
             
-            IScreen screen = _screenController.GetCurrentPlayerScreen(playerState);
-            await screen.ProcessMessage(message, playerState, playerData);
+            await _messageProcessor.ProcessMessage(message, playerState, playerData);
         }
     }
 }

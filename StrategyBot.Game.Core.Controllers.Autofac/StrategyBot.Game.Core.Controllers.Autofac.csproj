@@ -2,13 +2,14 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>StrategyBot.Game</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Autofac" Version="4.9.4" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\StrategyBot.Game.Core.Controllers\StrategyBot.Game.Core.Controllers.csproj" />
-      <ProjectReference Include="..\StrategyBot.Game.Core\StrategyBot.Game.Core.csproj" />
-      <ProjectReference Include="..\StrategyBot.Game.Data\StrategyBot.Game.Data.csproj" />
     </ItemGroup>
 
 </Project>

@@ -11,6 +11,6 @@ namespace StrategyBot.Game.Logic
         
         public string Locale { get; set; }
 
-        public Stack<string> ScreensStack { get; set; } = new Stack<string>();
+        public Stack<string> ControllersStack { get; set; } = new Stack<string>();
     }
 }

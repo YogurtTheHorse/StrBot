@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using StrategyBot.Game.Controllers;
+using StrategyBot.Game.Core.Controllers;
+using StrategyBot.Game.Core.Controllers.Autofac;
 using StrategyBot.Game.Data.Abstractions;
 using StrategyBot.Game.Data.Mongo;
 using StrategyBot.Game.Logic;
 using StrategyBot.Game.Logic.Communications;
+using StrategyBot.Game.Logic.Communications.Pipeline;
 using StrategyBot.Game.Logic.Localizations;
-using StrategyBot.Game.Logic.Screens;
-using StrategyBot.Game.Logic.Screens.Common;
-using StrategyBot.Game.Screens;
 using StrategyBot.Game.Server.RabbitMq;
 using StrategyBot.Game.Server.YamlLocalization;
 
@@ -36,7 +39,7 @@ namespace StrategyBot.Game.Server
                 .GetSection(nameof(LocalizationOptions))
                 .Get<LocalizationOptions>();
 
-            var factory = new ConnectionFactory()
+            var factory = new ConnectionFactory
             {
                 HostName = rabbitMqSettings.Hostname,
                 DispatchConsumersAsync = true
@@ -85,30 +88,26 @@ namespace StrategyBot.Game.Server
                 .As<IModel>()
                 .SingleInstance();
 
-            iocContainerBuilder
-                .RegisterAssemblyTypes(typeof(MainMenuScreen).Assembly)
-                .Where(t => typeof(IScreen).IsAssignableFrom(t))
-                .As<IScreen>()
-                .PreserveExistingDefaults();
+            iocContainerBuilder.RegisterControllers(typeof(MainMenuController).Assembly);
 
             iocContainerBuilder
-                .RegisterType<StackScreenController>()
-                .As<IScreenController>()
-                .SingleInstance();
+                .Register(c => c
+                    .Resolve<IEnumerable<IMiddleware>>()
+                    .Aggregate(
+                        new PipelineMessageProcessor(),
+                        (p, m) => p.Use(m)
+                    ))
+                .As<IMessageProcessor>();
 
             iocContainerBuilder
                 .RegisterInstance(new Random());
-
-            iocContainerBuilder
-                .RegisterType<CommonElementsFactory>()
-                .As<ICommonElementsFactory>()
-                .SingleInstance();
 
             iocContainerBuilder
                 .RegisterType<Localization>()
                 .AsSelf();
 
             IContainer container = iocContainerBuilder.Build();
+            var m = container.Resolve<IMiddleware>();
 
             var messagesConsumer = new AsyncEventingBasicConsumer(channel);
             messagesConsumer.Received += MessagesConsumerOnReceived(container);
@@ -118,7 +117,6 @@ namespace StrategyBot.Game.Server
                 autoAck: true,
                 consumer: messagesConsumer
             );
-
 
             Console.WriteLine("Listening...");
             Console.ReadLine();
