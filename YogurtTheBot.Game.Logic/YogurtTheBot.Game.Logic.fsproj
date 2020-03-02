@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Include="MainMenuController.fs" />
+      <Compile Include="PlayerData.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\YogurtTheBot.Game.Core.Controllers\YogurtTheBot.Game.Core.Controllers.csproj" />
+      <ProjectReference Include="..\YogurtTheBot.Game.Core\YogurtTheBot.Game.Core.csproj" />
+      <ProjectReference Include="..\YogurtTheBot.Game.Data\YogurtTheBot.Game.Data.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\YogurtTheBot.Game.Core.Controllers.Autofac\YogurtTheBot.Game.Core.Controllers.Autofac.csproj" />
+        <ProjectReference Include="..\YogurtTheBot.Game.Core\YogurtTheBot.Game.Core.csproj" />
+        <ProjectReference Include="..\YogurtTheBot.Game.Logic\YogurtTheBot.Game.Logic.fsproj" />
+        <ProjectReference Include="..\YogurtTheBot.Game.Server.RabbitMq\YogurtTheBot.Game.Server.RabbitMq.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="4.9.4" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
+        <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
+        <PackageReference Include="YamlDotNet" Version="8.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Text\**\*.*">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>

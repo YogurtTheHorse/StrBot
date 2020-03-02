@@ -1,20 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Data", "StrategyBot.Game.Data\StrategyBot.Game.Data.csproj", "{62ADA329-8E30-4877-9137-6F2BAE1BA46E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Data", "YogurtTheBot.Game.Data\YogurtTheBot.Game.Data.csproj", "{62ADA329-8E30-4877-9137-6F2BAE1BA46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Core", "StrategyBot.Game.Core\StrategyBot.Game.Core.csproj", "{05D80E6B-2A3F-4F1B-A892-213543553912}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Core", "YogurtTheBot.Game.Core\YogurtTheBot.Game.Core.csproj", "{05D80E6B-2A3F-4F1B-A892-213543553912}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Telegram.Polling", "StrategyBot.Telegram.Polling\StrategyBot.Telegram.Polling.csproj", "{242E7F03-4671-48FB-8503-CAF016448612}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Telegram.Polling", "YogurtTheBot.Telegram.Polling\YogurtTheBot.Telegram.Polling.csproj", "{242E7F03-4671-48FB-8503-CAF016448612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server", "StrategyBot.Game.Server\StrategyBot.Game.Server.csproj", "{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Server", "YogurtTheBot.Game.Server\YogurtTheBot.Game.Server.csproj", "{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Server.RabbitMq", "StrategyBot.Game.Server.RabbitMq\StrategyBot.Game.Server.RabbitMq.csproj", "{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Core.Controllers.Autofac", "YogurtTheBot.Game.Core.Controllers.Autofac\YogurtTheBot.Game.Core.Controllers.Autofac.csproj", "{79F22739-908B-4F44-81AA-C2DF718F9E54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Core.Controllers", "StrategyBot.Game.Core.Controllers\StrategyBot.Game.Core.Controllers.csproj", "{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "YogurtTheBot.Game.Logic", "YogurtTheBot.Game.Logic\YogurtTheBot.Game.Logic.fsproj", "{FC5AE2C9-54D7-4AC7-AC90-06CA3D8D6682}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyBot.Game.Core.Controllers.Autofac", "StrategyBot.Game.Core.Controllers.Autofac\StrategyBot.Game.Core.Controllers.Autofac.csproj", "{79F22739-908B-4F44-81AA-C2DF718F9E54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Core.Controllers", "YogurtTheBot.Game.Core.Controllers\YogurtTheBot.Game.Core.Controllers.csproj", "{85522F8B-CFE4-4C81-AC1A-38A68802F165}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StrategyBot.Game.Logic", "StrategyBot.Game.Logic\StrategyBot.Game.Logic.fsproj", "{FC5AE2C9-54D7-4AC7-AC90-06CA3D8D6682}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Server.RabbitMq", "YogurtTheBot.Game.Server.RabbitMq\YogurtTheBot.Game.Server.RabbitMq.csproj", "{E97CE660-7006-40A2-85FD-B11B7E169D0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,14 +38,6 @@ Global
 		{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8144EAB4-4AC9-4A36-BF0C-305B8A7A7123}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4CDA3C9-8A98-4BB6-9F47-68D5FB71E705}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A56A6AB-9B5B-4335-B33C-3AF007C3DB01}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79F22739-908B-4F44-81AA-C2DF718F9E54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{79F22739-908B-4F44-81AA-C2DF718F9E54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79F22739-908B-4F44-81AA-C2DF718F9E54}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,5 +46,13 @@ Global
 		{FC5AE2C9-54D7-4AC7-AC90-06CA3D8D6682}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC5AE2C9-54D7-4AC7-AC90-06CA3D8D6682}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC5AE2C9-54D7-4AC7-AC90-06CA3D8D6682}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85522F8B-CFE4-4C81-AC1A-38A68802F165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85522F8B-CFE4-4C81-AC1A-38A68802F165}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85522F8B-CFE4-4C81-AC1A-38A68802F165}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85522F8B-CFE4-4C81-AC1A-38A68802F165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E97CE660-7006-40A2-85FD-B11B7E169D0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E97CE660-7006-40A2-85FD-B11B7E169D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E97CE660-7006-40A2-85FD-B11B7E169D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E97CE660-7006-40A2-85FD-B11B7E169D0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
