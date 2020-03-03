@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Models.fs" />
+        <Compile Include="Level.fs" />
+        <Compile Include="Descriptions.fs" />
+        <Compile Include="LevelLoader.fs" />
+        <Content Include="Levels\first.yaml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Legivel" Version="0.4.1" />
+    </ItemGroup>
+
+</Project>

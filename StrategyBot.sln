@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Core.Cont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Server.RabbitMq", "YogurtTheBot.Game.Server.RabbitMq\YogurtTheBot.Game.Server.RabbitMq.csproj", "{E97CE660-7006-40A2-85FD-B11B7E169D0E}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "YogurtTheBot.Game.Logic.Engine", "YogurtTheBot.Game.Logic.Engine\YogurtTheBot.Game.Logic.Engine.fsproj", "{F6D5A5DE-A88B-45B5-9D3A-26B6261CCE14}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "YogurtTheBot.Game.Logic.Engine.Tests", "YogurtTheBot.Game.Logic.Engine.Tests\YogurtTheBot.Game.Logic.Engine.Tests.fsproj", "{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +58,13 @@ Global
 		{E97CE660-7006-40A2-85FD-B11B7E169D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E97CE660-7006-40A2-85FD-B11B7E169D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E97CE660-7006-40A2-85FD-B11B7E169D0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6D5A5DE-A88B-45B5-9D3A-26B6261CCE14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6D5A5DE-A88B-45B5-9D3A-26B6261CCE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6D5A5DE-A88B-45B5-9D3A-26B6261CCE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6D5A5DE-A88B-45B5-9D3A-26B6261CCE14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
