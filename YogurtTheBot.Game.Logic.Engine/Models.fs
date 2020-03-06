@@ -3,18 +3,25 @@ module YogurtTheBot.Game.Logic.Engine.Models
 type Actor =
     { name: string }
 
-type Event =
+type Action =
     { name: string }
 
-type Action =
-    { name: string
-      causes: Event }
-
-type Rule =
-    { actor: Actor
+type Reflex =
+    { actor: Actor 
       action: Action
-      reason: Event }
+      recipient: Actor }
     
 type Permission =
     { actor: Actor
       action: Action }
+    
+type Rule =
+    | Reflex of Reflex * Reflex
+    | Permission of Permission
+    
+type Level =
+    { name: string
+      rules: Rule list
+      solution: Rule list
+      actors: Actor list
+      actions: Action list }

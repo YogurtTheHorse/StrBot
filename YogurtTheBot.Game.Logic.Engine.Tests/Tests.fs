@@ -1,10 +1,12 @@
 module Tests
 
 open Xunit
-open YogurtTheBot.Game.Logic.Engine
+open YogurtTheBot.Game.Logic.Engine.LevelsList
+open YogurtTheBot.Game.Logic.Engine.Level
 
 [<Fact>]
 let ``My test`` () =
-    let level = LevelLoader.load "Levels/first.yaml"
-    
-    ()
+    levels
+    |> List.map (fun l -> testSolution l l.solution)
+    |> List.forall (fun r -> r = Complete)
+    |> Assert.True 
