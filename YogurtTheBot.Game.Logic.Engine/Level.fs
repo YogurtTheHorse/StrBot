@@ -110,8 +110,7 @@ let testSolution level solution =
                         match r with
                         | Reflex (reflex, _) when reflexMatches reflex stimulus -> true
                         | _ -> false)
-                    |> List.map (fun r ->
-                        match r with Reflex (_, r_) -> r_)
+                    |> List.map (fun r -> match r with Reflex (_, r_) -> r_)
                 
                 test (newStimuli @ tail) 
             
