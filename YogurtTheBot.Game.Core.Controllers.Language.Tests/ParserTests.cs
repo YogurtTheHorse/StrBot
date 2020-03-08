@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using YogurtTheBot.Game.Core.Controllers.Language.Expressions;
 using YogurtTheBot.Game.Core.Controllers.Language.Parsing;
+using YogurtTheBot.Game.Core.Localizations;
 
 namespace YogurtTheBot.Game.Core.Controllers.Language.Tests
 {
@@ -45,6 +48,38 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Tests
             Assert.NotNull(result);
         }
 
-        public Expression Digit = "0".AsTerm() | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+        [Theory]
+        [InlineData("Hello, Yegor")]
+        [InlineData("Greetings, Yegor")]
+        [InlineData("Hi Yegor")]
+        public void TestLocalizedParser(string expression)
+        {
+            var hello = new LocalizedTerminal("hello");
+            Expression name = !Alpha;
+            Expression rule = hello + ~",".AsTerm() + !" ".AsTerm() + name + Expression.End;
+
+            var parsingContext = new ParsingContext(expression)
+            {
+                Locale = "ru",
+                Localizer = new DumbLocalizer(new Dictionary<string, string[]>
+                {
+                    {"hello", new[]
+                    {
+                        "Hello", "Hi", "Greetings"
+                    }}
+                })
+            };
+
+            ParsingResult? result = rule.TryParse(parsingContext);
+
+            Assert.NotNull(result);
+        }
+
+        public readonly Expression Digit = "0".AsTerm() | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+
+        public readonly Expression Alpha =
+            new OneOf(
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".Select(c => c.ToString().AsTerm())
+            );
     }
 }

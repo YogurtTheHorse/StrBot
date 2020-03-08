@@ -5,4 +5,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\YogurtTheBot.Game.Core\YogurtTheBot.Game.Core.csproj" />
+    </ItemGroup>
+
 </Project>

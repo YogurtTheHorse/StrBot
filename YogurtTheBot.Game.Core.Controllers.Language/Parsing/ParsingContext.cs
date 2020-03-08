@@ -1,4 +1,5 @@
 using YogurtTheBot.Game.Core.Controllers.Language.Expressions;
+using YogurtTheBot.Game.Core.Localizations;
 
 namespace YogurtTheBot.Game.Core.Controllers.Language.Parsing
 {
@@ -8,6 +9,10 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Parsing
 
         public int Position { get; }
 
+        public ILocalizer Localizer { get; set; }
+
+        public string Locale { get; set; }
+
         public ParsingContext(string text, int position = 0)
         {
             Text = text;
@@ -15,11 +20,14 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Parsing
         }
 
         public ParsingContext Change(int position) =>
-            new ParsingContext(Text, position);
+            new ParsingContext(Text, position)
+            {
+                Localizer = Localizer, Locale = Locale
+            };
 
         public bool ContinuesWith(string value) => Text.Substring(Position).StartsWith(value);
 
-        public ParsingContext AppendTerminal(Terminal terminal) => 
+        public ParsingContext AppendTerminal(Terminal terminal) =>
             Change(Position + terminal.Value.Length);
     }
 }

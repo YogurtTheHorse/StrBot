@@ -23,6 +23,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
 
                 if (result is null) continue;
 
+                // TODO: Fix
                 possibilities.AddRange(result
                     .Possibilities
                     .Select(

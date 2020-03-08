@@ -7,28 +7,26 @@ namespace YogurtTheBot.Game.Core.Localizations
     public class Localization
     {
         private readonly Random _random;
-        private readonly string[] _formats;
 
-        public Localization(Random random, string[] formats)
+        public Localization(string[] formats, Random random=null)
         {
             _random = random;
-            _formats = formats;
+            Values = formats;
         }
 
         public Localization Format(params object[] args) =>
             args.Length > 0
-                ? new Localization(
-                    _random,
-                    _formats.Select(f => string.Format(f, args)).ToArray()
-                )
+                ? new Localization(Values.Select(f => string.Format(f, args)).ToArray(), _random)
                 : this;
 
-        public string Value => _formats[_random.Next(0, _formats.Length - 1)];
+        public string Value => Values[_random.Next(0, Values.Length - 1)];
+
+        public string[] Values { get; }
 
         public bool MatchesMessage(IncomingMessage message, params object[] args)
         {
             return Format(args)
-                ._formats
+                .Values
                 .Any(f => f.Equals(message.Text));
         }
     }
