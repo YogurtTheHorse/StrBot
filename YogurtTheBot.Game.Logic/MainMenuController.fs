@@ -2,12 +2,12 @@ namespace YogurtTheBot.Game.Logic
 
 open YogurtTheBot.Game.Core
 open YogurtTheBot.Game.Core.Controllers
-open YogurtTheBot.Game.Core.Controllers.Abstractions
 open YogurtTheBot.Game.Core.Controllers.Handlers
+open YogurtTheBot.Game.Core.Controllers.Language.Controllers
 
 [<Controller(isMainController = true)>]
 type MainMenuController(localizer) =
-    inherit Controller<PlayerData>(localizer) 
+    inherit LanguageController<PlayerData>(localizer) 
 
     [<Action("screens.main_menu.say_my_name")>]
     member x.SayMyName(player: PlayerInfo) = x.Answer("Your name is " + player.SocialId)
