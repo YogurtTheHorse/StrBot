@@ -20,6 +20,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "YogurtTheBot.Game.Logic.Eng
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "YogurtTheBot.Game.Logic.Engine.Tests", "YogurtTheBot.Game.Logic.Engine.Tests\YogurtTheBot.Game.Logic.Engine.Tests.fsproj", "{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Core.Controllers.Language", "YogurtTheBot.Game.Core.Controllers.Language\YogurtTheBot.Game.Core.Controllers.Language.csproj", "{1262D2DF-B926-454B-8B86-1FEFBEA9F7BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Core.Controllers.Language.Tests", "YogurtTheBot.Game.Core.Controllers.Language.Tests\YogurtTheBot.Game.Core.Controllers.Language.Tests.csproj", "{12D4D9B3-FC32-4134-9903-95E4655730B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +70,13 @@ Global
 		{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CC2A770-AE2E-4ECE-8B00-4E27023D83EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1262D2DF-B926-454B-8B86-1FEFBEA9F7BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1262D2DF-B926-454B-8B86-1FEFBEA9F7BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1262D2DF-B926-454B-8B86-1FEFBEA9F7BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1262D2DF-B926-454B-8B86-1FEFBEA9F7BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12D4D9B3-FC32-4134-9903-95E4655730B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12D4D9B3-FC32-4134-9903-95E4655730B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12D4D9B3-FC32-4134-9903-95E4655730B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12D4D9B3-FC32-4134-9903-95E4655730B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
