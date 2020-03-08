@@ -22,13 +22,14 @@ namespace YogurtTheBot.Game.Core
             _playersData = playersData;
         }
 
-        public async Task<ObjectId> CreatePlayer(string socialId, string replyBackQueue)
+        public async Task<ObjectId> CreatePlayer(string socialId, string replyBackQueue, string locale)
         {
             var playerState = new PlayerInfo
             {
                 Key = ObjectId.GenerateNewId(),
                 SocialId = socialId,
-                ReplyQueueName = replyBackQueue
+                ReplyQueueName = replyBackQueue,
+                Locale = locale
             };
             await _playersState.Insert(playerState);
 

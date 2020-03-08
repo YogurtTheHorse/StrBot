@@ -139,7 +139,8 @@ namespace YogurtTheBot.Game.Server
                     {
                         playerId = await gameContext.CreatePlayer(
                             message.PlayerSocialId,
-                            message.ReplyBackQueueName
+                            message.ReplyBackQueueName,
+                            message.Locale
                         );
                     }
 

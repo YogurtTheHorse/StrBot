@@ -1,7 +1,1 @@
-open_phrase: Welcome to StrBot. It is a simple strategy where you have to control space colony. Build spaceships and
-  conquer neighbours to became larger. Currently you have {0} attack ships and {1} defence. You can attack or upgrade 
-  your skills currently.
-  
-attack: Attack
-say_my_name: Say
-select_skills: Choose skills
+start: Start game

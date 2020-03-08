@@ -7,5 +7,7 @@ namespace YogurtTheBot.Game.Server.RabbitMq
         public string ReplyBackQueueName { get; set; }
         
         public string PlayerSocialId { get; set; }
+        
+        public string Locale { get; set; }
     }
 }

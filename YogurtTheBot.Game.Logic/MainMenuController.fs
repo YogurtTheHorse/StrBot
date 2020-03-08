@@ -9,9 +9,10 @@ open YogurtTheBot.Game.Core.Controllers.Language.Controllers
 type MainMenuController(localizer) =
     inherit LanguageController<PlayerData>(localizer) 
 
-    [<Action("screens.main_menu.say_my_name")>]
+    [<Action("screens.main_menu.start")>]
     member x.SayMyName(player: PlayerInfo) = x.Answer("Your name is " + player.SocialId)
 
     [<Action("screens.main_menu.attack")>]
     member x.AttackAction() = x.Answer "test"
+
 
