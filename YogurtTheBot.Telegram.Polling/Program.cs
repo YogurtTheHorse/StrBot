@@ -77,7 +77,7 @@ namespace YogurtTheBot.Telegram.Polling
 
         private static TelegramBotClient SetupBot(IConfigurationSection proxyConfiguration, string token)
         {
-            TelegramBotClient bot = null;
+            TelegramBotClient bot;
 
             if (proxyConfiguration.Exists())
             {

@@ -1,5 +1,4 @@
 using YogurtTheBot.Game.Core.Controllers.Language.Expressions;
-using Expression = System.Linq.Expressions.Expression;
 
 namespace YogurtTheBot.Game.Core.Controllers.Language
 {

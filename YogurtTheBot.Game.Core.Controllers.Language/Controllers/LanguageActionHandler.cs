@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using YogurtTheBot.Game.Core.Communications;
 using YogurtTheBot.Game.Core.Controllers.Abstractions;
