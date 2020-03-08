@@ -2,7 +2,7 @@ namespace YogurtTheBot.Game.Logic
 
 open System.Collections.Generic
 open YogurtTheBot.Game.Core
-open YogurtTheBot.Game.Core.Controllers
+open YogurtTheBot.Game.Core.Controllers.Abstractions
 
 type PlayerData() =
     inherit PlayerDataBase()
