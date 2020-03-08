@@ -1,8 +1,8 @@
 namespace YogurtTheBot.Game.Core.Controllers.Abstractions
 {
-    public interface IControllersProvider
+    public interface IControllersProvider<T> where T : IControllersData
     {
-        IController ResolveControllerByName(string s);
+        Controller<T> ResolveControllerByName(string s);
 
         string MainControllerName { get; }
     }

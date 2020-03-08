@@ -86,7 +86,7 @@ namespace YogurtTheBot.Game.Server
                 .As<IModel>()
                 .SingleInstance();
 
-            iocContainerBuilder.RegisterControllers(typeof(MainMenuController).Assembly);
+            iocContainerBuilder.RegisterControllers<PlayerData>(typeof(MainMenuController).Assembly);
             iocContainerBuilder
                 .RegisterType<ControllerMiddleware<PlayerData>>()
                 .AsSelf();

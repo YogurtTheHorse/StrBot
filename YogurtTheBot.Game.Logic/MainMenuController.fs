@@ -6,15 +6,12 @@ open YogurtTheBot.Game.Core.Controllers.Abstractions
 open YogurtTheBot.Game.Core.Controllers.Handlers
 
 [<Controller(isMainController = true)>]
-type MainMenuController() =
-    inherit ControllerBase()
+type MainMenuController(localizer) =
+    inherit Controller<PlayerData>(localizer) 
 
     [<Action("screens.main_menu.say_my_name")>]
     member x.SayMyName(player: PlayerInfo) = x.Answer("Your name is " + player.SocialId)
 
     [<Action("screens.main_menu.attack")>]
     member x.AttackAction() = x.Answer "test"
-
-    [<Default>]
-    member x.DefaultAction() = x.Answer "default"
 

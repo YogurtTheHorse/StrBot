@@ -3,7 +3,7 @@ using YogurtTheBot.Game.Core.Controllers.Abstractions;
 
 namespace YogurtTheBot.Game.Core.Controllers.Autofac
 {
-    public class AutofacControllersProvider : IControllersProvider
+    public class AutofacControllersProvider<T> : IControllersProvider<T> where T : IControllersData 
     {
         internal const string MainControllerAutofacName = "MAIN_CONTROLLER_NAME";
         private readonly ILifetimeScope _scope;
@@ -13,7 +13,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Autofac
             _scope = scope;
         }
 
-        public IController ResolveControllerByName(string s) => _scope.ResolveNamed<IController>(s);
+        public Controller<T> ResolveControllerByName(string s) => _scope.ResolveNamed<Controller<T>>(s);
 
         public string MainControllerName => MainControllerAutofacName;
     }

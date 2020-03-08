@@ -8,32 +8,33 @@ namespace YogurtTheBot.Game.Core.Controllers.Autofac
 {
     public static class AutofacExtensions
     {
-        public static void RegisterControllers(this ContainerBuilder containerBuilder, Assembly controllersAssembly)
+        public static void RegisterControllers<T>(this ContainerBuilder containerBuilder, Assembly controllersAssembly)
+            where T : IControllersData
         {
             IEnumerable<Type> types = Controllers.GetControllersTypesInAssembly(controllersAssembly);
 
             foreach (Type controllerType in types)
             {
-                if (!typeof(IController).IsAssignableFrom(controllerType))
+                if (!typeof(Controller<T>).IsAssignableFrom(controllerType))
                 {
-                    throw new InvalidOperationException($"{controllerType.Name} should implement IController.");
+                    throw new InvalidOperationException($"{controllerType.Name} should implement IController<T>.");
                 }
 
                 // ReSharper disable once SuggestVarOrType_Elsewhere
                 var registration =
                     containerBuilder
                         .RegisterType(controllerType)
-                        .Named<IController>(Controllers.GetName(controllerType));
+                        .Named<Controller<T>>(Controllers.GetName(controllerType));
 
                 if (Controllers.IsMain(controllerType))
                 {
-                    registration.Named<IController>(AutofacControllersProvider.MainControllerAutofacName);
+                    registration.Named<Controller<T>>(AutofacControllersProvider<T>.MainControllerAutofacName);
                 }
             }
 
             containerBuilder
-                .RegisterType<AutofacControllersProvider>()
-                .As<IControllersProvider>();
+                .RegisterType<AutofacControllersProvider<T>>()
+                .As<IControllersProvider<T>>();
         }
     }
 }
