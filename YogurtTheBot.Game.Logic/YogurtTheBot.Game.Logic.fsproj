@@ -7,6 +7,7 @@
     <ItemGroup>
         <Compile Include="PlayerData.fs" />
         <Compile Include="MainMenuController.fs" />
+        <Compile Include="LevelController.fs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -14,6 +15,7 @@
         <ProjectReference Include="..\YogurtTheBot.Game.Core.Controllers\YogurtTheBot.Game.Core.Controllers.csproj" />
         <ProjectReference Include="..\YogurtTheBot.Game.Core\YogurtTheBot.Game.Core.csproj" />
         <ProjectReference Include="..\YogurtTheBot.Game.Data\YogurtTheBot.Game.Data.csproj" />
+        <ProjectReference Include="..\YogurtTheBot.Game.Logic.Engine\YogurtTheBot.Game.Logic.Engine.fsproj" />
     </ItemGroup>
 
 </Project>

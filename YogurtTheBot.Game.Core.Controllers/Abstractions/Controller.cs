@@ -13,10 +13,13 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
 {
     public abstract class Controller<T> where T : IControllersData
     {
-        protected IMessageHandler<T>[] ActionHandlers;
+        protected readonly IControllersProvider<T> ControllersProvider;
+        protected readonly IMessageHandler<T>[] ActionHandlers;
 
-        protected Controller(ILocalizer localizer)
+        protected Controller(IControllersProvider<T> controllersProvider, ILocalizer localizer)
         {
+            ControllersProvider = controllersProvider;
+            
             ActionHandlers = (
                     from methodInfo in GetType().GetMethods()
                     let attribute = Attribute.GetCustomAttribute(methodInfo, typeof(ActionAttribute)) as ActionAttribute
@@ -37,10 +40,15 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
                 }
             }
 
-            return await DefaultHandler(message, info, data);
+            return DefaultHandler(message, info, data);
         }
 
-        protected virtual Task<IControllerAnswer> DefaultHandler(IncomingMessage message, PlayerInfo info, T data)
+        protected virtual IControllerAnswer DefaultHandler(IncomingMessage message, PlayerInfo info, T data)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual IControllerAnswer OnOpen(PlayerInfo info, T data)
         {
             throw new NotImplementedException();
         }
@@ -57,6 +65,24 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
         protected virtual Suggestion[] GetSuggestions()
         {
             return Array.Empty<Suggestion>();
+        }
+
+        protected IControllerAnswer Open(string controllerName, PlayerInfo info, T data)
+        {
+            Controller<T> controller = ControllersProvider.ResolveControllerByName(controllerName);
+            data.ControllersStack.Append(controllerName);
+
+            return controller.OnOpen(info, data);
+        }
+
+        protected IControllerAnswer Back(PlayerInfo info, T data)
+        {
+            data.ControllersStack.Pop();
+            
+            string currentControllerName = data.ControllersStack.Peek();
+            Controller<T> controller = ControllersProvider.ResolveControllerByName(currentControllerName);
+
+            return controller.OnOpen(info, data);
         }
     }
 }

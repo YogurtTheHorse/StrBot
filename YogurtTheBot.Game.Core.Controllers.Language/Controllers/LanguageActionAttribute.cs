@@ -5,11 +5,11 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Controllers
     [AttributeUsage(AttributeTargets.Method)]
     public class LanguageActionAttribute : Attribute
     {
-        public string ExpressionMemberName { get; }
+        public string ExpressionPropertyName { get; }
 
-        public LanguageActionAttribute(string expressionMemberName)
+        public LanguageActionAttribute(string expressionPropertyName)
         {
-            ExpressionMemberName = expressionMemberName;
+            ExpressionPropertyName = expressionPropertyName;
         }
     }
 }

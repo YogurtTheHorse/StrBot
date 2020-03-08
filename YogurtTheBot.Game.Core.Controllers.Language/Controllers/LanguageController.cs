@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using YogurtTheBot.Game.Core.Controllers.Abstractions;
 using YogurtTheBot.Game.Core.Controllers.Handlers;
 using YogurtTheBot.Game.Core.Controllers.Language.Expressions;
@@ -10,24 +11,35 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Controllers
 {
     public class LanguageController<T> : Controller<T> where T : IControllersData
     {
-        public LanguageController(ILocalizer localizer) : base(localizer)
+        public LanguageController(IControllersProvider<T> controllersProvider, ILocalizer localizer)
+            : base(controllersProvider, localizer)
         {
-            LanguageHandlers = (
-                    from methodInfo in GetType().GetMethods()
-                    let attribute =
-                        Attribute.GetCustomAttribute(
-                            methodInfo,
-                            typeof(LanguageActionAttribute)
-                        ) as LanguageActionAttribute
-                    where !(attribute is null)
-                    select new LanguageActionHandler<T>(
-                        GetType().GetField(attribute.ExpressionMemberName).GetValue(this) as Expression,
-                        localizer,
-                        methodInfo
-                    )
-                )
-                .Cast<IMessageHandler<T>>()
-                .ToArray();
+            var handlers = new List<IMessageHandler<T>>();
+
+            foreach (MethodInfo methodInfo in GetType().GetMethods())
+            {
+                var attribute = Attribute.GetCustomAttribute(
+                    methodInfo,
+                    typeof(LanguageActionAttribute)
+                ) as LanguageActionAttribute;
+
+                if (attribute is null) continue;
+
+                var expression = GetType().GetProperty(attribute.ExpressionPropertyName)?.GetValue(this) as Expression;
+
+                if (expression is null)
+                {
+                    throw new InvalidOperationException(
+                        "Couldn't find expression property with name " + attribute.ExpressionPropertyName
+                    );
+                }
+
+                handlers.Add(new LanguageActionHandler<T>(
+                    expression, localizer, methodInfo)
+                );
+            }
+
+            LanguageHandlers = handlers.ToArray();
         }
 
         protected override IEnumerable<IMessageHandler<T>> GetHandlers()
