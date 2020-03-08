@@ -5,7 +5,7 @@ using YogurtTheBot.Game.Core.Controllers.Language.Parsing;
 
 namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
 {
-    public class Sequence : NonTerminal
+    public class Sequence : Expression
     {
         private readonly Expression _e1, _e2;
 

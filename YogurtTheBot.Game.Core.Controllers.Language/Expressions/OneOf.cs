@@ -4,7 +4,7 @@ using YogurtTheBot.Game.Core.Controllers.Language.Parsing;
 
 namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
 {
-    public class OneOf : NonTerminal
+    public class OneOf : Expression
     {
         private readonly IEnumerable<Expression> _expressions;
 
@@ -42,5 +42,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
                 Possibilities = possibilities
             };
         }
+
+        public Expression Combine(Expression expression) => new OneOf(_expressions.Append(expression));
     }
 }
