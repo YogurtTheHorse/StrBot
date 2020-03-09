@@ -11,7 +11,6 @@ type PlayerData() =
     val mutable controllersStack: List<string>
 
     interface IControllersData with
-
         member x.ControllersStack
             with get () = x.controllersStack
             and set v = x.controllersStack <- v

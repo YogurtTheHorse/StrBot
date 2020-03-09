@@ -1,3 +1,5 @@
+using System.Linq;
+using YogurtTheBot.Game.Core.Controllers.Language.Nodes;
 using YogurtTheBot.Game.Core.Controllers.Language.Parsing;
 
 namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
@@ -17,7 +19,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
         {
             Name = name;
         }
-        
+
         public override ParsingResult? TryParse(ParsingContext parsingContext)
         {
             ParsingResult? result = Rule.TryParse(parsingContext);
@@ -26,7 +28,19 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
 
             return new ParsingResult
             {
-                Possibilities = result.Possibilities
+                Possibilities = result
+                    .Possibilities
+                    .Select(p => new Possibility
+                    {
+                        Context = p.Context,
+                        Node = p.Node switch
+                        {
+                            SingleNode singleNode => new SingleNode(singleNode.Terminal, p.Context, this),
+                            ListNode listNode => new ListNode(this, listNode.Nodes, p.Context.Text),
+                            _ => p.Node
+                        }
+                    })
+                    .ToArray()
             };
         }
     }

@@ -9,6 +9,8 @@ open YogurtTheBot.Game.Core.Controllers.Language.Expressions
 open YogurtTheBot.Game.Core.Controllers.Language.Parsing
 open YogurtTheBot.Game.Logic.Engine.Levels
 
+open YogurtTheBot.Game.Logic.NodeVisitor
+
 let englishAlphabet = "abcdefghijklmnopqrstuvwxyz"
 let russianAlphabet = "абвгдеёжзийклмнопстуфхцчшщъыьэюя"
 
@@ -33,12 +35,11 @@ let named name e = NonTerminal(name, e) :> Expression
 let reflex =
     (word |> named "actor") + spaces + ((LocalizedTerminal "screens.level.will" + spaces) |> optional)
     + (word |> named "action") + spaces + (word |> named "recipient")
+    |> named "reflex"
 
 let newRuleRule =
     (LocalizedTerminal "screens.level.if") + spaces + reflex
     + optional (spaces + LocalizedTerminal "screens.level.then") + spaces + reflex + Expression.End
-
-
 
 
 [<Controller>]
@@ -50,11 +51,12 @@ type LevelController(cp, localizer) =
     [<LanguageAction("NewRuleRule")>]
     member x.NewRule(message: IncomingMessage, parsingesult: ParsingResult) =
         let p = Seq.head parsingesult.Possibilities
+        let visit = visit p.Node
         x.Answer p.Node.Value
-        
-    override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) =
-        x.Answer (localizer.GetString ("screens.level.default", info.Locale)).Value
 
-    override x.OnOpen(info: PlayerInfo, data: PlayerData) = x.Answer "on open"
+    member x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) =
+        x.Answer (localizer.GetString("screens.level.default", info.Locale)).Value
+
+    member x.OnOpen(info: PlayerInfo, data: PlayerData) = x.Answer "on open"
 
     member x.NewRuleRule = newRuleRule

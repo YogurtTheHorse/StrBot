@@ -5,9 +5,12 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Nodes
 {
     public class SingleNode : INode
     {
-        public SingleNode(Terminal terminal, ParsingContext parsingContext)
+        public Terminal Terminal { get; }
+
+        public SingleNode(Terminal terminal, ParsingContext parsingContext, Expression? parentExpression = null)
         {
-            Expression = terminal;
+            Terminal = terminal;
+            Expression = parentExpression ?? terminal;
             Start = parsingContext.Position;
             End = Start + terminal.Value.Length;
             Value = terminal.Value;
