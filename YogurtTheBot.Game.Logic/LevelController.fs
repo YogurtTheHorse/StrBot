@@ -51,7 +51,7 @@ type LevelController(cp, localizer) =
     [<LanguageAction("NewRuleRule")>]
     member x.NewRule(message: IncomingMessage, parsingesult: ParsingResult) =
         let p = Seq.head parsingesult.Possibilities
-        let visit = visit p.Node
+        let visit = visit p.Node |> clearUnnammed
         x.Answer p.Node.Value
 
     member x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) =

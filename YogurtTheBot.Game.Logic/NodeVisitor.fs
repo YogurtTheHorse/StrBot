@@ -1,10 +1,6 @@
 module YogurtTheBot.Game.Logic.NodeVisitor
 
-open Microsoft.VisualBasic
-open Microsoft.VisualBasic
-open Microsoft.VisualBasic
 open System
-open System.Runtime.InteropServices.WindowsRuntime
 open YogurtTheBot.Game.Core.Controllers.Language.Expressions
 open YogurtTheBot.Game.Core.Controllers.Language.Nodes
 
@@ -19,8 +15,8 @@ let isValue v =
     | None -> false
     | Value v -> not (String.IsNullOrEmpty v)
     | _ -> true
-    
-    
+
+
 let createCollection values =
     let rec reduceValues values =
         values
@@ -28,13 +24,12 @@ let createCollection values =
         |> List.map (fun v ->
             match v with
             | Collection c -> reduceValues c
-            | _ -> [v]
-        )
+            | _ -> [ v ])
         |> List.concat
-    
+
     match values with
     | [] -> None
-    | _ -> Collection (reduceValues values)
+    | _ -> Collection(reduceValues values)
 
 let createNamed name term =
     let rec allStrings t =
@@ -42,24 +37,26 @@ let createNamed name term =
         | Value _ -> true
         | Collection c -> Seq.forall allStrings c
         | _ -> false
-        
+
     let rec toString t =
         match t with
         | Value v -> v
-        | Collection c -> c |> Seq.map toString |> String.concat ""
+        | Collection c ->
+            c
+            |> Seq.map toString
+            |> String.concat ""
         | _ -> ""
-        
-    if allStrings term then
-        Named(name, Value (toString term))
-    else
-        Named(name, term)
-            
-            
+
+    if allStrings term then Named(name, Value(toString term))
+    else Named(name, term)
+
+
 
 let rec visit (node: INode) =
     match node.Expression with
     | :? NonTerminal as nonTerm -> createNamed nonTerm.Name (visitTerminal node)
     | _ -> visitTerminal node
+
 and visitTerminal (node: INode) =
     match node with
     | :? SingleNode -> Value node.Value
@@ -68,6 +65,24 @@ and visitTerminal (node: INode) =
             nodesList.Nodes
             |> Seq.map visit
             |> Seq.toList
-            
+
         createCollection values
+    | _ -> None
+
+let isNammed v =
+    match v with
+    | Named _ -> true
+    | _ -> false
+
+let rec clearUnnammed node =
+    let rec clearCollection c =
+        c
+        |> Seq.map clearUnnammed
+        |> Seq.filter isNammed
+        |> Seq.toList
+
+    match node with
+    | Collection c -> Collection(clearCollection c)
+    | Named(name, Collection c) -> Named(name, Collection(clearCollection c))
+    | Named(_, Value _) -> node
     | _ -> None
