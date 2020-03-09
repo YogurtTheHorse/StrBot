@@ -5,7 +5,6 @@ open YogurtTheBot.Game.Core.Communications
 open YogurtTheBot.Game.Core.Controllers
 open YogurtTheBot.Game.Core.Controllers.Language.Controllers
 
-open System
 open YogurtTheBot.Game.Core.Controllers.Language.Expressions
 open YogurtTheBot.Game.Core.Controllers.Language.Parsing
 open YogurtTheBot.Game.Logic.Engine.Levels
@@ -50,9 +49,12 @@ type LevelController(cp, localizer) =
 
     [<LanguageAction("NewRuleRule")>]
     member x.NewRule(message: IncomingMessage, parsingesult: ParsingResult) =
-        let p = parsingesult
-        x.Answer message.Text
+        let p = Seq.head parsingesult.Possibilities
+        x.Answer p.Node.Value
+        
+    override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) =
+        x.Answer (localizer.GetString ("screens.level.default", info.Locale)).Value
 
-    member x.OnOpen(info: PlayerInfo, data: PlayerData) = x.Answer "on open"
+    override x.OnOpen(info: PlayerInfo, data: PlayerData) = x.Answer "on open"
 
     member x.NewRuleRule = newRuleRule
