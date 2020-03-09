@@ -24,7 +24,7 @@ namespace YogurtTheBot.Game.Data.Mongo
             }
         }
 
-        public IMongoRepository<T> GetRepository<T>() where T : MongoModel => new MongoRepository<T>(this);
+        public IMongoRepository<T> GetRepository<T>() where T : MongoModel, new() => new MongoRepository<T>(this);
 
         public IMongoDatabase Database { get; }
     }

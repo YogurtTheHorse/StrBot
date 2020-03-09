@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -47,11 +48,17 @@ namespace YogurtTheBot.Game.Data.Mongo
                 .In(m => m.Key, entities.Select(e => e.Key))
             );
 
-        public async Task Update(T entity) =>
-            await _collection.FindOneAndReplaceAsync(
+        public async Task Update(T entity)
+        {
+            await _collection.ReplaceOneAsync(
                 Builders<T>.Filter.Eq(m => m.Key, entity.Key),
-                entity
+                entity,
+                new ReplaceOptions
+                {
+                    IsUpsert = true
+                }
             );
+        }
 
         public async Task<T> GetById(ObjectId id) =>
             await (

@@ -6,6 +6,12 @@ open YogurtTheBot.Game.Core.Controllers.Abstractions
 
 type PlayerData() =
     inherit PlayerDataBase()
-    
+
+    [<DefaultValue>]
+    val mutable controllersStack: List<string>
+
     interface IControllersData with
-        member x.ControllersStack = Stack<string>()
+
+        member x.ControllersStack
+            with get () = x.controllersStack
+            and set v = x.controllersStack <- v

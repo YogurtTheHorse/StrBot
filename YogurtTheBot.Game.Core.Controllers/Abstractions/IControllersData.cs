@@ -4,6 +4,6 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
 {
     public interface IControllersData
     {
-        Stack<string> ControllersStack { get; }
+        List<string> ControllersStack { get; set; }
     }
 }

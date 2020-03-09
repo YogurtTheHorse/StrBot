@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YogurtTheBot.Game.Core.Communications;
 using YogurtTheBot.Game.Core.Communications.Pipeline;
@@ -23,9 +25,9 @@ namespace YogurtTheBot.Game.Core.Controllers
 
         public async Task Pipe(IncomingMessage message, PlayerInfo info, T data, Func<Task> next)
         {
-            string realControllerName = data.ControllersStack.TryPeek(out string controllerName)
-                ? controllerName
-                : _mainControllerName;
+            data.ControllersStack ??= new List<string>(new[] {_mainControllerName});
+            
+            string realControllerName = data.ControllersStack?.LastOrDefault() ?? _mainControllerName;
 
             Controller<T> controller = _controllersProvider.ResolveControllerByName(realControllerName);
             IControllerAnswer answer = await controller.ProcessMessage(message, info, data);

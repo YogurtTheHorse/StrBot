@@ -19,7 +19,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
         protected Controller(IControllersProvider<T> controllersProvider, ILocalizer localizer)
         {
             ControllersProvider = controllersProvider;
-            
+
             ActionHandlers = (
                     from methodInfo in GetType().GetMethods()
                     let attribute = Attribute.GetCustomAttribute(methodInfo, typeof(ActionAttribute)) as ActionAttribute
@@ -70,16 +70,20 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
         protected IControllerAnswer Open(string controllerName, PlayerInfo info, T data)
         {
             Controller<T> controller = ControllersProvider.ResolveControllerByName(controllerName);
-            data.ControllersStack.Append(controllerName);
+            data.ControllersStack.Add(controllerName);
 
             return controller.OnOpen(info, data);
         }
 
         protected IControllerAnswer Back(PlayerInfo info, T data)
         {
-            data.ControllersStack.Pop();
-            
-            string currentControllerName = data.ControllersStack.Peek();
+            if (data.ControllersStack.Count > 0)
+            {
+                data.ControllersStack.RemoveAt(data.ControllersStack.Count - 1);
+            }
+
+            string currentControllerName =
+                data.ControllersStack.LastOrDefault() ?? ControllersProvider.MainControllerName;
             Controller<T> controller = ControllersProvider.ResolveControllerByName(currentControllerName);
 
             return controller.OnOpen(info, data);

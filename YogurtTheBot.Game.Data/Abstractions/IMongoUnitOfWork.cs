@@ -5,7 +5,7 @@ namespace YogurtTheBot.Game.Data.Abstractions
 {
     public interface IMongoUnitOfWork
     {
-        IMongoRepository<T> GetRepository<T>() where T : MongoModel;
+        IMongoRepository<T> GetRepository<T>() where T : MongoModel, new();
         
         IMongoDatabase Database { get; }
     }

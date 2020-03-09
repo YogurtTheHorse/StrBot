@@ -46,8 +46,10 @@ namespace YogurtTheBot.Game.Core
         {
             PlayerInfo playerInfo = await _playersState.GetById(message.PlayerId);
             T playerData = await _playersData.GetById(message.PlayerId);
-            
+
             await _messageProcessor.ProcessMessage(message, playerInfo, playerData);
+
+            await _playersData.Update(playerData);
         }
     }
 }
