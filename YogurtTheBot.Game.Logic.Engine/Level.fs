@@ -70,6 +70,16 @@ let getActions level =
     |> (@) [ level.actions ]
     |> Seq.concat
     |> Seq.distinctBy (fun a -> a.name)
+
+let getActors level =
+    level.rules
+    |> List.map (fun (r: Rule) ->
+        match r with
+        | Reflex ({ actor = a1; recipient = a2 }, { actor = a3; recipient = a4 }) -> [ a1; a2; a3; a4 ]
+        | Permission _ -> [ ])
+    |> (@) [ level.actors ]
+    |> Seq.concat
+    |> Seq.distinctBy (fun a -> a.name)
     
     
 let actorsMatch pattern actor =

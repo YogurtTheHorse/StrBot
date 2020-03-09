@@ -25,6 +25,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Controllers
 
                 if (attribute is null) continue;
 
+                // ReSharper disable once UseNegatedPatternMatching
                 var expression = GetType().GetProperty(attribute.ExpressionPropertyName)?.GetValue(this) as Expression;
 
                 if (expression is null)

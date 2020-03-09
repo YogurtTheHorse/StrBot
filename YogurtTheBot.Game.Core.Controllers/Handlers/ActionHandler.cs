@@ -23,7 +23,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Handlers
 
             return new CanHandleResult
             {
-                CanHandle = actionString.MatchesMessage(message)
+                CanHandle = actionString.MatchesMessage(message.Text)
             };
         }
     }

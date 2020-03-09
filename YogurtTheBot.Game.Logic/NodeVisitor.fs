@@ -86,3 +86,37 @@ let rec clearUnnammed node =
     | Named(name, Collection c) -> Named(name, Collection(clearCollection c))
     | Named(_, Value _) -> node
     | _ -> None
+
+let get visit (path: string) =    
+    let rec _get visit keys =        
+        let k :: tail = keys
+        
+        let nextVisit = 
+            match visit with
+            | Collection c ->
+                let foundV =
+                    Seq.tryFind (fun e ->
+                        match e with
+                        | Named (n, v) when n = k -> true
+                        | _ -> false
+                    ) c
+                
+                match foundV with
+                | Some v -> v
+                | Option.None -> None
+            | Named (name, v) when name = k -> v
+            | _ -> None
+            
+        match tail, nextVisit with
+        | [], Named (_, v) -> v
+        | [], _ -> None
+        | _, Named (_, v) -> _get v tail
+        | _ -> None
+        
+    _get visit (path.Split "." |> Seq.toList)
+
+let value v =
+    match v with
+    | Value v -> v
+    | Named (_ , Value v) -> v
+    | _ -> null

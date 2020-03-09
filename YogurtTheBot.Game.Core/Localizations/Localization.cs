@@ -8,7 +8,7 @@ namespace YogurtTheBot.Game.Core.Localizations
     {
         private readonly Random _random;
 
-        public Localization(string[] formats, Random random=null)
+        public Localization(string[] formats, Random random = null)
         {
             _random = random;
             Values = formats;
@@ -23,11 +23,11 @@ namespace YogurtTheBot.Game.Core.Localizations
 
         public string[] Values { get; }
 
-        public bool MatchesMessage(IncomingMessage message, params object[] args)
+        public bool MatchesMessage(string message, params object[] args)
         {
             return Format(args)
                 .Values
-                .Any(f => f.Equals(message.Text));
+                .Any(f => f.Equals(message, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

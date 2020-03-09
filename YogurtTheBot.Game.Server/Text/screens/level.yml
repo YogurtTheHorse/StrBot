@@ -7,6 +7,9 @@ will:
   - Will
   - Should
 
+slf:
+  - "s"
+    
 default:
   - Didn't understand you correctly
   - Can't get what you're saying
