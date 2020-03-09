@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using YogurtTheBot.Game.Core.Localizations;
 
@@ -12,24 +13,22 @@ namespace YogurtTheBot.Game.Server.YamlLocalization
         private readonly Func<string[], Localization> _localizationFactory;
         private readonly string _resourcesDirectory;
         private readonly string _defaultLanguage;
-        private readonly Deserializer _deserializer;
 
         public YamlLocalizer(LocalizationOptions localizationOptions, Func<string[], Localization> localizationFactory)
         {
             _localizationFactory = localizationFactory;
             _resourcesDirectory = localizationOptions.ResourcesDirectory;
             _defaultLanguage = localizationOptions.DefaultLanguage;
-            _deserializer = new Deserializer();
         }
 
         public Localization GetString(string key, string locale)
         {
-            string format = GetFormat(key, locale);
+            string[] format = GetFormat(key, locale);
 
-            return _localizationFactory(new[] {format});
+            return _localizationFactory(format);
         }
 
-        private string GetFormat(string key, string locale)
+        private string[] GetFormat(string key, string locale)
         {
             string[] keys = key.Split(".");
 
@@ -51,21 +50,38 @@ namespace YogurtTheBot.Game.Server.YamlLocalization
 
                 if (!File.Exists(finalPath)) continue;
 
-                Dictionary<string, string> yaml = ParseFile(finalPath);
+                YamlMappingNode yaml = ParseFile(finalPath);
+                string lastKey = keys.Last();
 
-                if (yaml.TryGetValue(keys.Last(), out string res))
+                foreach ((YamlNode yamlKey, YamlNode value) in yaml.Children)
                 {
-                    return res;
+                    if ((yamlKey as YamlScalarNode)?.Value != lastKey) continue;
+
+                    switch (value)
+                    {
+                        case YamlScalarNode scalarNode:
+                            return new[] {scalarNode.Value};
+                        
+                        case YamlSequenceNode sequenceNode:
+                            return sequenceNode
+                                .Children
+                                .Select(e => (e as YamlScalarNode)?.Value)
+                                .Where(v => v != null)
+                                .ToArray();
+                    }
                 }
             }
 
-            return key;
+            return new[] {key};
         }
 
-        private Dictionary<string, string> ParseFile(string path)
+        private YamlMappingNode ParseFile(string path)
         {
-            string content = File.ReadAllText(path);
-            return _deserializer.Deserialize<Dictionary<string, string>>(content);
+            var yaml = new YamlStream();
+            using var stringReader = new StreamReader(path);
+            yaml.Load(stringReader);
+
+            return (YamlMappingNode) yaml.Documents[0].RootNode;
         }
     }
 }
