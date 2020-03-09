@@ -17,11 +17,14 @@ namespace YogurtTheBot.Game.Core.Controllers.Handlers
             _localizer = localizer;
         }
 
-        public override bool CanHandle(IncomingMessage message, PlayerInfo playerInfo)
+        public override CanHandleResult CanHandle(IncomingMessage message, PlayerInfo playerInfo)
         {
             Localization actionString = _localizer.GetString(_localizationPath.Path, playerInfo.Locale);
 
-            return actionString.MatchesMessage(message);
+            return new CanHandleResult
+            {
+                CanHandle = actionString.MatchesMessage(message)
+            };
         }
     }
 }

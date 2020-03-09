@@ -1,3 +1,4 @@
+using System;
 using YogurtTheBot.Game.Core.Controllers.Language.Expressions;
 using YogurtTheBot.Game.Core.Localizations;
 
@@ -25,7 +26,9 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Parsing
                 Localizer = Localizer, Locale = Locale
             };
 
-        public bool ContinuesWith(string value) => Text.Substring(Position).StartsWith(value);
+        public bool ContinuesWith(string value) => Text
+            .Substring(Position)
+            .StartsWith(value, StringComparison.OrdinalIgnoreCase);
 
         public ParsingContext AppendTerminal(Terminal terminal) =>
             Change(Position + terminal.Value.Length);

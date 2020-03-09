@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using YogurtTheBot.Game.Core.Communications;
 using YogurtTheBot.Game.Core.Controllers.Answers;
@@ -32,12 +31,15 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
 
         public async Task<IControllerAnswer> ProcessMessage(IncomingMessage message, PlayerInfo info, T data)
         {
-            foreach (IMessageHandler<T> handler in GetHandlers())
+            IMessageHandler<T>[] handlers = GetHandlers()
+                .OrderByDescending(h => h.Priority)
+                .ToArray();
+            
+            foreach (IMessageHandler<T> handler in handlers)
             {
-                if (handler.CanHandle(message, info))
-                {
-                    return await handler.Handle(this, message, info, data);
-                }
+                IControllerAnswer? answer = await handler.Handle(this, message, info, data);
+
+                if (answer != null) return answer;
             }
 
             return DefaultHandler(message, info, data);

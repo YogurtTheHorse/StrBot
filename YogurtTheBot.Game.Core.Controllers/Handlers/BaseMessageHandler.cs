@@ -18,15 +18,19 @@ namespace YogurtTheBot.Game.Core.Controllers.Handlers
             _methodInfo = methodInfo;
         }
 
-        public abstract bool CanHandle(IncomingMessage message, PlayerInfo playerInfo);
+        public abstract CanHandleResult CanHandle(IncomingMessage message, PlayerInfo playerInfo);
 
-        public async Task<IControllerAnswer> Handle(
+        public async Task<IControllerAnswer?> Handle(
             Controller<T> controller,
             IncomingMessage message,
             PlayerInfo info,
             T data)
         {
-            object[] parameters = BuildParameters(message, info, data, controller);
+            CanHandleResult result = CanHandle(message, info);
+            
+            if (!result.CanHandle) return null;
+            
+            object[] parameters = BuildParameters(message, info, data, controller, result.Data);
 
             if (typeof(Task<IControllerAnswer>).IsAssignableFrom(_methodInfo.ReturnType))
             {

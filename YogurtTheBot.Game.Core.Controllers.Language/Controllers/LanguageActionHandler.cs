@@ -20,7 +20,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Controllers
             _localizer = localizer;
         }
 
-        public override bool CanHandle(IncomingMessage message, PlayerInfo playerInfo)
+        public override CanHandleResult CanHandle(IncomingMessage message, PlayerInfo playerInfo)
         {
             var parsingContext = new ParsingContext(message.Text)
             {
@@ -28,7 +28,13 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Controllers
                 Localizer = _localizer
             };
 
-            return _expression.TryParse(parsingContext) != null;
+            ParsingResult? parseResult = _expression.TryParse(parsingContext);
+
+            return new CanHandleResult
+            {
+                Data = parseResult,
+                CanHandle = parseResult != null
+            };
         }
     }
 }

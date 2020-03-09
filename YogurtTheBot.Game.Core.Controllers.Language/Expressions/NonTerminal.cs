@@ -7,6 +7,12 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
         public string Name { get; set; }
         public Expression Rule { get; set; }
 
+        public NonTerminal(string name, Expression rule)
+        {
+            Name = name;
+            Rule = rule;
+        }
+
         public NonTerminal(string name)
         {
             Name = name;

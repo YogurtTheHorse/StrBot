@@ -1,4 +1,8 @@
-if: 
+if:
   - If
   - When
   - On
+
+will:
+  - Will
+  - Should

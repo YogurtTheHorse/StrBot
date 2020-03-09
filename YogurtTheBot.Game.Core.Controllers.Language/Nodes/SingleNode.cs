@@ -10,11 +10,14 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Nodes
             Expression = terminal;
             Start = parsingContext.Position;
             End = Start + terminal.Value.Length;
+            Value = terminal.Value;
         }
 
         public int Start { get; }
         
         public int End { get; }
         public Expression Expression { get; }
+        
+        public string Value { get; }
     }
 }

@@ -20,21 +20,25 @@ namespace YogurtTheBot.Game.Core.Controllers.Language.Expressions
             ParsingResult? result = _e1.TryParse(parsingContext);
 
             if (result is null) return null;
-            
+
             var possibilities = new List<Possibility>();
 
             foreach (Possibility possibility in result.Possibilities)
             {
                 ParsingResult? secondResult = _e2.TryParse(possibility.Context);
-                
+
                 if (secondResult is null) continue;
-                
+
                 possibilities.AddRange(secondResult
                     .Possibilities
-                    .Select(p => 
+                    .Select(p =>
                         new Possibility
                         {
-                            Node = new ListNode(this, new []{possibility.Node, p.Node}),
+                            Node = new ListNode(
+                                this,
+                                new[] {possibility.Node, p.Node},
+                                parsingContext.Text
+                            ),
                             Context = p.Context
                         }
                     )
