@@ -26,7 +26,7 @@ namespace YogurtTheBot.Telegram.Polling
             Task handler = update.Type switch
             {
                 UpdateType.Message => BotOnMessageReceived(update.Message),
-                UpdateType.EditedMessage => BotOnMessageReceived(update.Message),
+                //UpdateType.EditedMessage => BotOnMessageReceived(update.Message),
                 
                 _ => UnknownUpdateHandlerAsync(update)
             };
