@@ -11,6 +11,7 @@ open YogurtTheBot.Game.Core.Controllers.Language.Expressions
 open YogurtTheBot.Game.Core.Controllers.Language.Parsing
 open YogurtTheBot.Game.Logic.Engine.Levels
 
+open System.Collections.Generic
 open YogurtTheBot.Game.Core.Localizations
 open YogurtTheBot.Game.Logic.Engine
 open YogurtTheBot.Game.Logic.Engine.Models
@@ -48,7 +49,7 @@ let newRuleRule =
     + optional (spaces + LocalizedTerminal "screens.level.then") + spaces + (reflex |> named "reflex") + Expression.End
 
 
-let buildReflex (localizer: ILocalizer) locale level reflex =
+let buildReflex (translate: string -> Localization) level reflex =
     let actorName = get reflex "actor" |> value
     let actionName = get reflex "action" |> value
     let recipientName = get reflex "recipient"
@@ -57,7 +58,7 @@ let buildReflex (localizer: ILocalizer) locale level reflex =
         level
         |> Level.getActions
         |> Seq.find (fun a ->
-            let localization = localizer.GetString("actions." + a.name + ".name", locale)
+            let localization = translate ("actions." + a.name + ".name")
 
             localization.MatchesMessage actionName)
 
@@ -65,7 +66,7 @@ let buildReflex (localizer: ILocalizer) locale level reflex =
         level
         |> Level.getActors
         |> Seq.find (fun a ->
-            let localization = localizer.GetString("actors." + a.name + ".name", locale)
+            let localization = translate ("actors." + a.name + ".name")
 
             localization.MatchesMessage name)
 
@@ -79,10 +80,7 @@ let buildReflex (localizer: ILocalizer) locale level reflex =
           | _ -> actor
       action = action }
 
-let formatRule (localizer: ILocalizer) locale rule =
-    let translate s =
-        (localizer.GetString(s, locale)).Value
-
+let formatRule (translate: string -> string) rule =
     let translateActor (a: Actor) =
         translate ("actors." + a.name + ".name")
 
@@ -106,14 +104,17 @@ type LevelController(cp, localizer) =
     let level = First.level
 
     [<LanguageAction("NewRuleRule")>]
-    member x.NewRule(parsingesult: ParsingResult, info: PlayerInfo) =
-        let node = (Seq.head parsingesult.Possibilities).Node
-        let visit = visit node |> clearUnnammed
+    member x.NewRule(parsingesult: ParsingResult, info: PlayerInfo, data: PlayerData) =
+        let visit =
+            (Seq.head parsingesult.Possibilities).Node
+            |> visit
+            |> clearUnnammed
 
-        let stimulus = buildReflex localizer info.Locale level (get visit "stimulus")
-        let reflex = buildReflex localizer info.Locale level (get visit "reflex")
+        let buildReflex name = buildReflex (fun s -> localizer.GetString(s, info.Locale)) level (get visit name)
 
-        x.Answer(stimulus.ToString() + "\n" + reflex.ToString())
+        data.reflexes <- (data.reflexes @ [ buildReflex "stimulus", buildReflex "reflex" ])
+
+        x.Answer "123"
 
 
     override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) = x.OnOpen(info, data)
@@ -126,7 +127,7 @@ type LevelController(cp, localizer) =
 
         let rules =
             level.rules
-            |> List.map (formatRule localizer info.Locale)
+            |> List.map (formatRule (fun s -> localizer.GetString(s, info.Locale).Value))
             |> String.concat "\n"
 
         x.Answer ((localizer.GetString("screens.level.open", info.Locale)).Format(actors, rules)).Value

@@ -3,6 +3,7 @@ using System.IO;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
+using MongoDB.Bson.FSharp;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using YogurtTheBot.Game.Logic;
@@ -23,6 +24,7 @@ namespace YogurtTheBot.Game.Server
     {
         public static void Main(string[] args)
         {
+            FSharpSerializer.Register();
             IConfigurationRoot configuration = BuildConfiguration();
 
             var rabbitMqSettings = configuration
