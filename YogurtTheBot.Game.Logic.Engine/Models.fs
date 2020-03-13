@@ -6,22 +6,23 @@ type Actor =
 type Action =
     { name: string }
 
-type Reflex =
+type ActorAction =
     { actor: Actor 
       action: Action
       recipient: Actor }
     
-type Permission =
-    { actor: Actor
-      action: Action }
-    
-type Rule =
-    | Reflex of Reflex * Reflex
-    | Permission of Permission
+type Callback =
+    { reason: ActorAction
+      result: ActorAction }
     
 type Level =
     { name: string
-      rules: Rule list
-      solution: Rule list
+      permissions: ActorAction list
+      callbacks: Callback list
+      solution: ActorAction list
+      winCondition: ActorAction
       actors: Actor list
       actions: Action list }
+    
+let createAction actor action recipient =
+    { actor = actor; action = action; recipient = recipient }

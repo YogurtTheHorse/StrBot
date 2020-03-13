@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\MongoDB.Bson.FSharp\MongoDB.Bson.FSharp.fsproj" />
         <ProjectReference Include="..\YogurtTheBot.Game.Core.Controllers.Autofac\YogurtTheBot.Game.Core.Controllers.Autofac.csproj" />
         <ProjectReference Include="..\YogurtTheBot.Game.Core\YogurtTheBot.Game.Core.csproj" />
         <ProjectReference Include="..\YogurtTheBot.Game.Logic\YogurtTheBot.Game.Logic.fsproj" />
@@ -18,7 +19,6 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
-        <PackageReference Include="MongoDB.Bson.FSharp" Version="0.0.4-beta" />
         <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
         <PackageReference Include="YamlDotNet" Version="8.1.0" />
     </ItemGroup>

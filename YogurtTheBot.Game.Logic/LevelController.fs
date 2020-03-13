@@ -3,17 +3,17 @@ module YogurtTheBot.Game.Logic.LevelController
 open System
 
 open YogurtTheBot.Game.Core
+open YogurtTheBot.Game.Core.Localizations
 open YogurtTheBot.Game.Core.Communications
 open YogurtTheBot.Game.Core.Controllers
-open YogurtTheBot.Game.Core.Controllers.Language.Controllers
+open YogurtTheBot.Game.Core.Controllers.Handlers
 
+open YogurtTheBot.Game.Core.Controllers.Language.Controllers
 open YogurtTheBot.Game.Core.Controllers.Language.Expressions
 open YogurtTheBot.Game.Core.Controllers.Language.Parsing
-open YogurtTheBot.Game.Logic.Engine.Levels
 
-open System.Collections.Generic
-open YogurtTheBot.Game.Core.Localizations
 open YogurtTheBot.Game.Logic.Engine
+open YogurtTheBot.Game.Logic.Engine.Levels
 open YogurtTheBot.Game.Logic.Engine.Models
 open YogurtTheBot.Game.Logic.NodeVisitor
 
@@ -84,12 +84,12 @@ let formatRule (translate: string -> string) rule =
     let translateActor (a: Actor) =
         translate ("actors." + a.name + ".name")
 
-    let translateStimulus (s: Reflex) =
+    let translateStimulus (s: ActorAction) =
         (translateActor s.actor) + " " + translate ("actions." + s.action.name + ".present") + " "
         + (translateActor s.recipient)
 
     match rule with
-    | Reflex(stimulus, reflex) ->
+    | Callback(stimulus, reflex) ->
         (translate "screens.level.if") + " " + (translateStimulus stimulus) + " " + (translate "screens.level.then")
         + " " + (translateStimulus reflex)
     | Permission { actor = a; action = { name = actionName } } ->
@@ -102,6 +102,9 @@ type LevelController(cp, localizer) =
     inherit LanguageController<PlayerData>(cp, localizer)
 
     let level = First.level
+    
+    [<Action("common.back")>]
+    member x.GoBack(info: PlayerInfo, data: PlayerData) = x.Back(info, data)
 
     [<LanguageAction("NewRuleRule")>]
     member x.NewRule(parsingesult: ParsingResult, info: PlayerInfo, data: PlayerData) =
@@ -109,12 +112,15 @@ type LevelController(cp, localizer) =
             (Seq.head parsingesult.Possibilities).Node
             |> visit
             |> clearUnnammed
+            
+        let translate s = localizer.GetString(s, info.Locale)
 
-        let buildReflex name = buildReflex (fun s -> localizer.GetString(s, info.Locale)) level (get visit name)
+        let buildReflex name = buildReflex translate level (get visit name)
+        let rule = Callback (buildReflex "stimulus", buildReflex "reflex")
 
-        data.reflexes <- (data.reflexes @ [ buildReflex "stimulus", buildReflex "reflex" ])
-
-        x.Answer "123"
+        match PlayerData.addRule level data rule with
+        | Added -> x.Answer (translate "screens.level.rule_added").Value
+        | Error l -> x.Answer l.Value
 
 
     override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) = x.OnOpen(info, data)

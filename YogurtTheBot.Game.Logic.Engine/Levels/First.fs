@@ -1,22 +1,18 @@
 module YogurtTheBot.Game.Logic.Engine.Levels.First
 
-open YogurtTheBot.Game.Logic.Engine.Level
 open YogurtTheBot.Game.Logic.Engine.Default.Actors
 open YogurtTheBot.Game.Logic.Engine.Default.Actions
+open YogurtTheBot.Game.Logic.Engine.Models
+
+let openDoor = createAction player open_ door
 
 let level =
-    lvl {
-        acting player
-        
-        allowed door to_ complete
-        allowed game to_ start
-        allowed player to_ open_
-
-        rules (ruleset {
-            on player open_ door door will complete game
-        })
-        
-        solution (ruleset {
-            on game start somebody player will open_ game
-        })
+    {
+        name = "first"
+        permissions = [ createAction player open_ everyone  ]
+        callbacks = List.empty
+        winCondition = openDoor
+        actors = [player]
+        actions = [open_]
+        solution = [openDoor]
     }

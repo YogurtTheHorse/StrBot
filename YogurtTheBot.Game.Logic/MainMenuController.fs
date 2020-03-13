@@ -15,4 +15,6 @@ type MainMenuController(cp, localizer) =
     [<Action("screens.main_menu.attack")>]
     member x.AttackAction() = x.Answer "test"
 
+    override x.OnOpen(info: PlayerInfo, data: PlayerData) =
+        x.Answer (localizer.GetString("screens.main_menu.open", info.Locale).Value)
 
