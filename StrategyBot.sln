@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Core.Cont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YogurtTheBot.Game.Core.Controllers.Language.Tests", "YogurtTheBot.Game.Core.Controllers.Language.Tests\YogurtTheBot.Game.Core.Controllers.Language.Tests.csproj", "{12D4D9B3-FC32-4134-9903-95E4655730B1}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MongoDB.Bson.FSharp", "MongoDB.Bson.FSharp\MongoDB.Bson.FSharp.fsproj", "{45DB2832-9358-4D41-BB78-CF9CFA809EBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,5 +80,9 @@ Global
 		{12D4D9B3-FC32-4134-9903-95E4655730B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12D4D9B3-FC32-4134-9903-95E4655730B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12D4D9B3-FC32-4134-9903-95E4655730B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45DB2832-9358-4D41-BB78-CF9CFA809EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45DB2832-9358-4D41-BB78-CF9CFA809EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45DB2832-9358-4D41-BB78-CF9CFA809EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45DB2832-9358-4D41-BB78-CF9CFA809EBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
