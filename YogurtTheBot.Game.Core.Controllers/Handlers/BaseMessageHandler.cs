@@ -21,7 +21,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Handlers
         public abstract CanHandleResult CanHandle(IncomingMessage message, PlayerInfo playerInfo);
 
         public async Task<IControllerAnswer?> Handle(
-            Controller<T> controller,
+            ControllerBase<T> controller,
             IncomingMessage message,
             PlayerInfo info,
             T data)

@@ -17,6 +17,7 @@ using YogurtTheBot.Game.Data.Abstractions;
 using YogurtTheBot.Game.Data.Mongo;
 using YogurtTheBot.Game.Server.RabbitMq;
 using YogurtTheBot.Game.Server.YamlLocalization;
+using Localization = YogurtTheBot.Game.Core.Localizations.Localization;
 
 namespace YogurtTheBot.Game.Server
 {

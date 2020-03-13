@@ -13,7 +13,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Autofac
             _scope = scope;
         }
 
-        public Controller<T> ResolveControllerByName(string s) => _scope.ResolveNamed<Controller<T>>(s);
+        public ControllerBase<T> ResolveControllerByName(string s) => _scope.ResolveNamed<ControllerBase<T>>(s);
 
         public string MainControllerName => MainControllerAutofacName;
     }

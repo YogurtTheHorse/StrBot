@@ -1,31 +1,27 @@
 namespace YogurtTheBot.Game.Logic
 
-open Engine.Models
 open System.Collections.Generic
 open YogurtTheBot.Game.Core
 open YogurtTheBot.Game.Core.Controllers.Abstractions
-open YogurtTheBot.Game.Core.Localizations
+open YogurtTheBot.Game.Logic.Engine.Models
+open YogurtTheBot.Game.Logic.Engine
 
 type PlayerData() =
     inherit PlayerDataBase()
 
     [<DefaultValue>]
     val mutable controllersStack: List<string>
-    
-    member val rules = list<Rule>.Empty with get, set
 
     interface IControllersData with
         member x.ControllersStack
             with get () = x.controllersStack
             and set v = x.controllersStack <- v
-        
-type RuleAddingResult =
-    | Added
-    | Error of Localization
             
 module PlayerData =
-    let addRule level (data: PlayerData) rule =
-        data.rules <- (data.rules @ [ rule ])
+    let runAction level (data: PlayerData) action =
+        let result = Runner.runAction action level.permissions level
         
-        Added
+        // TODO: Save permissions to data
+        
+        result
         

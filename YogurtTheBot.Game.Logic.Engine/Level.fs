@@ -2,7 +2,6 @@ module YogurtTheBot.Game.Logic.Engine.Level
 
 open YogurtTheBot.Game.Logic.Engine.Models
 open YogurtTheBot.Game.Logic.Engine.Default.Actors
-open YogurtTheBot.Game.Logic.Engine.Default.Actions
 
 type Will = Will
 
@@ -28,6 +27,7 @@ let getActors level =
     level.callbacks
     |> List.map (fun cb -> [cb.reason; cb.result])
     |> List.concat
+    |> (@) [level.winCondition]
     |> List.map (fun a -> [ a.recipient; a.actor ])
     |> (@) [ level.actors ]
     |> Seq.concat
@@ -47,29 +47,3 @@ let reflexMatches pattern reflex =
     actorsMatch pattern.recipient reflex.recipient &&
     actorsMatch pattern.actor reflex.actor &&
     pattern.action = reflex.action
-
-type TestResult =
-    | Complete
-    | Fail
-    | Nothing
-
-let testSolution level solution =
-    let rec test permissions actions =
-        match actions with
-        | [] -> [], Fail
-        | action :: tail when allowed permissions action ->
-            if action = level.winCondition then
-                [], Complete
-            else 
-                let newActions =
-                    level.callbacks
-                    |> List.filter (fun cb -> cb.reason = action)
-                    |> List.map (fun cb -> cb.result)
-                
-                let actions, result = test permissions (tail @ newActions)
-                
-                (actions @ [action]), result
-        | _ -> [], Fail
-        
-    test level.permissions solution 
-

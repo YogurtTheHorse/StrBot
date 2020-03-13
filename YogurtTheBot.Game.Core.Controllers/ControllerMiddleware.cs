@@ -29,7 +29,7 @@ namespace YogurtTheBot.Game.Core.Controllers
             
             string realControllerName = data.ControllersStack?.LastOrDefault() ?? _mainControllerName;
 
-            Controller<T> controller = _controllersProvider.ResolveControllerByName(realControllerName);
+            ControllerBase<T> controller = _controllersProvider.ResolveControllerByName(realControllerName);
             IControllerAnswer answer = await controller.ProcessMessage(message, info, data);
 
             await ProcessAnswer(answer, data, info);

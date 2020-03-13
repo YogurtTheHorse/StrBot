@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YogurtTheBot.Game.Core.Communications;
+using YogurtTheBot.Game.Core.Controllers.Abstractions;
 using YogurtTheBot.Game.Core.Controllers.Answers;
 using YogurtTheBot.Game.Core.Controllers.Handlers;
 using YogurtTheBot.Game.Core.Localizations;
-using YogurtTheBot.Game.Data;
 
-namespace YogurtTheBot.Game.Core.Controllers.Abstractions
+namespace YogurtTheBot.Game.Core.Controllers
 {
-    public abstract class Controller<T> where T : IControllersData
+    public abstract class ActionController<T> : ControllerBase<T> where T : IControllersData
     {
-        protected readonly IControllersProvider<T> ControllersProvider;
         protected readonly IMessageHandler<T>[] ActionHandlers;
 
-        protected Controller(IControllersProvider<T> controllersProvider, ILocalizer localizer)
+        protected ActionController(IControllersProvider<T> controllersProvider, ILocalizer localizer) 
+            : base(controllersProvider, localizer)
         {
-            ControllersProvider = controllersProvider;
-
             ActionHandlers = (
                     from methodInfo in GetType().GetMethods()
                     let attribute = Attribute.GetCustomAttribute(methodInfo, typeof(ActionAttribute)) as ActionAttribute
@@ -29,12 +27,12 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
                 .ToArray();
         }
 
-        public async Task<IControllerAnswer> ProcessMessage(IncomingMessage message, PlayerInfo info, T data)
+        public override async Task<IControllerAnswer> ProcessMessage(IncomingMessage message, PlayerInfo info, T data)
         {
             IMessageHandler<T>[] handlers = GetHandlers()
                 .OrderByDescending(h => h.Priority)
                 .ToArray();
-            
+
             foreach (IMessageHandler<T> handler in handlers)
             {
                 IControllerAnswer? answer = await handler.Handle(this, message, info, data);
@@ -50,10 +48,6 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
             throw new NotImplementedException();
         }
 
-        protected virtual IControllerAnswer OnOpen(PlayerInfo info, T data)
-        {
-            throw new NotImplementedException();
-        }
 
         protected virtual IEnumerable<IMessageHandler<T>> GetHandlers() => ActionHandlers;
 
@@ -63,32 +57,5 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
                 Suggestions = GetSuggestions(),
                 Text = text
             };
-
-        protected virtual Suggestion[] GetSuggestions()
-        {
-            return Array.Empty<Suggestion>();
-        }
-
-        protected IControllerAnswer Open(string controllerName, PlayerInfo info, T data)
-        {
-            Controller<T> controller = ControllersProvider.ResolveControllerByName(controllerName);
-            data.ControllersStack.Add(controllerName);
-
-            return controller.OnOpen(info, data);
-        }
-
-        protected IControllerAnswer Back(PlayerInfo info, T data)
-        {
-            if (data.ControllersStack.Count > 0)
-            {
-                data.ControllersStack.RemoveAt(data.ControllersStack.Count - 1);
-            }
-
-            string currentControllerName =
-                data.ControllersStack.LastOrDefault() ?? ControllersProvider.MainControllerName;
-            Controller<T> controller = ControllersProvider.ResolveControllerByName(currentControllerName);
-
-            return controller.OnOpen(info, data);
-        }
     }
 }

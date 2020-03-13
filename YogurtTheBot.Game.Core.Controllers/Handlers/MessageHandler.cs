@@ -9,7 +9,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Handlers
     public interface IMessageHandler<T> where T : IControllersData
     {
         Task<IControllerAnswer?> Handle(
-            Controller<T> controller,
+            ControllerBase<T> controller,
             IncomingMessage message,
             PlayerInfo info,
             T data

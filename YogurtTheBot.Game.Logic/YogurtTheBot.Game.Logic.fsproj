@@ -5,6 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Localization.fs" />
+        <Compile Include="Language.fs" />
         <Compile Include="PlayerData.fs" />
         <Compile Include="MainMenuController.fs" />
         <Compile Include="NodeVisitor.fs" />

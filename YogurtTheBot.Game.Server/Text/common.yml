@@ -1,1 +1,16 @@
+let:
+  - Let
+
 back: Back
+
+if:
+  - If
+  - When
+  - On
+
+will:
+  - Will
+  - Should
+
+slf:
+  - s

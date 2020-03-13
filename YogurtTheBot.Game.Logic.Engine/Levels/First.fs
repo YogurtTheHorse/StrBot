@@ -9,7 +9,7 @@ let openDoor = createAction player open_ door
 let level =
     {
         name = "first"
-        permissions = [ createAction player open_ everyone  ]
+        permissions = [ createAction player open_ everyone ]
         callbacks = List.empty
         winCondition = openDoor
         actors = [player]

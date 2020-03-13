@@ -9,7 +9,7 @@ using YogurtTheBot.Game.Core.Localizations;
 
 namespace YogurtTheBot.Game.Core.Controllers.Language.Controllers
 {
-    public class LanguageController<T> : Controller<T> where T : IControllersData
+    public class LanguageController<T> : ActionController<T> where T : IControllersData
     {
         public LanguageController(IControllersProvider<T> controllersProvider, ILocalizer localizer)
             : base(controllersProvider, localizer)

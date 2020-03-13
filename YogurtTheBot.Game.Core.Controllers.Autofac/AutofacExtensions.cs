@@ -15,7 +15,7 @@ namespace YogurtTheBot.Game.Core.Controllers.Autofac
 
             foreach (Type controllerType in types)
             {
-                if (!typeof(Controller<T>).IsAssignableFrom(controllerType))
+                if (!typeof(ControllerBase<T>).IsAssignableFrom(controllerType))
                 {
                     throw new InvalidOperationException($"{controllerType.Name} should implement IController<T>.");
                 }
@@ -24,11 +24,11 @@ namespace YogurtTheBot.Game.Core.Controllers.Autofac
                 var registration =
                     containerBuilder
                         .RegisterType(controllerType)
-                        .Named<Controller<T>>(Controllers.GetName(controllerType));
+                        .Named<ControllerBase<T>>(Controllers.GetName(controllerType));
 
                 if (Controllers.IsMain(controllerType))
                 {
-                    registration.Named<Controller<T>>(AutofacControllersProvider<T>.MainControllerAutofacName);
+                    registration.Named<ControllerBase<T>>(AutofacControllersProvider<T>.MainControllerAutofacName);
                 }
             }
 
