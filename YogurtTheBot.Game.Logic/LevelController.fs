@@ -131,7 +131,7 @@ type LevelController(cp, localizer) =
             let suggestions =
                 suggestionsStrings
                 |> Array.map (translate >> Localization.value)
-                |> Array.map Suggestion
+                |> Array.map (fun t -> Suggestion(Text = t))
                         
             let answer =
                 selectedAnswerString

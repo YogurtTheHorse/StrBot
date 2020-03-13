@@ -2,13 +2,8 @@ namespace YogurtTheBot.Game.Data
 {
     public class Suggestion
     {
-        public string Suggestion1 { get; }
+        public string Text { get; set; }
 
-        public Suggestion(string suggestion)
-        {
-            Suggestion1 = suggestion;
-        }
-
-        public static implicit operator Suggestion(string s) => new Suggestion(s);
+        public static implicit operator Suggestion(string s) => new Suggestion{ Text = s };
     }
 }

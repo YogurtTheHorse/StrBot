@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 using YogurtTheBot.Game.Server.RabbitMq;
 
 namespace YogurtTheBot.Telegram.Polling
@@ -61,6 +63,11 @@ namespace YogurtTheBot.Telegram.Polling
                 await bot.SendTextMessageAsync(
                     gameMessage.PlayerSocialId,
                     gameMessage.Text,
+                    replyMarkup: new ReplyKeyboardMarkup(gameMessage
+                        .Suggestions
+                        ?.Select(s => new KeyboardButton(s.Text))
+                        ?? new KeyboardButton[0]
+                    ),
                     cancellationToken: cancellationTokenSource.Token
                 );
 

@@ -36,6 +36,7 @@ namespace YogurtTheBot.Game.Server
                 {
                     Text = message.Text,
                     PlayerId = message.PlayerId,
+                    Suggestions = message.Suggestions,
                     PlayerSocialId = playerInfo.SocialId
                 }.EncodeObject()
             );
