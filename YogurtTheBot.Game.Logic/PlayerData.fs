@@ -6,7 +6,7 @@ open YogurtTheBot.Game.Core
 open YogurtTheBot.Game.Core.Controllers.Abstractions
 open YogurtTheBot.Game.Logic.Engine
 
-type PlayerData() as x =
+type PlayerData() as this =
     inherit PlayerDataBase()
 
     [<DefaultValue>]
@@ -15,18 +15,27 @@ type PlayerData() as x =
     [<DefaultValue>]    
     val mutable availableLevelsCount: int
     
+    [<DefaultValue>]    
+    val mutable currentLevel: int
+    
     [<DefaultValue>]
     val mutable savedPermissions: ActorAction list
     
     do
-        x.controllersStack <- List<string>()
-        x.availableLevelsCount <- 1
-        x.savedPermissions <- List.empty
+        this.controllersStack <- List<string>()
+        this.availableLevelsCount <- 1
+        this.currentLevel <- 0
+        this.savedPermissions <- List.empty
 
     interface IControllersData with
         member x.ControllersStack
             with get () = x.controllersStack
             and set v = x.controllersStack <- v
+            
+type NextLevelResult =
+    | LevelChanged of PlayerData
+    | NoMoreLevels
+    | LevelNotAllowed
             
 module PlayerData =
     let runAction level (data: PlayerData) action =
@@ -36,7 +45,28 @@ module PlayerData =
         
         result
         
-    let restart (data: PlayerData) =
+    let level (data: PlayerData) =
+        List.item data.currentLevel LevelsList.levels
+        
+    let clearLevel (data: PlayerData) =
         data.savedPermissions <- List.Empty
-        ()
+        
+        data
+        
+    let nextLevel (data: PlayerData) =
+        if data.currentLevel + 1 < data.availableLevelsCount then
+            LevelNotAllowed
+        else if data.currentLevel + 1 >= List.length LevelsList.levels then
+            NoMoreLevels
+        else
+            data.currentLevel <- data.currentLevel + 1
+            
+            LevelChanged (clearLevel data)
+            
+    let startLevel (data: PlayerData) level =
+        if level >= 0 && level < data.availableLevelsCount then
+            data.currentLevel <- level
+        
+        data
+        
         

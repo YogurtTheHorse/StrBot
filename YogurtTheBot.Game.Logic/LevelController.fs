@@ -8,12 +8,12 @@ open YogurtTheBot.Game.Core.Controllers.Handlers
 
 open YogurtTheBot.Game.Core.Controllers.Language.Controllers
 
+open YogurtTheBot.Game.Core.Controllers.Abstractions
 open YogurtTheBot.Game.Core.Controllers.Answers
 open YogurtTheBot.Game.Core.Controllers.Language.Expressions
 open YogurtTheBot.Game.Core.Controllers.Language.Parsing
 open YogurtTheBot.Game.Data
 open YogurtTheBot.Game.Logic.Engine
-open YogurtTheBot.Game.Logic.Engine.Levels
 open YogurtTheBot.Game.Logic.Engine.Models
 open YogurtTheBot.Game.Logic.NodeVisitor
 
@@ -87,20 +87,33 @@ let formatCbResult translate cbResult =
 [<Controller>]
 type LevelController(cp, localizer) =
     inherit LanguageController<PlayerData>(cp, localizer)
-
-    let level = Second.level
     
     [<Action("common.back")>]
     member x.GoBack(info: PlayerInfo, data: PlayerData) = x.Back(info, data)
     
     [<Action("screens.level.next")>]
-    member x.NextLevel() =
-        x.Answer "next"
+    member x.NextLevel(info, data: PlayerData) =
+        match PlayerData.nextLevel data with
+        | LevelChanged data -> x.OnOpen(info, data)
+        | NoMoreLevels ->
+            let answer =
+                "screens.level.no_more_levels"
+                |> Localization.translate localizer info.Locale
+                |> Localization.value
+                
+            x.Answer answer
+        | LevelNotAllowed ->
+            let answer =
+                "screens.level.next_not_allowed"
+                |> Localization.translate localizer info.Locale
+                |> Localization.value
+                
+            x.Answer answer    
+            
     
     [<Action("screens.level.restart")>]
     member x.Restart(info, data) =
-        PlayerData.restart data |> ignore
-        x.OnOpen(info, data)
+        x.OnOpen(info, PlayerData.clearLevel data)
     
     member x.MakeActionRule = Language.actorAction + Expression.End
 
@@ -112,6 +125,7 @@ type LevelController(cp, localizer) =
             |> clearUnnammed
             
         let translate = Localization.translate localizer info.Locale
+        let level = PlayerData.level data
         let actionResult = buildAction translate level parsed
         
         match actionResult with
@@ -130,8 +144,9 @@ type LevelController(cp, localizer) =
             let selectedAnswerString, suggestionsStrings =
                 match runResult.status with
                 | Runner.Complete ->
+                    // todo: handle last level
                     "screens.level.level_complete", [|
-                        "screens.level.next"
+                        "screens.level.next" 
                         "screens.level.restart"
                         "common.back"
                     |]
@@ -148,8 +163,8 @@ type LevelController(cp, localizer) =
 
             let suggestions =
                 suggestionsStrings
-                |> Array.map (translate >> Localization.value)
-                |> Array.map (fun t -> Suggestion(Text = t))
+                |> Array.map LocalizedSuggestion
+                |> Array.map (fun s -> s :> IControllerSuggestion)
                         
             let answer =
                 selectedAnswerString
@@ -163,6 +178,7 @@ type LevelController(cp, localizer) =
     override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) = x.OnOpen(info, data)
 
     override x.OnOpen(info: PlayerInfo, data: PlayerData) =
+        let level = PlayerData.level data
         let description = (localizer.GetString("levels." + level.name + ".description", info.Locale)).Value
                         
         x.Answer ((localizer.GetString("screens.level.open", info.Locale)).Format(description)).Value
