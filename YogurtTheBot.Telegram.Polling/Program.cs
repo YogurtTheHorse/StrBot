@@ -33,7 +33,7 @@ namespace YogurtTheBot.Telegram.Polling
                 .GetSection(nameof(RabbitMqSettings))
                 .Get<RabbitMqSettings>();
 
-            var factory = new ConnectionFactory()
+            var factory = new ConnectionFactory
             {
                 HostName = rabbitMqSettings.Hostname,
                 DispatchConsumersAsync = true
@@ -63,10 +63,13 @@ namespace YogurtTheBot.Telegram.Polling
                 await bot.SendTextMessageAsync(
                     gameMessage.PlayerSocialId,
                     gameMessage.Text,
-                    replyMarkup: new ReplyKeyboardMarkup(gameMessage
-                        .Suggestions
-                        ?.Select(s => new KeyboardButton(s.Text))
-                        ?? new KeyboardButton[0]
+                    replyMarkup: new ReplyKeyboardMarkup(
+                        gameMessage
+                            .Suggestions
+                            ?.Select(s => new[] {new KeyboardButton(s.Text)})
+                        ?? new KeyboardButton[0][],
+                        true,
+                        true
                     ),
                     cancellationToken: cancellationTokenSource.Token
                 );
