@@ -17,8 +17,8 @@
     },
     "YogurtTheBot.Alice": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "http://localhost:8200",
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:8500",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
