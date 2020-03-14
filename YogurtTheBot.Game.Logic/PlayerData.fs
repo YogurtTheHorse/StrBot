@@ -36,3 +36,7 @@ module PlayerData =
         
         result
         
+    let restart (data: PlayerData) =
+        data.savedPermissions <- List.Empty
+        ()
+        

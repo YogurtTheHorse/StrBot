@@ -98,13 +98,14 @@ type LevelController(cp, localizer) =
         x.Answer "next"
     
     [<Action("screens.level.restart")>]
-    member x.Restart() =
-        x.Answer "next"
+    member x.Restart(info, data) =
+        PlayerData.restart data |> ignore
+        x.OnOpen(info, data)
     
     member x.MakeActionRule = Language.actorAction + Expression.End
 
     [<LanguageAction("MakeActionRule")>]
-    member x.MakeAction(parsingResult: ParsingResult, info: PlayerInfo, data: PlayerData) =
+    member x.MakeAction(parsingResult: ParsingResult, info: PlayerInfo, data) =
         let parsed =
             (Seq.head parsingResult.Possibilities).Node
             |> visit
