@@ -176,6 +176,8 @@ type LevelController(cp, localizer) =
 
 
     override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) = x.OnOpen(info, data)
+    
+    override x.GetSuggestions() = Array.empty
 
     override x.OnOpen(info: PlayerInfo, data: PlayerData) =
         let level = PlayerData.level data
