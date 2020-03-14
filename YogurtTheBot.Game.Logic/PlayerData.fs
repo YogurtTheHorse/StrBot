@@ -76,10 +76,10 @@ module PlayerData =
         data
         
     let nextLevel (data: PlayerData) =
-        if data.currentLevel + 1 >= data.availableLevelsCount then
-            LevelNotAllowed
-        else if isLastLevel data then
+        if isLastLevel data then
             NoMoreLevels
+        else if data.currentLevel + 1 >= data.availableLevelsCount then
+            LevelNotAllowed
         else
             data.currentLevel <- data.currentLevel + 1
             
