@@ -81,6 +81,7 @@ let formatCbResult translate cbResult =
     match cbResult with
     | Action a -> formatAction translate a
     | Answer a -> translate a
+    | Failure f -> translate f
     | NotAllowed a -> formNotAllowed translate a
     | _ -> ""
 
@@ -133,46 +134,50 @@ type LevelController(cp, localizer) =
         | ActionNotFound -> x.Answer (translate "screens.level.action_not_found" |> Localization.value)
         | RecipientNotFound -> x.Answer (translate "screens.level.recipient_not_found"  |> Localization.value)
         | Success action -> // TODO: Extract method
-            let runResult = PlayerData.runAction level data action
-                
-            let formattedRanActions =
-                runResult.results
-                |> List.map (formatCbResult (translate >> Localization.value))
-                |> String.concat "\n"
-                
+            if data.isLevelComplete then
+                x.Answer (translate "screens.level.already_complete" |> Localization.value)
+            else
+                let runResult = PlayerData.runAction level data action
+                    
+                let formattedRanActions =
+                    runResult.results
+                    |> Seq.rev
+                    |> Seq.map (formatCbResult (translate >> Localization.value))
+                    |> String.concat "\n"
+                    
 
-            let selectedAnswerString, suggestionsStrings =
-                match runResult.status with
-                | Runner.Complete ->
-                    // todo: handle last level
-                    "screens.level.level_complete", [|
-                        "screens.level.next" 
-                        "screens.level.restart"
-                        "common.back"
-                    |]
-                | Runner.Fail ->
-                    "screens.level.level_failed", [|
-                        "screens.level.restart"
-                        "common.back"
-                    |]
-                | Runner.Nothing ->
-                    "screens.level.level_continues", [|
-                        "screens.level.restart"
-                        "common.back"
-                    |] 
+                let selectedAnswerString, suggestionsStrings =
+                    match runResult.status with
+                    | Runner.Complete ->
+                        // todo: handle last level
+                        "screens.level.level_complete", [|
+                            "screens.level.next" 
+                            "screens.level.restart"
+                            "common.back"
+                        |]
+                    | Runner.Fail ->
+                        "screens.level.level_failed", [|
+                            "screens.level.restart"
+                            "common.back"
+                        |]
+                    | Runner.Nothing ->
+                        "screens.level.level_continues", [|
+                            "screens.level.restart"
+                            "common.back"
+                        |] 
 
-            let suggestions =
-                suggestionsStrings
-                |> Array.map LocalizedSuggestion
-                |> Array.map (fun s -> s :> IControllerSuggestion)
-                        
-            let answer =
-                selectedAnswerString
-                |> translate 
-                |> Localization.format [| formattedRanActions |]
-                |> Localization.value
-                
-            ControllerAnswer(Text = answer, Suggestions = suggestions) :> IControllerAnswer
+                let suggestions =
+                    suggestionsStrings
+                    |> Array.map LocalizedSuggestion
+                    |> Array.map (fun s -> s :> IControllerSuggestion)
+                            
+                let answer =
+                    selectedAnswerString
+                    |> translate 
+                    |> Localization.format [| formattedRanActions |]
+                    |> Localization.value
+                    
+                ControllerAnswer(Text = answer, Suggestions = suggestions) :> IControllerAnswer
 
 
     override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) = x.OnOpen(info, data)

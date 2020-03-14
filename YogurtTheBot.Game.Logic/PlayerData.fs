@@ -25,10 +25,14 @@ type PlayerData() as this =
     [<DefaultValue>]
     val mutable savedTags: string list
     
+    [<DefaultValue>]
+    val mutable isLevelComplete: bool
+    
     do
         this.controllersStack <- List<string>()
         this.availableLevelsCount <- 1
         this.currentLevel <- 0
+        this.isLevelComplete <- false
         this.savedPermissions <- List.empty
         this.savedTags <- List.empty
 
@@ -43,12 +47,21 @@ type NextLevelResult =
     | LevelNotAllowed
             
 module PlayerData =
+    let isLastLevel (data: PlayerData) =
+        data.currentLevel + 1 >= List.length LevelsList.levels
+        
     let runAction level (data: PlayerData) action =
         let result = Runner.runAction action data.savedPermissions data.savedTags level
         
         if result.status <> Fail then
             data.savedPermissions <- data.savedPermissions @ result.addedPermissions
             data.savedTags <- data.savedTags @ result.savedTags
+            
+            if result.status = Complete then
+                data.isLevelComplete <- true
+                
+                if not (isLastLevel data) then
+                    data.availableLevelsCount <- data.availableLevelsCount + 1
         
         result
         
@@ -58,13 +71,14 @@ module PlayerData =
     let clearLevel (data: PlayerData) =
         data.savedPermissions <- List.Empty
         data.savedTags <- List.Empty
+        data.isLevelComplete <- false
         
         data
         
     let nextLevel (data: PlayerData) =
         if data.currentLevel + 1 >= data.availableLevelsCount then
             LevelNotAllowed
-        else if data.currentLevel + 1 >= List.length LevelsList.levels then
+        else if isLastLevel data then
             NoMoreLevels
         else
             data.currentLevel <- data.currentLevel + 1

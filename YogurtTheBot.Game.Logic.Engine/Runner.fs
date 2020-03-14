@@ -37,7 +37,7 @@ let rec run actions permissions tags level =
                 { result 
                   with addedPermissions = p :: result.addedPermissions}
             | Failure _ ->
-                { status = Complete
+                { status = Fail
                   results = [cb]
                   savedTags = []
                   addedPermissions = [] }

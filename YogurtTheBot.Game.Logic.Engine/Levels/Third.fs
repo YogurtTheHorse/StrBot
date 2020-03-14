@@ -16,14 +16,12 @@ let level =
         ]
         callbacks = [
             { reason = createAction wolves eat grass 
-              result = Answer "levels.third.rabbits_starve" }
-            { reason = createAction wolves eat grass 
               result = Failure "levels.third.herbivorous_wolves" }
             
             { reason = rabbitsEatGrass
               result = Action wolvesEatRabbits }
-            { reason = rabbitsEatGrass
-              result = Failure "levels.third.wolves_left" }
+            { reason = createAction somebody eat grass
+              result = Failure "levels.third.grass_eaten" }
             
             { reason = createAction grass eat grass
               result = Answer "levels.third.last_grass" }
@@ -31,28 +29,20 @@ let level =
               result = Action wolvesEatRabbits }
             
             { reason = createAction wolves eat wolves
-              result = Answer "levels.third.last_wolf" }
+              result = Answer "levels.third.wolves_dead" }
             
             { reason = createAction rabbits eat rabbits
-              result = Answer "levels.third.last_rabbit" }
-            { reason = createAction rabbits eat rabbits
-              result = Action wolvesEatRabbits }
-            
-            { reason = createAction rabbits eat wolves
-              result = Answer "levels.third.carnivorous_rabbits" }
-            { reason = createAction rabbits eat wolves
-              result = restrict wolves eat everyone |> Permission }
-            
-            { reason = createAction grass eat wolves
-              result = restrict wolves eat everyone |> Permission }
-            
-            { reason = createAction grass eat rabbits
-              result = restrict rabbits eat everyone |> Permission }
+              result = Answer "levels.third.rabbits_dead" }
             
             { reason = createAction somebody eat rabbits
               result = Tag "rabbits" }
+            { reason = createAction somebody eat rabbits
+              result = restrict rabbits eat everyone |> Permission }
+            
             { reason = createAction somebody eat wolves
               result = Tag "wolves" }
+            { reason = createAction somebody eat wolves
+              result = restrict wolves eat everyone |> Permission }
         ]
         winCondition = ["wolves"; "rabbits"]
         actors = [wolves; grass; rabbits]

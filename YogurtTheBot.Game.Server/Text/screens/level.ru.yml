@@ -21,6 +21,8 @@ action_not_found: Не понял, что нужно делать, может б
 recipient_not_found: Не понял, на кого направлено действие
 
 no_more_levels: Кажется уровни закончились...
+next_not_allowed: Кажется ты еще не прошел этот
+already_complete: Уровень уже пройден 
 
 level_complete: |-
   {0} 
