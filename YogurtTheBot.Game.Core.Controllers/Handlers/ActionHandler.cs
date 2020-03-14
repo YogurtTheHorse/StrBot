@@ -7,19 +7,20 @@ namespace YogurtTheBot.Game.Core.Controllers.Handlers
 {
     public class ActionHandler<T> : BaseMessageHandler<T> where T : IControllersData
     {
-        private readonly LocalizationPath _localizationPath;
+        public LocalizationPath LocalizationPath { get; }
+
         private readonly ILocalizer _localizer;
 
         public ActionHandler(LocalizationPath localizationPath, ILocalizer localizer, MethodInfo methodInfo)
             : base(methodInfo)
         {
-            _localizationPath = localizationPath;
+            LocalizationPath = localizationPath;
             _localizer = localizer;
         }
 
         public override CanHandleResult CanHandle(IncomingMessage message, PlayerInfo playerInfo)
         {
-            Localization actionString = _localizer.GetString(_localizationPath.Path, playerInfo.Locale);
+            Localization actionString = _localizer.GetString(LocalizationPath.Path, playerInfo.Locale);
 
             return new CanHandleResult
             {

@@ -21,9 +21,9 @@ namespace YogurtTheBot.Game.Core.Controllers.Abstractions
 
         public abstract Task<IControllerAnswer> ProcessMessage(IncomingMessage message, PlayerInfo info, T data);
         
-        protected virtual Suggestion[] GetSuggestions()
+        protected virtual IControllerSuggestion[] GetSuggestions()
         {
-            return Array.Empty<Suggestion>();
+            return Array.Empty<IControllerSuggestion>();
         }
 
         protected virtual IControllerAnswer OnOpen(PlayerInfo info, T data)

@@ -7,12 +7,13 @@ using YogurtTheBot.Game.Core.Controllers.Abstractions;
 using YogurtTheBot.Game.Core.Controllers.Answers;
 using YogurtTheBot.Game.Core.Controllers.Handlers;
 using YogurtTheBot.Game.Core.Localizations;
+using YogurtTheBot.Game.Data;
 
 namespace YogurtTheBot.Game.Core.Controllers
 {
     public abstract class ActionController<T> : ControllerBase<T> where T : IControllersData
     {
-        protected readonly IMessageHandler<T>[] ActionHandlers;
+        protected readonly ActionHandler<T>[] ActionHandlers;
 
         protected ActionController(IControllersProvider<T> controllersProvider, ILocalizer localizer) 
             : base(controllersProvider, localizer)
@@ -23,7 +24,6 @@ namespace YogurtTheBot.Game.Core.Controllers
                     where !(attribute is null)
                     select new ActionHandler<T>(attribute.LocalizationPath, localizer, methodInfo)
                 )
-                .Cast<IMessageHandler<T>>()
                 .ToArray();
         }
 
@@ -50,6 +50,14 @@ namespace YogurtTheBot.Game.Core.Controllers
 
 
         protected virtual IEnumerable<IMessageHandler<T>> GetHandlers() => ActionHandlers;
+
+        protected override IControllerSuggestion[] GetSuggestions()
+        {
+            return ActionHandlers
+                .Select(h => new LocalizedSuggestion(h.LocalizationPath.Path))
+                .Cast<IControllerSuggestion>()
+                .ToArray();
+        }
 
         protected virtual IControllerAnswer Answer(string text) =>
             new ControllerAnswer

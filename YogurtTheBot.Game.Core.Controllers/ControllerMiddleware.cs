@@ -6,6 +6,7 @@ using YogurtTheBot.Game.Core.Communications;
 using YogurtTheBot.Game.Core.Communications.Pipeline;
 using YogurtTheBot.Game.Core.Controllers.Abstractions;
 using YogurtTheBot.Game.Core.Controllers.Answers;
+using YogurtTheBot.Game.Core.Localizations;
 using YogurtTheBot.Game.Data;
 
 namespace YogurtTheBot.Game.Core.Controllers
@@ -14,19 +15,22 @@ namespace YogurtTheBot.Game.Core.Controllers
     {
         private readonly IControllersProvider<T> _controllersProvider;
         private readonly IGameCommunicator _gameCommunicator;
+        private readonly ILocalizer _localizer;
         private readonly string _mainControllerName;
 
-        public ControllerMiddleware(IControllersProvider<T> controllersProvider, IGameCommunicator gameCommunicator)
+        public ControllerMiddleware(IControllersProvider<T> controllersProvider, IGameCommunicator gameCommunicator,
+            ILocalizer localizer)
         {
             _controllersProvider = controllersProvider;
             _gameCommunicator = gameCommunicator;
+            _localizer = localizer;
             _mainControllerName = controllersProvider.MainControllerName;
         }
 
         public async Task Pipe(IncomingMessage message, PlayerInfo info, T data, Func<Task> next)
         {
             data.ControllersStack ??= new List<string>(new[] {_mainControllerName});
-            
+
             string realControllerName = data.ControllersStack?.LastOrDefault() ?? _mainControllerName;
 
             ControllerBase<T> controller = _controllersProvider.ResolveControllerByName(realControllerName);
@@ -41,7 +45,10 @@ namespace YogurtTheBot.Game.Core.Controllers
             await _gameCommunicator.Answer(new GameAnswer
             {
                 PlayerId = info.Key,
-                Suggestions = answer.Suggestions,
+                Suggestions = answer
+                    .Suggestions
+                    .Select(a => a.GetSuggestion(_localizer, info.Locale))
+                    .ToArray(),
                 Text = answer.Text
             });
         }

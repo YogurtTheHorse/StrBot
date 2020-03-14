@@ -3,7 +3,7 @@ using YogurtTheBot.Game.Core.Localizations;
 
 namespace YogurtTheBot.Game.Core.Controllers.Handlers
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class ActionAttribute : Attribute
     {
         public LocalizationPath LocalizationPath { get; }

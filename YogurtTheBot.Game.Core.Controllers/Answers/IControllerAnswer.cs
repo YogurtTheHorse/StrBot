@@ -1,4 +1,4 @@
-using YogurtTheBot.Game.Data;
+using YogurtTheBot.Game.Core.Controllers.Abstractions;
 
 namespace YogurtTheBot.Game.Core.Controllers.Answers
 {
@@ -6,6 +6,6 @@ namespace YogurtTheBot.Game.Core.Controllers.Answers
     {
         string Text { get; }
         
-        Suggestion[] Suggestions { get; }
+        IControllerSuggestion[] Suggestions { get; }
     }
 }
