@@ -2,6 +2,7 @@ module YogurtTheBot.Game.Logic.Engine.Level
 
 open YogurtTheBot.Game.Logic.Engine.Models
 open YogurtTheBot.Game.Logic.Engine.Default.Actors
+open YogurtTheBot.Game.Logic.Engine.Models
 
 type Will = Will
 
@@ -15,18 +16,23 @@ type To = To
 
 let to_ = To
 
-let getActions level =
+let getActorActions level =
     level.callbacks
-    |> List.map (fun cb -> [cb.reason; cb.result])
+    |> List.map (fun cb ->
+        match cb.result with
+        | Action a -> [cb.reason; a]
+        | _ -> [cb.reason]
+    )
     |> List.concat
+
+let getActions level =
+    getActorActions level
     |> List.map (fun a -> a.action)
     |> (@) level.actions
     |> Seq.distinctBy (fun a -> a.name)
 
 let getActors level =
-    level.callbacks
-    |> List.map (fun cb -> [cb.reason; cb.result])
-    |> List.concat
+    getActorActions level
     |> (@) [level.winCondition]
     |> List.map (fun a -> [ a.recipient; a.actor ])
     |> (@) [ level.actors ]

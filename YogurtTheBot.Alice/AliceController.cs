@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using YogurtTheBot.Alice.Models;
 using YogurtTheBot.Alice.Services;
@@ -31,7 +32,14 @@ namespace YogurtTheBot.Alice
                 Session = request.Session,
                 Response = new ResponseModel
                 {
-                    Text = answer.Text
+                    Text = answer.Text,
+                    Buttons = answer
+                        .Suggestions
+                        .Select(s => new ButtonModel
+                        {
+                            Title = s.Text
+                        })
+                        .ToArray()
                 }
             };
         }

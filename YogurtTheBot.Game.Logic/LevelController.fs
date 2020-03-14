@@ -57,7 +57,7 @@ let buildAction (translate: string -> Localization) level parsed =
     | (_, _, Option.None) -> RecipientNotFound
     | (Some actor, Some action, Some recipient) -> Success (createAction actor action recipient)
 
-let formatAction (translate: string -> string) action: string =
+let formatAction translate action =
     let translateActor (a: Actor) = translate ("actors." + a.name + ".name")
 
     (translateActor action.actor)
@@ -65,13 +65,30 @@ let formatAction (translate: string -> string) action: string =
     + translate ("actions." + action.action.name + ".present")
     + " "
     + (translateActor action.recipient)
+    
+let formNotAllowed translate action =
+    let translateActor (a: Actor) = translate ("actors." + a.name + ".name")
 
+    (translateActor action.actor)
+    + " "
+    + translate "screens.level.cant"
+    + " "
+    + translate ("actions." + action.action.name + ".infinitive")
+    + " "
+    + (translateActor action.recipient)
+    
+let formatCbResult translate cbResult =
+    match cbResult with
+    | Action a -> formatAction translate a
+    | Answer a -> translate a
+    | NotAllowed a -> formNotAllowed translate a
+    | _ -> ""
 
 [<Controller>]
 type LevelController(cp, localizer) =
     inherit LanguageController<PlayerData>(cp, localizer)
 
-    let level = First.level
+    let level = Second.level
     
     [<Action("common.back")>]
     member x.GoBack(info: PlayerInfo, data: PlayerData) = x.Back(info, data)
@@ -87,9 +104,9 @@ type LevelController(cp, localizer) =
     member x.MakeActionRule = Language.actorAction + Expression.End
 
     [<LanguageAction("MakeActionRule")>]
-    member x.MakeAction(parsingesult: ParsingResult, info: PlayerInfo, data: PlayerData) =
+    member x.MakeAction(parsingResult: ParsingResult, info: PlayerInfo, data: PlayerData) =
         let parsed =
-            (Seq.head parsingesult.Possibilities).Node
+            (Seq.head parsingResult.Possibilities).Node
             |> visit
             |> clearUnnammed
             
@@ -104,8 +121,8 @@ type LevelController(cp, localizer) =
             let runResult = PlayerData.runAction level data action
                 
             let formattedRanActions =
-                runResult.ranActions
-                |> List.map (formatAction (translate >> Localization.value))
+                runResult.results
+                |> List.map (formatCbResult (translate >> Localization.value))
                 |> String.concat "\n"
                 
 

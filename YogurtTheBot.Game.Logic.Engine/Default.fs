@@ -11,10 +11,15 @@ module Actors =
     
     let door: Actor = { name = "door" }
     let player: Actor = { name = "player" }
+    
+    let key: Actor = { name = "key" }
 
 module Actions =
     let open_: Action =
         { name = "open" }
+        
+    let takes: Action =
+        { name = "takes" }
 
     let complete: Action =
         { name = "complete" }
