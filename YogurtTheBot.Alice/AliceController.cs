@@ -20,7 +20,7 @@ namespace YogurtTheBot.Alice
         {
             MessageToSocialNetwork answer = _rabbit.HandleUserMessage(new MessageFromSocialNetwork
             {
-                Locale = request.Meta.Locale,
+                Locale = request.Meta.Locale == "ru-RU" ? "ru" : request.Meta.Locale,
                 Text = request.Request.OriginalUtterance,
                 PlayerSocialId = request.Session.UserId,
                 ReplyBackQueueName = "alice"
