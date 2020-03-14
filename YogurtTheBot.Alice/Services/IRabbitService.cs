@@ -5,9 +5,7 @@ namespace YogurtTheBot.Alice.Services
 {
     public interface IRabbitService
     {
-        IModel Channel { get; }
-
-        void HandleAnswer(MessageToSocialNetwork answer);
+        void Listen();
         
         MessageToSocialNetwork HandleUserMessage(MessageFromSocialNetwork messageFromSocialNetwork);
     }

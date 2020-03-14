@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -19,10 +21,58 @@ namespace YogurtTheBot.Alice.Services
             _rabbitMqSettings = rabbitMqSettings;
             _answers = new ConcurrentDictionary<string, BlockingCollection<MessageToSocialNetwork>>();
 
-            StartListening();
+            SetupRabbit();
         }
 
-        private void StartListening()
+        public void Dispose()
+        {
+            Channel.Close();
+            _connection.Close();
+        }
+
+        public MessageToSocialNetwork HandleUserMessage(MessageFromSocialNetwork messageFromSocialNetwork)
+        {
+            BlockingCollection<MessageToSocialNetwork> userAnswers = GetUserAnswers(messageFromSocialNetwork.PlayerSocialId);
+            
+            Channel.BasicPublish(
+                _rabbitMqSettings.Value.MessagesExchange,
+                _rabbitMqSettings.Value.ServersQueue,
+                null,
+                messageFromSocialNetwork.EncodeObject()
+            );
+
+            // TODO: Add timeout
+            return userAnswers.Take();
+        }
+
+        public void Listen()
+        {
+            var consumer = new EventingBasicConsumer(Channel);
+
+            consumer.Received += (channel, ea) =>
+            {
+                HandleAnswer(ea.Body.DecodeObject<MessageToSocialNetwork>());
+                Channel.BasicAck(ea.DeliveryTag, false);
+            };
+
+            Channel.BasicConsume("alice", false, consumer);
+        }
+
+        private BlockingCollection<MessageToSocialNetwork> GetUserAnswers(string userId) =>
+            _answers
+                .GetOrAdd(
+                    userId,
+                    _ => new BlockingCollection<MessageToSocialNetwork>()
+                );
+
+        private void HandleAnswer(MessageToSocialNetwork answer)
+        {
+            BlockingCollection<MessageToSocialNetwork> userAnswers = GetUserAnswers(answer.PlayerSocialId);
+
+            userAnswers.Add(answer);                
+        }
+
+        private void SetupRabbit()
         {
             var factory = new ConnectionFactory()
             {
@@ -42,41 +92,6 @@ namespace YogurtTheBot.Alice.Services
                     .WithSocialNetwork("alice")
                     .Build()
             );
-        }
-
-        public void Dispose()
-        {
-            Channel.Close();
-            _connection.Close();
-        }
-
-        private BlockingCollection<MessageToSocialNetwork> GetUserAnswers(string userId) =>
-            _answers
-                .GetOrAdd(
-                    userId,
-                    _ => new BlockingCollection<MessageToSocialNetwork>()
-                );
-
-        public void HandleAnswer(MessageToSocialNetwork answer)
-        {
-            BlockingCollection<MessageToSocialNetwork> userAnswers = GetUserAnswers(answer.PlayerSocialId);
-
-            userAnswers.Add(answer);            
-        }
-
-        public MessageToSocialNetwork HandleUserMessage(MessageFromSocialNetwork messageFromSocialNetwork)
-        {
-            BlockingCollection<MessageToSocialNetwork> userAnswers = GetUserAnswers(messageFromSocialNetwork.PlayerSocialId);
-            
-            Channel.BasicPublish(
-                _rabbitMqSettings.Value.MessagesExchange,
-                _rabbitMqSettings.Value.ServersQueue,
-                null,
-                messageFromSocialNetwork.EncodeObject()
-            );
-
-            // TODO: Add timeout
-            return userAnswers.Take();
         }
     }
 }

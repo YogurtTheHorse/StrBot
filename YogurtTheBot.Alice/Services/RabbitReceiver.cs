@@ -22,15 +22,7 @@ namespace YogurtTheBot.Alice.Services
         {
             stoppingToken.ThrowIfCancellationRequested();
 
-            var consumer = new EventingBasicConsumer(_rabbitService.Channel);
-
-            consumer.Received += (channel, ea) =>
-            {
-                _rabbitService.HandleAnswer(ea.Body.DecodeObject<MessageToSocialNetwork>());
-                _rabbitService.Channel.BasicAck(ea.DeliveryTag, false);
-            };
-
-            _rabbitService.Channel.BasicConsume("alice", false, consumer);
+            _rabbitService.Listen();
             
             return Task.CompletedTask;
         }
