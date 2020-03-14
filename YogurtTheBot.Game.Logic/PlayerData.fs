@@ -5,6 +5,7 @@ open System.Collections.Generic
 open YogurtTheBot.Game.Core
 open YogurtTheBot.Game.Core.Controllers.Abstractions
 open YogurtTheBot.Game.Logic.Engine
+open YogurtTheBot.Game.Logic.Engine.Runner
 
 type PlayerData() as this =
     inherit PlayerDataBase()
@@ -19,13 +20,17 @@ type PlayerData() as this =
     val mutable currentLevel: int
     
     [<DefaultValue>]
-    val mutable savedPermissions: ActorAction list
+    val mutable savedPermissions: Permission list
+    
+    [<DefaultValue>]
+    val mutable savedTags: string list
     
     do
         this.controllersStack <- List<string>()
         this.availableLevelsCount <- 1
         this.currentLevel <- 0
         this.savedPermissions <- List.empty
+        this.savedTags <- List.empty
 
     interface IControllersData with
         member x.ControllersStack
@@ -39,9 +44,11 @@ type NextLevelResult =
             
 module PlayerData =
     let runAction level (data: PlayerData) action =
-        let result = Runner.runAction action data.savedPermissions level
+        let result = Runner.runAction action data.savedPermissions data.savedTags level
         
-        data.savedPermissions <- data.savedPermissions @ result.addedPermissions
+        if result.status <> Fail then
+            data.savedPermissions <- data.savedPermissions @ result.addedPermissions
+            data.savedTags <- data.savedTags @ result.savedTags
         
         result
         
@@ -50,6 +57,7 @@ module PlayerData =
         
     let clearLevel (data: PlayerData) =
         data.savedPermissions <- List.Empty
+        data.savedTags <- List.Empty
         
         data
         
@@ -67,6 +75,6 @@ module PlayerData =
         if level >= 0 && level < data.availableLevelsCount then
             data.currentLevel <- level
         
-        data
+        clearLevel data
         
         

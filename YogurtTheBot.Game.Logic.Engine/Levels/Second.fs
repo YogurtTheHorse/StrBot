@@ -11,16 +11,18 @@ let level =
     {
         name = "second"
         permissions = [
-            createAction key open_ everyone
-            createAction player takes key
+            grant key open_ everyone
+            grant player takes key
         ]
         callbacks = [
             { reason = takesKey
-              result = grant player open_ door }
+              result = grant player open_ door |> Permission }
             { reason = takesKey
               result = Answer "levels.second.takes_key"}
+            { reason = openDoor
+              result = Tag "door_open" }
         ]
-        winCondition = openDoor
+        winCondition = ["door_open"]
         actors = [player; key]
         actions = [open_; takes]
         solution = [openDoor]

@@ -10,6 +10,7 @@
         <Compile Include="Level.fs" />
         <Compile Include="Levels\First.fs" />
         <Compile Include="Levels\Second.fs" />
+        <Compile Include="Levels\Third.fs" />
         <Compile Include="Levels\LevelsList.fs" />
         <Compile Include="Runner.fs" />
     </ItemGroup>

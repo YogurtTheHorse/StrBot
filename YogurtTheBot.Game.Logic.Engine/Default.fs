@@ -13,10 +13,19 @@ module Actors =
     let player: Actor = { name = "player" }
     
     let key: Actor = { name = "key" }
+    
+    let wolves: Actor = { name = "wolves" }
+    
+    let grass: Actor = { name = "grass" }
+    
+    let rabbits: Actor = { name = "rabbits" }
 
 module Actions =
     let open_: Action =
         { name = "open" }
+        
+    let eat: Action =     
+        { name = "eat" }
         
     let takes: Action =
         { name = "takes" }

@@ -33,7 +33,6 @@ let getActions level =
 
 let getActors level =
     getActorActions level
-    |> (@) [level.winCondition]
     |> List.map (fun a -> [ a.recipient; a.actor ])
     |> (@) [ level.actors ]
     |> Seq.concat
@@ -47,7 +46,18 @@ let actionMatch a1 a2 =
     actorsMatch a1.actor a2.actor && actorsMatch a1.recipient a2.recipient && a1.action = a2.action
 
 let allowed permissions action =
-    List.exists (fun p -> actionMatch p action) permissions
+    let rec allowed_ permissions def =
+        match permissions with
+        | [] -> def
+        | p :: tail ->
+            match p with
+            | Grant a when actionMatch a action ->
+                allowed_ tail true
+            | Restriction a when actionMatch a action ->
+                allowed_ tail false
+            | _ -> allowed_ tail def 
+     
+    allowed_ permissions false
     
 let reflexMatches pattern reflex =
     actorsMatch pattern.recipient reflex.recipient &&

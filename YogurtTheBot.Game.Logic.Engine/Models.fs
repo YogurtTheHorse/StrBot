@@ -11,11 +11,17 @@ type ActorAction =
       action: Action
       recipient: Actor }
     
+type Permission =
+    | Grant of ActorAction
+    | Restriction of ActorAction
+    
 type CallbackResult =
     | Action of ActorAction
-    | Grant of ActorAction
+    | Permission of Permission
     | Answer of string
+    | Failure of string
     | NotAllowed of ActorAction
+    | Tag of string
     
 type Callback =
     { reason: ActorAction
@@ -23,10 +29,10 @@ type Callback =
     
 type Level =
     { name: string
-      permissions: ActorAction list
+      permissions: Permission list
       callbacks: Callback list
       solution: ActorAction list
-      winCondition: ActorAction
+      winCondition: string list
       actors: Actor list
       actions: Action list }
     
@@ -40,4 +46,8 @@ let createAction actor action recipient =
     
 let grant actor action recipient =
     createAction actor action recipient
-    |> Grant 
+    |> Grant
+    
+let restrict actor action recipient =
+    createAction actor action recipient
+    |> Restriction
