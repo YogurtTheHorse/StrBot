@@ -28,6 +28,9 @@ type PlayerData() as this =
     [<DefaultValue>]
     val mutable isLevelComplete: bool
     
+    [<DefaultValue>]
+    val mutable isFirstRun: bool
+    
     do
         this.controllersStack <- List<string>()
         this.availableLevelsCount <- 1
@@ -35,6 +38,7 @@ type PlayerData() as this =
         this.isLevelComplete <- false
         this.savedPermissions <- List.empty
         this.savedTags <- List.empty
+        this.isFirstRun <- true
 
     interface IControllersData with
         member x.ControllersStack
