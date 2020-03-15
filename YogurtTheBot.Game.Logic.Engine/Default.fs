@@ -37,3 +37,5 @@ module Actions =
         
     let start: Action =
         { name = "start" }
+        
+    let find = { name = "find" } 
