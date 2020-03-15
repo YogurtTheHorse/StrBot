@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.VisualBasic.CompilerServices;
 using YogurtTheBot.Game.Core.Communications;
 
 namespace YogurtTheBot.Game.Core.Localizations
@@ -25,9 +26,17 @@ namespace YogurtTheBot.Game.Core.Localizations
 
         public bool MatchesMessage(string message, params object[] args)
         {
+            string preparedMessage = PrepareForCompartment(message);
+            
             return Format(args)
                 .Values
-                .Any(f => f.Equals(message, StringComparison.OrdinalIgnoreCase));
+                .Any(f => PrepareForCompartment(f).Equals(preparedMessage, StringComparison.OrdinalIgnoreCase));
         }
+
+        private string PrepareForCompartment(string s) =>
+            string.Join("", s
+                .ToArray()
+                .Where(c => !char.IsPunctuation(c))
+            ).Trim();
     }
 }

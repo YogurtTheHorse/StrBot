@@ -25,8 +25,9 @@ type MainMenuController(cp, localizer) =
         x.Answer (Localization.translate localizer info.Locale "screens.main_menu.how_to_play" |> Localization.value)
 
     override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) =
-        if data.isFirstRun then    
-            x.Answer (Localization.translate localizer info.Locale "screens.main_menu.default" |> Localization.value)
+        if data.isFirstRun then
+            data.isFirstRun <- false // TODO: non-functional
+            x.Answer (Localization.translate localizer info.Locale "screens.main_menu.first_time" |> Localization.value)
         else
             x.Answer (Localization.translate localizer info.Locale "screens.main_menu.default" |> Localization.value)
 
