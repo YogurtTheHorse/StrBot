@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,6 +60,8 @@ namespace YogurtTheBot.Telegram.Polling
             rabbitConsumer.Received += async (_, ea) =>
             {
                 var gameMessage = ea.Body.DecodeObject<MessageToSocialNetwork>();
+                
+                Console.WriteLine($"<- {gameMessage.PlayerSocialId}: {gameMessage.Text}");
 
                 await bot.SendTextMessageAsync(
                     gameMessage.PlayerSocialId,

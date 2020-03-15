@@ -65,6 +65,7 @@ namespace YogurtTheBot.Telegram.Polling
         
         private Task BotOnMessageReceived(Message message)
         {
+            Console.WriteLine($"> {message.Chat.Id} {message.Chat.FirstName}: {message.Text}");
             _channel.BasicPublish(
                 _rabbitMqSettings.MessagesExchange,
                 _rabbitMqSettings.ServersQueue,
