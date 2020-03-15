@@ -3,22 +3,24 @@ module YogurtTheBot.Game.Logic.Engine.Default
 open YogurtTheBot.Game.Logic.Engine.Models
 
 module Actors =
-    let game: Actor = { name = "game" }
+    let game: Actor = 
+        { name = "game"
+          grammaticalNumber = Singular }
     
-    let everyone: Actor = { name = "everyone" }
+    let everyone: Actor = { name = "everyone"; grammaticalNumber = Singular }
     
-    let somebody: Actor = { name = "somebody" }
+    let somebody: Actor = { name = "somebody"; grammaticalNumber = Singular }
     
-    let door: Actor = { name = "door" }
-    let player: Actor = { name = "player" }
+    let door: Actor = { name = "door"; grammaticalNumber = Singular }
+    let player: Actor = { name = "player"; grammaticalNumber = Singular }
     
-    let key: Actor = { name = "key" }
+    let key: Actor = { name = "key"; grammaticalNumber = Singular }
     
-    let wolves: Actor = { name = "wolves" }
+    let wolves: Actor = { name = "wolves"; grammaticalNumber = Plural }
     
-    let grass: Actor = { name = "grass" }
+    let grass: Actor = { name = "grass"; grammaticalNumber = Singular }
     
-    let rabbits: Actor = { name = "rabbits" }
+    let rabbits: Actor = { name = "rabbits"; grammaticalNumber = Plural }
 
 module Actions =
     let open_: Action =

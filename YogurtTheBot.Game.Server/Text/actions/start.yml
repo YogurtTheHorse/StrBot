@@ -1,3 +1,7 @@
 name:
   - Start
   - Starts
+
+present: starts
+present_plural: start
+infinitive: start

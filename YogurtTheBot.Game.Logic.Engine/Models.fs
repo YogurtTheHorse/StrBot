@@ -1,7 +1,10 @@
 module YogurtTheBot.Game.Logic.Engine.Models
 
+type GrammaticalNumber = Singular | Plural
+
 type Actor =
-    { name: string }
+    { name: string
+      grammaticalNumber: GrammaticalNumber }
 
 type Action =
     { name: string }

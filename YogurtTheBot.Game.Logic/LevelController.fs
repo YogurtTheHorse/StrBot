@@ -56,26 +56,43 @@ let buildAction (translate: string -> Localization) level parsed =
     | (_, Option.None, _) -> ActionNotFound
     | (_, _, Option.None) -> RecipientNotFound
     | (Some actor, Some action, Some recipient) -> Success (createAction actor action recipient)
+    
+let firstUpper s =
+    match s |> Seq.toList with
+    | head :: tail ->
+        let first = head.ToString().ToUpper()
+        let tail = (String.concat "" (tail |> Seq.map (fun x -> x.ToString())))
+        
+        first + tail
+    | _ -> s
 
 let formatAction translate action =
-    let translateActor (a: Actor) = translate ("actors." + a.name + ".name")
-
-    (translateActor action.actor)
-    + " "
-    + translate ("actions." + action.action.name + ".present")
-    + " "
-    + (translateActor action.recipient)
+    let tense =
+        match action.actor.grammaticalNumber with
+        | Singular -> ".present"
+        | Plural -> ".plural_present"
+    
+    
+    let preformatted =
+        (translate ("actors." + action.actor.name + ".name"))
+        + " "
+        + translate ("actions." + action.action.name + tense)
+        + " "
+        + (translate ("actors." + action.recipient.name + ".subject"))
+        
+    preformatted |> firstUpper
     
 let formNotAllowed translate action =
-    let translateActor (a: Actor) = translate ("actors." + a.name + ".name")
+    let preformatted =
+        translate ("actors." + action.actor.name + ".name")
+        + " "
+        + translate (if action.actor.grammaticalNumber = Singular then "screens.level.cant" else "screens.level.plural_cant")
+        + " "
+        + translate ("actions." + action.action.name + ".infinitive")
+        + " "
+        + translate ("actors." + action.recipient.name + ".subject")
 
-    (translateActor action.actor)
-    + " "
-    + translate "screens.level.cant"
-    + " "
-    + translate ("actions." + action.action.name + ".infinitive")
-    + " "
-    + (translateActor action.recipient)
+    preformatted |> firstUpper
     
 let formatCbResult translate cbResult =
     match cbResult with
