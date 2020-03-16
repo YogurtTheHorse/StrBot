@@ -60,7 +60,7 @@ let buildAction (translate: string -> Localization) level parsed =
 let firstUpper s =
     match s |> Seq.toList with
     | head :: tail ->
-        let first = head.ToString().ToUpper()
+        let first = head.ToString()
         let tail = (String.concat "" (tail |> Seq.map (fun x -> x.ToString())))
         
         first + tail
@@ -197,12 +197,19 @@ type LevelController(cp, localizer) =
                 ControllerAnswer(Text = answer, Suggestions = suggestions) :> IControllerAnswer
 
 
-    override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) = x.OnOpen(info, data)
+    override x.DefaultHandler(message: IncomingMessage, info: PlayerInfo, data: PlayerData) =
+        x.Answer (Localization.translate localizer info.Locale "screens.level.default" |> Localization.value)
     
     override x.GetSuggestions() = Array.empty
 
     override x.OnOpen(info: PlayerInfo, data: PlayerData) =
         let level = PlayerData.level data
         let description = (localizer.GetString("levels." + level.name + ".description", info.Locale)).Value
-                        
-        x.Answer ((localizer.GetString("screens.level.open", info.Locale)).Format(description)).Value
+        
+        
+        x.Answer (
+             "screens.level.open"
+             |> Localization.translate localizer info.Locale
+             |> Localization.format [|description|]
+             |> Localization.value
+        )
