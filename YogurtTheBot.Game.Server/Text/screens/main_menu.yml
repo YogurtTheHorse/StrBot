@@ -1,1 +1,33 @@
-start: Start game
+start: Start from beginning
+
+continue:
+  - Play
+  - Continue
+  - Continue game
+  - Continue the game
+
+how_to_play_button:
+  - How to play?
+  - Rules
+  - Rules of game
+  - Rules of the game
+  - Game rules
+  - See game rules
+  - See rules
+
+default: Didn't get you
+
+
+how_to_play: |-
+  This game is quest-quiz. We have a few levels there. Each of them have some characters. Thses characters can do specific actions targeting other characters on level
+  
+  So on, you are narrator of eaach level and you must try to make everything get to goal of each level. The problem there is that English is a bit complicates, so in game you will have strict rules what to say. First word is character, then goes verb and after target character. Example:\
+
+  Alex finds key
+
+  It's hard to foresee all possible language structure, so to make game playable we had to make this rules
+
+first_time: |-
+  Seems like you are playing for the first time. Then maybe to see game rules?
+
+open: Hi. Continue the game or start new one? Maybe you need to look onto game rules?

@@ -1,8 +1,9 @@
 name:
   - takes
   - take
-  - find
+  - get
+  - gets
 
-present: takes
-plural_present: take
-infinitive: take
+present: gets
+plural_present: get
+infinitive: get
