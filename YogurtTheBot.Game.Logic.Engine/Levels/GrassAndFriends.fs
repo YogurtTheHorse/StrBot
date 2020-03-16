@@ -1,4 +1,4 @@
-module YogurtTheBot.Game.Logic.Engine.Levels.Third
+module YogurtTheBot.Game.Logic.Engine.Levels.GrassAndFriends
 
 open YogurtTheBot.Game.Logic.Engine.Default.Actors
 open YogurtTheBot.Game.Logic.Engine.Default.Actions
@@ -10,7 +10,7 @@ let rabbitsEatGrass = createAction rabbits eat grass
 
 let level =
     {
-        name = "third"
+        name = "grass_and_friends"
         permissions = [
             grant everyone eat everyone
         ]
