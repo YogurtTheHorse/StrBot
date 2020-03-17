@@ -76,7 +76,9 @@ namespace YogurtTheBot.Alice.Services
         {
             var factory = new ConnectionFactory()
             {
-                HostName = _rabbitMqSettings.Value.Hostname
+                HostName = _rabbitMqSettings.Value.Hostname,
+                UserName = _rabbitMqSettings.Value.Username,
+                Password = _rabbitMqSettings.Value.Password
             };
 
             _connection = factory.CreateConnection();
