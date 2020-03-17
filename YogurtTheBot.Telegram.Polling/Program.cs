@@ -16,8 +16,14 @@ namespace YogurtTheBot.Telegram.Polling
 {
     public static class Program
     {
+        private static readonly AutoResetEvent _closing = new AutoResetEvent(false);
+
         public static async Task Main(string[] args)
         {
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(
+                (object sender, ConsoleCancelEventArgs args) => _closing.Set()
+            );
+
             IConfigurationRoot configuration = BuildConfiguration();
 
             IConfigurationSection proxyConfiguration = configuration.GetSection("Bot:Proxy");
@@ -85,7 +91,7 @@ namespace YogurtTheBot.Telegram.Polling
             channel.BasicConsume("telegram", false, rabbitConsumer);
 
             System.Console.WriteLine($"Start listening for @{botInfo.Username}");
-            System.Console.ReadLine();
+            _closing.WaitOne();
 
             cancellationTokenSource.Cancel();
         }

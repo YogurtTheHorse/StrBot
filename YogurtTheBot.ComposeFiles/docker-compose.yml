@@ -41,7 +41,6 @@ services:
       - "GAME_RabbitMqSettings__Hostname=rabbitmq"
       - "GAME_RabbitMqSettings__Username=user"
       - "GAME_RabbitMqSettings__Password=user"
-    stdin_open: true
   yogurt-telegram-polling:
     build:
       context: ../
@@ -49,7 +48,6 @@ services:
     links:
       - rabbitmq
     restart: always
-    stdin_open: true
     environment:
       - "GAME_RabbitMqSettings__Hostname=rabbitmq"
       - "GAME_RabbitMqSettings__Username=user"
