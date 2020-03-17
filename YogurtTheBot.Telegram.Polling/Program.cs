@@ -37,6 +37,8 @@ namespace YogurtTheBot.Telegram.Polling
             var factory = new ConnectionFactory
             {
                 HostName = rabbitMqSettings.Hostname,
+                UserName = rabbitMqSettings.Username,
+                Password = rabbitMqSettings.Password,
                 DispatchConsumersAsync = true
             };
 

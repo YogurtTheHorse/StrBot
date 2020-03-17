@@ -43,6 +43,8 @@ namespace YogurtTheBot.Game.Server
             var factory = new ConnectionFactory
             {
                 HostName = rabbitMqSettings.Hostname,
+                UserName = rabbitMqSettings.Username,
+                Password = rabbitMqSettings.Password,
                 DispatchConsumersAsync = true
             };
 

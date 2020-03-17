@@ -6,6 +6,24 @@ is in development and for a while i'm working on periphery around bot.a
 Bot is developed with .NET Core 3.1. But to run it you will be required to have RabbitMQ server and MongoDB. All 
 configuration could be found in appsettings. To test it in Telegram you will ned a telegram bot token.
 
+# Docker & docker-compose
+
+## Starting docker-compose
+
+If you want to have start all services follow up these commands:
+```bash
+ docker-compose -f YogurtTheBot.ComposeFiles/docker-compose.yml up --build -d
+``` 
+
+## After start (only once)
+
+You have to create an user by after rabbitmq started firstly:
+```bash
+ docker-compose -f YogurtTheBot.ComposeFiles/docker-compose.yml exec rabbitmq rabbitmqctl add_user user user
+ docker-compose -f YogurtTheBot.ComposeFiles/docker-compose.yml exec rabbitmq rabbitmqctl set_user_tags user administrator
+ docker-compose -f YogurtTheBot.ComposeFiles/docker-compose.yml exec rabbitmq rabbitmqctl set_permissions -p / user ".*" ".*" ".*"
+``` 
+
 # Projects 
 A lot of projects, yeah? :)
 
