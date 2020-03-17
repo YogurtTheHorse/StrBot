@@ -121,7 +121,9 @@ namespace YogurtTheBot.Telegram.Polling
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.Confidentional.json", optional: true, reloadOnChange: true);
+                .AddJsonFile($"appsettings.Confidentional.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables("GAME_")
+                .AddEnvironmentVariables("TELEGRAM_");
 
             return builder.Build();
         }

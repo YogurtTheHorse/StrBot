@@ -50,3 +50,7 @@ services:
       - rabbitmq
     restart: always
     stdin_open: true
+    environment:
+      - "GAME_RabbitMqSettings__Hostname=rabbitmq"
+      - "GAME_RabbitMqSettings__Username=user"
+      - "GAME_RabbitMqSettings__Password=user"
