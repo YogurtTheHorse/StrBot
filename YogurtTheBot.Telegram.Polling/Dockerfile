@@ -5,8 +5,7 @@ WORKDIR /source/YogurtTheBot.Telegram.Polling
 RUN dotnet publish -c Release -f netcoreapp3.1 -o /out
 
 WORKDIR /
-RUN rm -rf source
-RUN find /out -name "*.pdb" -type f -delete
+RUN rm -rf source && find /out -name "*.pdb" -type f -delete
 
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1 as runtime
 WORKDIR /app

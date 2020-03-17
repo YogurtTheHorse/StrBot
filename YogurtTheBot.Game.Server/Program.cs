@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
@@ -23,8 +24,14 @@ namespace YogurtTheBot.Game.Server
 {
     public static class Program
     {
+        private static readonly AutoResetEvent _closing = new AutoResetEvent(false);
+
         public static void Main(string[] args)
         {
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(
+                (object sender, ConsoleCancelEventArgs args) => _closing.Set()
+            );
+
             FSharpSerializer.Register();
             IConfigurationRoot configuration = BuildConfiguration();
 
@@ -122,7 +129,7 @@ namespace YogurtTheBot.Game.Server
             );
 
             Console.WriteLine("Listening...");
-            Console.ReadLine();
+            _closing.WaitOne();
         }
 
         private static AsyncEventHandler<BasicDeliverEventArgs> MessagesConsumerOnReceived(IContainer container) =>
@@ -165,7 +172,9 @@ namespace YogurtTheBot.Game.Server
         {
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true);
+                .AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables("GAME_")
+                .AddEnvironmentVariables("SERVER_");
 
             return builder.Build();
         }
