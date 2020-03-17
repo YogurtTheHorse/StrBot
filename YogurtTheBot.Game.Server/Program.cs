@@ -165,7 +165,8 @@ namespace YogurtTheBot.Game.Server
         {
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true);
+                .AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables("GAME_");
 
             return builder.Build();
         }

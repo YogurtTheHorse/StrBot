@@ -16,10 +16,6 @@ services:
     hostname: rabbitmq
     image: rabbitmq
     restart: always
-    # if you didn't want to share that port then have to delete that below
-    ports:
-      - "15672:15672"
-      - "5672:5672"
     volumes:
       - ./Scripts/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - ./Scripts/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
@@ -39,6 +35,13 @@ services:
       - mongo
       - rabbitmq
     restart: always
+    environment:
+      - "GAME_MongoSettings__Database=root"
+      - "GAME_MongoSettings__ConnectionString=mongodb://root:root@mongo"
+      - "GAME_RabbitMqSettings__Hostname=rabbitmq"
+      - "GAME_RabbitMqSettings__Username=user"
+      - "GAME_RabbitMqSettings__Password=user"
+    stdin_open: true
   yogurt-telegram-polling:
     build:
       context: ../
@@ -46,3 +49,4 @@ services:
     links:
       - rabbitmq
     restart: always
+    stdin_open: true

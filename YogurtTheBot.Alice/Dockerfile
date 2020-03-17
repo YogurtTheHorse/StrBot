@@ -5,10 +5,9 @@ WORKDIR /source/YogurtTheBot.Alice
 RUN dotnet publish -c Release -f netcoreapp3.1 -o /out
 
 WORKDIR /
-RUN rm -rf source
-RUN find /out -name "*.pdb" -type f -delete
+RUN rm -rf source && find /out -name "*.pdb" -type f -delete
 
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1 as runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as runtime
 WORKDIR /app
 COPY --from=build /out ./
 ENTRYPOINT ["dotnet", "YogurtTheBot.Alice.dll"]
