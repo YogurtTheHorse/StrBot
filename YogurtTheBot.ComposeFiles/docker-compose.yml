@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+  mongo:
+    logging: &loggingConfig
+      driver: json-file
+    image: mongo
+    restart: always
+    volumes:
+      - ../data/mongodb:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=root
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+  rabbitmq:
+    logging: *loggingConfig
+    hostname: rabbitmq
+    image: rabbitmq
+    restart: always
+    volumes:
+      - ./Scripts/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./Scripts/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
+      - ../data/rabbitmq:/var/lib/rabbitmq:delegated
+  yogurt-alice:
+    build:
+      context: ../
+      dockerfile: YogurtTheBot.Alice/Dockerfile
+    links:
+      - rabbitmq
+    restart: always
+  yogurt-game-server:
+    build:
+      context: ../
+      dockerfile: YogurtTheBot.Game.Server/Dockerfile
+    links:
+      - mongo
+      - rabbitmq
+    restart: always
+    environment:
+      - "GAME_MongoSettings__Database=root"
+      - "GAME_MongoSettings__ConnectionString=mongodb://root:root@mongo"
+      - "GAME_RabbitMqSettings__Hostname=rabbitmq"
+      - "GAME_RabbitMqSettings__Username=user"
+      - "GAME_RabbitMqSettings__Password=user"
+  yogurt-telegram-polling:
+    build:
+      context: ../
+      dockerfile: YogurtTheBot.Telegram.Polling/Dockerfile
+    links:
+      - rabbitmq
+    restart: always
+    environment:
+      - "GAME_RabbitMqSettings__Hostname=rabbitmq"
+      - "GAME_RabbitMqSettings__Username=user"
+      - "GAME_RabbitMqSettings__Password=user"
