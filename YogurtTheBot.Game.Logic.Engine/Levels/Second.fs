@@ -3,7 +3,6 @@ module YogurtTheBot.Game.Logic.Engine.Levels.Second
 open YogurtTheBot.Game.Logic.Engine.Default.Actors
 open YogurtTheBot.Game.Logic.Engine.Default.Actions
 open YogurtTheBot.Game.Logic.Engine.Models
-open YogurtTheBot.Game.Logic.Engine
 
 let openDoor = createAction somebody open_ door
 let takesKey = createAction player takes key
@@ -27,7 +26,7 @@ let level =
             { reason = openDoor
               result = Tag "door_open" }
         ]
-        winCondition = Level.allTags ["door_open"] None
+        winCondition = ["door_open"]
         actors = [player; key]
         actions = [open_; takes]
         solution = [openDoor]

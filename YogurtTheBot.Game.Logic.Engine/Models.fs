@@ -30,17 +30,12 @@ type Callback =
     { reason: ActorAction
       result: CallbackResult }
     
-type LevelState =
-    | Completed
-    | Failed
-    | Awaiting
-    
 type Level =
     { name: string
       permissions: Permission list
       callbacks: Callback list
       solution: ActorAction list
-      winCondition: string list -> LevelState * string option 
+      winCondition: string list
       actors: Actor list
       actions: Action list }
     

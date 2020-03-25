@@ -3,7 +3,6 @@ module YogurtTheBot.Game.Logic.Engine.Levels.GrassAndFriends
 open YogurtTheBot.Game.Logic.Engine.Default.Actors
 open YogurtTheBot.Game.Logic.Engine.Default.Actions
 open YogurtTheBot.Game.Logic.Engine.Models
-open YogurtTheBot.Game.Logic.Engine
 
 let wolvesEatRabbits = createAction wolves eat rabbits
 
@@ -45,7 +44,7 @@ let level =
             { reason = createAction somebody eat wolves
               result = restrict wolves eat everyone |> Permission }
         ]
-        winCondition = Level.allTags ["wolves"; "rabbits"] None
+        winCondition = ["wolves"; "rabbits"]
         actors = [wolves; grass; rabbits]
         actions = [eat]
         solution =

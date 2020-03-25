@@ -63,10 +63,3 @@ let reflexMatches pattern reflex =
     actorsMatch pattern.recipient reflex.recipient &&
     actorsMatch pattern.actor reflex.actor &&
     pattern.action = reflex.action
-
-let allTags requiredTags message tags =
-    let forall =
-        requiredTags
-        |> Seq.forall (fun t -> List.contains t tags)
-        
-    (if forall then Completed else Awaiting), message
