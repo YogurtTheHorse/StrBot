@@ -19,7 +19,12 @@ actor_not_found: Didn't get who must act
 action_not_found: Didn't get how to act
 recipient_not_found: Didn't get act recipient
 
-no_more_levels: Seems like there is no more levels...
+no_more_levels: |-
+  Seems like levels ran out...
+  
+  Sad to say, but I couldn't make more levels for the game, but I decided to publish it to get feedback. If you wish, write directly to @YogurtTheHorse about game, maybe I would figure something out with it 
+  
+
 next_not_allowed: Seems like you must finish this one first
 already_complete: Level is finished already
 
@@ -40,5 +45,4 @@ level_continues: |-
 
 
 default:
-  - Don't get what you are saying. First say who must act, then what to do and the last word for action's target 
-  - Не понимаю, что ты говоришь. Ты должен говорить кому и что делать. Сначала говоришь, кто должен делать, затем действие и того, на кого оно направлено 
+  - Don't get what you are saying. First say who must act, then what to do and the last word for action's target  
