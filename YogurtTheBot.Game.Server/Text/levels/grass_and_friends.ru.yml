@@ -1,19 +1,18 @@
 description: |- 
-  Окей, в этом уровне есть трава, волки и зайцы. Олега и двери больше нет. Сверху дали указание, что нужно сделать так, чтобы осталась только трава.
+  Now, this level has wolves, hares and some grass. Forget Alex and the door. When you're done, there should be nothing here but the grass. Orders from the top.
   
-  С какого верху? Ну с того самого, конечно
+  Yes, from the very top. Don't dwell on it, start solving already.
 
-rabbits_starve: Ну вот. Кролики умерли от голода
+rabbits_starve: The hares have starved to death. Happy now?
   
-herbivorous_wolves: Травоядные волки, ага
+herbivorous_wolves: Herbivorous wolves, sure
 
-grass_eaten: Траву не уберегли
+grass_eaten: A-a-and the grass is gone
 
-last_grass: Трава почти съела саму себя, но последний леписток выжил и смог восстановиться до былых размеров травы
+last_grass: The grass was so close to exterminating itself, but one little blade fought back and survived. From it, all the grass grew right back
 
-wolves_dead: Ага, волки переели друг друга, отлично
+wolves_dead: The wolves ate each other, just like that
 
-rabbits_dead: Ну вот, зайцы совсем озверели
+rabbits_dead: Oh wow, those hares just went berserk
 
-last_rabbit: Последняя крольчиха смогла выжить и восстановить популяцию 
-  
+last_rabbit: The last surviving female hare repopulated the whole tribe
