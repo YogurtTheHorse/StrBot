@@ -75,7 +75,7 @@ namespace YogurtTheBot.Telegram.Polling
                     Text = message.Text,
                     PlayerSocialId = message.Chat.Id.ToString(),
                     ReplyBackQueueName = "telegram",
-                    Locale = message.From.LanguageCode.Contains("ru") ? "ru" : "en"
+                    Locale = (message.From?.LanguageCode?.Contains("ru") ?? false) ? "ru" : "en"
                 }.EncodeObject()
             );
             
